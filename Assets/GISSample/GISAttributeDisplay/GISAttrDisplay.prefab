@@ -718,3 +718,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 7202930876246949887}
+  background: {fileID: 7202930877333185210}
+  pillar: {fileID: 836388237685299169}
