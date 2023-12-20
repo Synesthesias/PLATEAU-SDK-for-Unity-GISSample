@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d32e60d18ac734197b079b61b10ce0, type: 3}
   m_Name: CesiumRuntimeSettings
   m_EditorClassIdentifier: 
-  _defaultIonAccessTokenID: d5a8b360-f881-4d39-9a5c-c2e0ce694c9d
-  _defaultIonAccessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNWE4YjM2MC1mODgxLTRkMzktOWE1Yy1jMmUwY2U2OTRjOWQiLCJpZCI6MTM1NDM3LCJpYXQiOjE2OTg5MDcwOTF9.nWC1LMKSfujVLAqB-sYTntux7DHADvSRhPRscJq4OWw
+  _defaultIonAccessTokenID: 
+  _defaultIonAccessToken: 
   _requestsPerCachePrune: 10000
   _maxItems: 4096
