@@ -20,7 +20,7 @@ namespace GISSample.GISAttributeDisplay
 
         public void Exec()
         {
-            var dbfs = GameObjectUtil.FindDbfsInChild(target.transform);
+            var dbfs = GameObjectUtil.FindComponentsInChild<DbfComponent>(target.transform);
             foreach (var dbf in dbfs)
             {
                 if (dbf.Properties.Count <= propertyIndex)
