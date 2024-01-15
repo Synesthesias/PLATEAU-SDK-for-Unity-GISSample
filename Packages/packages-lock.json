@@ -19,7 +19,7 @@
       }
     },
     "com.synesthesias.plateau-unity-sdk": {
-      "version": "file:F:/Desktop/DATA/release/PLATEAU-SDK-for-Unity-20240115.tgz",
+      "version": "file:F:/Desktop/DATA/release/PLATEAU-SDK-for-Unity-2024022502.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {

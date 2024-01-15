@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="Attribute.uss" />
+    <ui:ScrollView class="attribute">
+        <ui:Label text="属性情報" display-tooltip-when-elided="true" name="Header" class="attr-header" />
+        <ui:VisualElement class="key-value">
+            <ui:Label text="Label" display-tooltip-when-elided="true" class="key" />
+            <ui:Label text="Label" display-tooltip-when-elided="true" class="value" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

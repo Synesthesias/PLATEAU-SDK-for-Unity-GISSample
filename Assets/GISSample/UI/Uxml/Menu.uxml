@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="Menu.uss" />
+    <ui:ScrollView show-horizontal-scroller="false" class="menu">
+        <ui:VisualElement name="FilterElement" style="position: relative; align-items: stretch; justify-content: flex-start;">
+            <ui:Label text="フィルタリング" display-tooltip-when-elided="true" name="FilterHeaderLabel" class="menu-header" />
+            <ui:VisualElement name="FilterContent" class="content">
+                <ui:VisualElement name="HeightLabelAndValue" class="filter-label">
+                    <ui:Label text="高さ" display-tooltip-when-elided="true" name="HeightLabel" />
+                    <ui:Label text="0 to 700" display-tooltip-when-elided="true" name="HeightValue" />
+                </ui:VisualElement>
+                <ui:MinMaxSlider picking-mode="Ignore" min-value="0" max-value="700" low-limit="0" high-limit="700" name="HeightSlider" />
+                <ui:VisualElement name="LodLabelAndValue" class="filter-label">
+                    <ui:Label text="LOD" display-tooltip-when-elided="true" name="LodLabel" />
+                    <ui:Label text="0 to 3" display-tooltip-when-elided="true" name="LodValue" />
+                </ui:VisualElement>
+                <ui:MinMaxSlider picking-mode="Ignore" min-value="0" max-value="3" low-limit="0" high-limit="3" name="LodSlider" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ColorCodeElement">
+            <ui:Label text="色分け" display-tooltip-when-elided="true" name="ColorCodeHeaderLabel" class="menu-header" />
+            <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="色分けなし,高さ" name="ColorCodeGroup" class="content" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

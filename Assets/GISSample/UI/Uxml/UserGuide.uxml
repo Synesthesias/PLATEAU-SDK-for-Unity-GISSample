@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="UserGuide.uss" />
+    <ui:ScrollView class="userguide">
+        <ui:Label text="操作方法" display-tooltip-when-elided="true" name="Header" class="userguide-header" />
+        <ui:Label text="○マウス左ボタン＋ドラッグ" display-tooltip-when-elided="true" name="LeftButtonLabel" class="userguide-label" />
+        <ui:Label text="→水平移動" display-tooltip-when-elided="true" name="HorizontalMoveLabel" class="userguide-label" />
+        <ui:VisualElement name="Splitter" class="splitter" />
+        <ui:Label text="○マウス右ボタン＋ドラッグ" display-tooltip-when-elided="true" name="RightButtonLabel" class="userguide-label" />
+        <ui:Label text="→回転" display-tooltip-when-elided="true" name="RotateLabel" class="userguide-label" />
+        <ui:VisualElement name="Splitter" class="splitter" />
+        <ui:Label text="○マウスホイール回転" display-tooltip-when-elided="true" name="WheelLabel0" class="userguide-label" />
+        <ui:Label text="→前後移動" display-tooltip-when-elided="true" name="ForwardBackwardLabel" class="userguide-label" />
+        <ui:VisualElement name="Splitter" class="splitter" />
+        <ui:Label text="○マウス中央ボタン＋ドラッグ" display-tooltip-when-elided="true" name="CenterButtonLabel" class="userguide-label" />
+        <ui:Label text="○マウス左ボタン＋&lt;br&gt;　マウス右ボタン＋ドラッグ" display-tooltip-when-elided="true" name="LeftRightButtonLabel" class="userguide-label" />
+        <ui:Label text="→上下左右移動" display-tooltip-when-elided="true" name="VerticalMoveLabel" class="userguide-label" />
+        <ui:VisualElement name="Splitter" class="splitter" />
+    </ui:ScrollView>
+</ui:UXML>

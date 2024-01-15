@@ -1,0 +1,53 @@
+.attribute {
+    width: 20%;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background-color: rgb(255, 255, 255);
+}
+
+.key-value {
+    white-space: normal;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    -unity-text-align: upper-left;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.key {
+    width: 50%;
+    white-space: normal;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 5px;
+}
+
+.value {
+    width: 50%;
+    white-space: normal;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+.attr-header {
+    background-color: rgba(0, 190, 190, 255);
+    color: rgba(255, 255, 255, 255);
+    font-size: 20px;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-font-style: bold;
+    padding-left: 11px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+}

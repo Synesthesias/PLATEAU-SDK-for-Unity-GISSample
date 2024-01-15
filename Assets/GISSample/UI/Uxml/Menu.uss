@@ -1,0 +1,67 @@
+.menu {
+    width: 20%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+}
+
+.menu-header {
+    font-size: 20px;
+    -unity-font-style: bold;
+    margin-left: 0;
+    margin-right: 0;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 190, 190, 255);
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 11px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+}
+
+.content {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-label {
+    flex-direction: row;
+}
+
+.unity-min-max-slider__dragger {
+    -unity-slice-left: 24;
+    -unity-slice-right: 24;
+    background-color: rgb(0, 190, 190);
+    height: 12px;
+    margin-top: -6px;
+}
+
+.unity-min-max-slider__min-thumb {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    min-height: 16px;
+    margin-top: -3px;
+    background-color: rgb(0, 190, 190);
+}
+
+.unity-min-max-slider__max-thumb {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin-top: -3px;
+    min-height: 16px;
+    background-color: rgb(0, 190, 190);
+}
+
+.unity-radio-button__checkmark {
+    background-color: rgb(0, 190, 190);
+}
+
+#ColorCodeGroup Label {
+    white-space: normal;
+    padding-right: 46px;
+}
