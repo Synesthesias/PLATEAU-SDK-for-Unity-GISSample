@@ -54,7 +54,7 @@ namespace GISSample.PlateauAttributeDisplay
 
 
     /// <summary>
-    /// GMLファイル1つに対応するゲームオブジェクトをサンプル上で扱うクラス
+    /// GMLファイル1つに対応するゲームオブジェクトをサンプル上で扱いやすくしたラッパーです。
     /// </summary>
     public class SampleGml
     {
@@ -139,11 +139,11 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="type">色分けタイプ</param>
         /// <param name="colorTable">色テーブル</param>
         /// <param name="areaName">浸水エリア名</param>
-        public void ColorCode(ColorCodeType type, Color[] colorTable, string areaName = null)
+        public void ColorGml(ColorCodeType type, Color[] colorTable, string areaName = null)
         {
             foreach (var keyValue in CityObjects)
             {
-                keyValue.Value.ColorCode(type, colorTable, areaName);
+                keyValue.Value.ColorCityObj(type, colorTable, areaName);
             }
         }
     }

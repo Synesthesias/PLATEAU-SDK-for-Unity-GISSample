@@ -126,8 +126,6 @@ namespace GISSample.PlateauAttributeDisplay
 
             foreach (var instancedCityModel in instancedCityModels)
             {
-                // インポートしたPLATEAUInstancedCityModelの名前がルートフォルダ名です。
-                // var rootDirName = instancedCityModel.name;
 
                 for (int i = 0; i < instancedCityModel.transform.childCount; ++i)
                 {
@@ -159,7 +157,7 @@ namespace GISSample.PlateauAttributeDisplay
                 choices.AddRange(floodingAreaNames);
                 colorCodeGroup.choices = choices;
             }
-            ColorCode(colorCodeType, floodingAreaName);
+            ColorCity(colorCodeType, floodingAreaName);
 
             inputActions.GISSample.SetCallbacks(gisCameraMove);
 
@@ -172,7 +170,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// 色分け処理
         /// </summary>
         /// <param name="type"></param>
-        private void ColorCode(ColorCodeType type, string areaName)
+        private void ColorCity(ColorCodeType type, string areaName)
         {
             foreach (var keyValue in gmls)
             {
@@ -189,7 +187,7 @@ namespace GISSample.PlateauAttributeDisplay
                         break;
                 }
 
-                keyValue.Value.ColorCode(type, colorTable, areaName);
+                keyValue.Value.ColorGml(type, colorTable, areaName);
             }
         }
 
@@ -264,7 +262,7 @@ namespace GISSample.PlateauAttributeDisplay
                 var trans = PickObject();
                 if (trans == null)
                 {
-                    ColorCode(colorCodeType, floodingAreaName);
+                    ColorCity(colorCodeType, floodingAreaName);
 
                     selectedCityObject = null;
 
@@ -275,11 +273,11 @@ namespace GISSample.PlateauAttributeDisplay
                 };
 
                 // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
-                ColorCode(colorCodeType, floodingAreaName);
+                ColorCity(colorCodeType, floodingAreaName);
 
                 // 選択されたオブジェクトの色を変更
                 selectedCityObject = gmls[trans.parent.parent.name].CityObjects[trans.name];
-                selectedCityObject.SetMaterialColor(selectedColor);
+                selectedCityObject.SetMaterialColorAndShow(selectedColor);
 
                 userGuideUi.gameObject.SetActive(false);
                 attributeUi.gameObject.SetActive(true);
@@ -341,7 +339,7 @@ namespace GISSample.PlateauAttributeDisplay
                 floodingAreaName = colorCodeGroup.choices.ElementAt(e.newValue);
             }
 
-            ColorCode(colorCodeType, floodingAreaName);
+            ColorCity(colorCodeType, floodingAreaName);
         }
 
     }
