@@ -1,19 +1,18 @@
-﻿using PLATEAU.CityInfo;
-using PLATEAU.Util.Async;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using PLATEAU.CityInfo;
+using PLATEAU.Samples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-namespace PLATEAU.Samples
+namespace GISSample.PlateauAttributeDisplay
 {
     /// <summary>
     /// シーンマネージャ
     /// カメラ、入力、UIの制御を行います。
     /// </summary>
-    public class SceneManager : MonoBehaviour, GISSampleInputActions.IGISSampleActions
+    public class SceneManager : MonoBehaviour
     {
         [SerializeField, Tooltip("初期化中")] private UIDocument initializingUi;
         [SerializeField, Tooltip("メニュー（フィルター、色分け部分）")] private UIDocument menuUi;
@@ -30,11 +29,7 @@ namespace PLATEAU.Samples
         /// Assets/GISSample/GISSampleInputActionsから生成されたクラスです。
         /// </summary>
         private GISSampleInputActions inputActions;
-
-        /// <summary>
-        /// カメラのTransform
-        /// </summary>
-        private Transform cameraTransform;
+        
 
         /// <summary>
         /// シーン中のPLATEAUInstancedCityModel
@@ -56,11 +51,6 @@ namespace PLATEAU.Samples
         private SampleCityObject selectedCityObject;
 
         /// <summary>
-        /// フィルターパラメータ
-        /// </summary>
-        private FilterParameter filterParameter;
-
-        /// <summary>
         /// 色分けタイプ
         /// </summary>
         private ColorCodeType colorCodeType;
@@ -70,37 +60,15 @@ namespace PLATEAU.Samples
         /// </summary>
         private string floodingAreaName;
 
-        /// <summary>
-        /// 高さフィルターのスライダー
-        /// </summary>
-        private MinMaxSlider heightSlider;
-
-        /// <summary>
-        /// LODフィルターのスライダー
-        /// </summary>
-        private MinMaxSlider lodSlider;
-
-        /// <summary>
-        /// 高さフィルターのラベル
-        /// </summary>
-        private Label heightValueLabel;
-
-        /// <summary>
-        /// LODフィルターのラベル
-        /// </summary>
-        private Label lodValueLabel;
+        
 
         /// <summary>
         /// 色分けグループ
         /// </summary>
         private RadioButtonGroup colorCodeGroup;
 
-        /// <summary>
-        /// カメラ操作が有効かどうか
-        /// ドラッグの起点がUI上の場合はカメラ操作できないようにするための判定用フラグです。
-        /// </summary>
-        private bool isCameraControllActive = false;
-
+        private FilterByLodAndHeight filterByLodAndHeight;
+        private GISCameraMove gisCameraMove;
 
 
 
@@ -111,29 +79,15 @@ namespace PLATEAU.Samples
 
         private void Start()
         {
-            cameraTransform = Camera.main.transform;
+            
 
             attributeUi.gameObject.SetActive(false);
             userGuideUi.gameObject.SetActive(true);
-
-            heightSlider = menuUi.rootVisualElement.Q<MinMaxSlider>("HeightSlider");
-            heightSlider.RegisterValueChangedCallback(OnHightSliderValueChanged);
-
-            lodSlider = menuUi.rootVisualElement.Q<MinMaxSlider>("LodSlider");
-            lodSlider.RegisterValueChangedCallback(OnLodSliderValueChanged);
-
-            heightValueLabel = menuUi.rootVisualElement.Q<Label>("HeightValue");
-
-            lodValueLabel = menuUi.rootVisualElement.Q<Label>("LodValue");
-
+            
             colorCodeGroup = menuUi.rootVisualElement.Q<RadioButtonGroup>("ColorCodeGroup");
             colorCodeGroup.RegisterValueChangedCallback(OnColorCodeGroupValueChanged);
-            
-            InitializeAsync().ContinueWithErrorCatch();
 
-            var param = GetFilterParameterFromSliders();
-            Filter(param);
-            UpdateFilterText(param);
+            Initialize();
         }
 
         private void OnEnable()
@@ -159,8 +113,9 @@ namespace PLATEAU.Samples
         /// 属性情報から必要なデータをまとめます。
         /// </summary>
         /// <returns></returns>
-        private async Task InitializeAsync()
+        private void Initialize()
         {
+            gisCameraMove = new GISCameraMove(this);
             instancedCityModels = FindObjectsOfType<PLATEAUInstancedCityModel>();
             if (instancedCityModels == null || instancedCityModels.Length == 0)
             {
@@ -172,7 +127,7 @@ namespace PLATEAU.Samples
             foreach (var instancedCityModel in instancedCityModels)
             {
                 // インポートしたPLATEAUInstancedCityModelの名前がルートフォルダ名です。
-                var rootDirName = instancedCityModel.name;
+                // var rootDirName = instancedCityModel.name;
 
                 for (int i = 0; i < instancedCityModel.transform.childCount; ++i)
                 {
@@ -182,9 +137,7 @@ namespace PLATEAU.Samples
 
                     // サンプルではdemを除外します。
                     if (go.name.Contains("dem")) continue;
-
-                    // var cityModel = await PLATEAUCityGmlProxy.LoadAsync(go, rootDirName);
-                    // if (cityModel == null) continue;
+                    
 
                     // ロードしたデータをアプリ用に扱いやすくしたクラスに変換します。
                     var gml = new SampleGml(go);
@@ -206,41 +159,13 @@ namespace PLATEAU.Samples
                 choices.AddRange(floodingAreaNames);
                 colorCodeGroup.choices = choices;
             }
-
-            Filter(GetFilterParameterFromSliders());
             ColorCode(colorCodeType, floodingAreaName);
 
-            inputActions.GISSample.SetCallbacks(this);
+            inputActions.GISSample.SetCallbacks(gisCameraMove);
 
             initializingUi.gameObject.SetActive(false);
-        }
-
-        /// <summary>
-        /// フィルターパラメータを取得
-        /// UIのスライダーの状態からフィルターパラメータを作成します。
-        /// </summary>
-        /// <returns>フィルターパラメータ</returns>
-        private FilterParameter GetFilterParameterFromSliders()
-        {
-            return new FilterParameter
-            {
-                MinHeight = heightSlider.value.x,
-                MaxHeight = heightSlider.value.y,
-                MinLod = (int)lodSlider.value.x,
-                MaxLod = (int)lodSlider.value.y,
-            };
-        }
-
-        /// <summary>
-        /// フィルター処理
-        /// </summary>
-        /// <param name="parameter"></param>
-        private void Filter(FilterParameter parameter)
-        {
-            foreach (var keyValue in gmls)
-            {
-                keyValue.Value.Filter(parameter);
-            }
+            
+            filterByLodAndHeight = new FilterByLodAndHeight(menuUi, gmls);
         }
 
         /// <summary>
@@ -313,20 +238,10 @@ namespace PLATEAU.Samples
         }
 
         /// <summary>
-        /// フィルターのテキストを更新
-        /// </summary>
-        /// <param name="parameter"></param>
-        private void UpdateFilterText(FilterParameter parameter)
-        {
-            heightValueLabel.text = $"{parameter.MinHeight:F1} to {parameter.MaxHeight:F1}";
-            lodValueLabel.text = $"{parameter.MinLod:D} to {parameter.MaxLod:D}";
-        }
-
-        /// <summary>
         /// マウスの位置がUI上にあるかどうか
         /// </summary>
         /// <returns></returns>
-        private bool IsMousePositionInUiRect()
+        public bool IsMousePositionInUiRect()
         {
             var refW = (float)menuUi.panelSettings.referenceResolution.x;
             var scale = refW / Screen.width;
@@ -336,77 +251,6 @@ namespace PLATEAU.Samples
             var rightView = userGuideUi.gameObject.activeSelf ? userGuideUi : attributeUi;
             var rightViewRect = rightView.rootVisualElement.Q<ScrollView>().worldBound;
             return leftViewRect.Contains(mousePos) || rightViewRect.Contains(mousePos); ;
-        }
-
-        /// <summary>
-        /// カメラ水平移動
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnHorizontalMoveCamera(InputAction.CallbackContext context)
-        {
-            if (context.performed && isCameraControllActive)
-            {
-                // 左右同時押下時は上下移動を優先
-                if (Mouse.current.rightButton.isPressed) return;
-
-                var delta = context.ReadValue<Vector2>();
-                var dir = new Vector3(delta.x, 0.0f, delta.y);
-                var rotY = cameraTransform.eulerAngles.y;
-                dir = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f)) * dir;
-                cameraTransform.position -= dir;
-            }
-        }
-
-        /// <summary>
-        /// カメラ上下移動
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnVerticalMoveCamera(InputAction.CallbackContext context)
-        {
-            if (context.performed && isCameraControllActive)
-            {
-                var delta = context.ReadValue<Vector2>();
-                var dir = new Vector3(delta.x, delta.y, 0.0f);
-                var rotY = cameraTransform.eulerAngles.y;
-                dir = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f)) * dir;
-                cameraTransform.position -= dir;
-            }
-        }
-
-        /// <summary>
-        /// カメラ回転
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnRotateCamera(InputAction.CallbackContext context)
-        {
-            if (context.performed && isCameraControllActive)
-            {
-                // 左右同時押下時は上下移動を優先
-                if (Mouse.current.leftButton.isPressed) return;
-
-                var delta = context.ReadValue<Vector2>();
-
-                var euler = cameraTransform.rotation.eulerAngles;
-                euler.x -= delta.y;
-                euler.x = Mathf.Clamp(euler.x, 0.0f, 90.0f);
-                euler.y += delta.x;
-                cameraTransform.rotation = Quaternion.Euler(euler);
-            }
-        }
-
-        /// <summary>
-        /// カメラ前後移動
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnZoomCamera(InputAction.CallbackContext context)
-        {
-            if (context.performed && !IsMousePositionInUiRect())
-            {
-                var delta = context.ReadValue<float>();
-                var dir = delta * Vector3.forward;
-                dir = cameraTransform.rotation * dir;
-                cameraTransform.position += dir;
-            }
         }
 
         /// <summary>
@@ -474,49 +318,6 @@ namespace PLATEAU.Samples
                     scrollView.Add(elem);
                 }
             }
-        }
-
-        /// <summary>
-        /// マウスクリックイベントコールバック
-        /// ドラッグの起点がUI上の場合カメラ操作させないようにするため、
-        /// このタイミングで判定しています。
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnClick(InputAction.CallbackContext context)
-        {
-            if (context.started)
-            {
-                isCameraControllActive = !IsMousePositionInUiRect();
-            }
-
-            if (context.canceled)
-            {
-                isCameraControllActive = false;
-            }
-        }
-
-        /// <summary>
-        /// 高さフィルタースライダーの値変更イベントコールバック
-        /// </summary>
-        /// <param name="e"></param>
-        private void OnHightSliderValueChanged(ChangeEvent<Vector2> e)
-        {
-            filterParameter = GetFilterParameterFromSliders();
-            Filter(filterParameter);
-            UpdateFilterText(filterParameter);
-        }
-
-        /// <summary>
-        /// LODフィルタースライダーの値変更イベントコールバック
-        /// </summary>
-        /// <param name="e"></param>
-        private void OnLodSliderValueChanged(ChangeEvent<Vector2> e)
-        {
-            lodSlider.value = new Vector2(Mathf.Round(e.newValue.x), Mathf.Round(e.newValue.y));
-
-            filterParameter = GetFilterParameterFromSliders();
-            Filter(filterParameter);
-            UpdateFilterText(filterParameter);
         }
 
         /// <summary>
