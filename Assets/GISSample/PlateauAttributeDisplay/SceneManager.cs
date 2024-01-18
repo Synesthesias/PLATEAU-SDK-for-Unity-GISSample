@@ -2,6 +2,7 @@
 using System.Linq;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
+using PlateauToolkit.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -83,9 +84,12 @@ namespace GISSample.PlateauAttributeDisplay
 
             attributeUi.gameObject.SetActive(false);
             userGuideUi.gameObject.SetActive(true);
-            
-            colorCodeGroup = menuUi.rootVisualElement.Q<RadioButtonGroup>("ColorCodeGroup");
+
+            var menuRoot = menuUi.rootVisualElement;
+            colorCodeGroup = menuRoot.Q<RadioButtonGroup>("ColorCodeGroup");
             colorCodeGroup.RegisterValueChangedCallback(OnColorCodeGroupValueChanged);
+
+            menuRoot.Q<Slider>("TimeSlider").RegisterValueChangedCallback(OnTimeSliderChanged);
 
             Initialize();
         }
@@ -340,6 +344,11 @@ namespace GISSample.PlateauAttributeDisplay
             }
 
             ColorCity(colorCodeType, floodingAreaName);
+        }
+
+        private void OnTimeSliderChanged(ChangeEvent<float> e)
+        {
+            FindObjectOfType<EnvironmentController>().TimeOfDay = e.newValue;
         }
 
     }
