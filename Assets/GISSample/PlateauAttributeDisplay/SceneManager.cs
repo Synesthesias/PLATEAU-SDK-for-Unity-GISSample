@@ -69,6 +69,7 @@ namespace GISSample.PlateauAttributeDisplay
         private RadioButtonGroup colorCodeGroup;
 
         private FilterByLodAndHeight filterByLodAndHeight;
+        private WeatherController weatherController;
         private GISCameraMove gisCameraMove;
 
 
@@ -88,8 +89,6 @@ namespace GISSample.PlateauAttributeDisplay
             var menuRoot = menuUi.rootVisualElement;
             colorCodeGroup = menuRoot.Q<RadioButtonGroup>("ColorCodeGroup");
             colorCodeGroup.RegisterValueChangedCallback(OnColorCodeGroupValueChanged);
-
-            menuRoot.Q<Slider>("TimeSlider").RegisterValueChangedCallback(OnTimeSliderChanged);
 
             Initialize();
         }
@@ -168,6 +167,7 @@ namespace GISSample.PlateauAttributeDisplay
             initializingUi.gameObject.SetActive(false);
             
             filterByLodAndHeight = new FilterByLodAndHeight(menuUi, gmls);
+            weatherController = new WeatherController(menuUi);
         }
 
         /// <summary>
@@ -344,11 +344,6 @@ namespace GISSample.PlateauAttributeDisplay
             }
 
             ColorCity(colorCodeType, floodingAreaName);
-        }
-
-        private void OnTimeSliderChanged(ChangeEvent<float> e)
-        {
-            FindObjectOfType<EnvironmentController>().TimeOfDay = e.newValue;
         }
 
     }
