@@ -171,7 +171,8 @@ namespace GISSample.PlateauAttributeDisplay
             foreach (var lod in LodObjects)
             {
                 if (lod == null) continue;
-                if (!lod.TryGetComponent<Renderer>(out var renderer)) continue;
+                var renderer = lod.GetComponentInChildren<Renderer>();
+                if(renderer == null) continue;
                 for (int i = 0; i < renderer.materials.Length; ++i)
                 {
                     renderer.materials[i].color = color;
