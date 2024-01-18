@@ -280,11 +280,8 @@ namespace GISSample.PlateauAttributeDisplay
                 ColorCity(colorCodeType, floodingAreaName);
 
                 // 選択されたオブジェクトの色を変更
-                if (selectedCityObject != null)
-                {
-                    selectedCityObject = gmls[trans.parent.parent.name].CityObjects[trans.name];
-                    selectedCityObject.SetMaterialColorAndShow(selectedColor);
-                }
+                selectedCityObject = gmls[trans.parent.parent.name].CityObjects[trans.name];
+                selectedCityObject.SetMaterialColorAndShow(selectedColor);
                 
 
                 userGuideUi.gameObject.SetActive(false);
