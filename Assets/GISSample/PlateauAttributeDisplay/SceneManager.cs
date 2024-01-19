@@ -142,7 +142,11 @@ namespace GISSample.PlateauAttributeDisplay
 
                     // ロードしたデータをアプリ用に扱いやすくしたクラスに変換します。
                     var gml = new SampleGml(go);
-                    gmls.Add(go.name, gml);
+                    if (!gmls.ContainsKey(go.name))
+                    {
+                        gmls.Add(go.name, gml);
+                    }
+                    
                 }
             }
 

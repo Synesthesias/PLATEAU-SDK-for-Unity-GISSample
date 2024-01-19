@@ -75,7 +75,7 @@ namespace GISSample.PlateauAttributeDisplay
                     {
                         try
                         {
-                            var cityObjComponent = cityObjectTransform.GetComponentInChildren<PLATEAUCityObjectGroup>();
+                            var cityObjComponent = cityObjectTransform.GetComponent<PLATEAUCityObjectGroup>();
                             if (cityObjComponent != null)
                             {
                                 CityObjects[id] = new SampleCityObject(id, cityObjComponent);
@@ -114,8 +114,12 @@ namespace GISSample.PlateauAttributeDisplay
                     if (level != -1)
                     {
                         var go = cityObjectTransform.gameObject;
-                        var material = cityObjectTransform.GetComponentInChildren<Renderer>()?.material;
-                        CityObjects[id].LodObjects[level] = go;
+                        var material = cityObjectTransform.GetComponent<Renderer>()?.material;
+                        if (CityObjects.TryGetValue(id, out var o))
+                        {
+                            o.LodObjects[level] = go;
+                        }
+                        
                     }
                 }
             }
