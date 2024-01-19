@@ -233,10 +233,12 @@ namespace GISSample.PlateauAttributeDisplay
             Transform nearestTransform = null;
             foreach (var hit in Physics.RaycastAll(ray))
             {
+                var hitTrans = hit.transform;
+                if (hitTrans.name.Contains("Cesium")) continue;
                 if (hit.distance <= nearestDistance)
                 {
                     nearestDistance = hit.distance;
-                    nearestTransform = hit.transform;
+                    nearestTransform = hitTrans;
                 }
             }
 

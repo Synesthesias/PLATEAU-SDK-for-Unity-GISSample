@@ -22,6 +22,7 @@ namespace GISSample.PlateauAttributeDisplay
         public readonly GameObject[] LodObjects;
 
         public readonly SampleAttribute Attribute;
+        private static readonly int BuildingColorPropertyId = Shader.PropertyToID("_BaseColor");
 
         public SampleCityObject(string id, PLATEAUCityObjectGroup cityObjComponent)
         {
@@ -175,7 +176,14 @@ namespace GISSample.PlateauAttributeDisplay
                 if(renderer == null) continue;
                 for (int i = 0; i < renderer.materials.Length; ++i)
                 {
-                    renderer.materials[i].color = color;
+                    var mat = renderer.materials[i];
+                    mat.color = color;
+                    
+                    // Rendering Toolkitsのauto textureに対応
+                    if (mat.HasProperty(BuildingColorPropertyId))
+                    {
+                        mat.SetColor(BuildingColorPropertyId, color);
+                    }
                 }
             }
         }
