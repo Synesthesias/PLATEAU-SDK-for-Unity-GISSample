@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.cesium.unity": "file:com.cesium.unity-1.7.1.tgz",
-    "com.synesthesias.plateau-unity-sdk": "file:F:/Desktop/DATA/release/PLATEAU-SDK-for-Unity-2024022502.tgz",
+    "com.synesthesias.plateau-unity-sdk": "file:PLATEAU-SDK-for-Unity-v2.3.2.tgz",
     "com.unity.collab-proxy": "2.0.7",
     "com.unity.ide.rider": "3.0.24",
     "com.unity.ide.visualstudio": "2.0.18",

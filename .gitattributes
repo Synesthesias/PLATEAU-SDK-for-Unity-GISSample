@@ -5,6 +5,9 @@
 # Large prefab
 13100_tokyo23-ku_2022_citygml_1_2_op.prefab filter=lfs diff=lfs merge=lfs -text
 
+# Large font
+"MPLUSRounded1c-Regular SDF.asset" filter=lfs diff=lfs merge=lfs -text
+
 # General Binary
 *.tgz filter=lfs diff=lfs merge=lfs -text
 *.tif filter=lfs diff=lfs merge=lfs -text

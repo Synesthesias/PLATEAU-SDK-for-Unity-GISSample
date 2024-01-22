@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace GISSample.PlateauAttributeDisplay
 {
+    /// <summary>
+    /// GIS Sampleのカメラ移動です
+    /// </summary>
     public class GISCameraMove : GISSampleInputActions.IGISSampleActions
     {
         /// <summary>
