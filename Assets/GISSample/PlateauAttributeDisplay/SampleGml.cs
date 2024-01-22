@@ -115,7 +115,11 @@ namespace GISSample.PlateauAttributeDisplay
                     {
                         var go = cityObjectTransform.gameObject;
                         var material = cityObjectTransform.GetComponent<Renderer>()?.material;
-                        CityObjects[id].LodObjects[level] = go;
+                        if (CityObjects.TryGetValue(id, out var o))
+                        {
+                            o.LodObjects[level] = go;
+                        }
+                        
                     }
                 }
             }

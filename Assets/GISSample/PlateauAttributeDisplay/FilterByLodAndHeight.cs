@@ -1,10 +1,12 @@
 using System.Collections.Generic;
-using PLATEAU.Samples;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace GISSample.PlateauAttributeDisplay
 {
+    /// <summary>
+    /// LODと高さによって都市モデルのON/OFFを切り替えます。
+    /// </summary>
     public class FilterByLodAndHeight
     {
         /// <summary>

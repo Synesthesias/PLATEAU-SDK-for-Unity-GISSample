@@ -2,7 +2,6 @@
 using System.Linq;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
-using PlateauToolkit.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -11,6 +10,7 @@ namespace GISSample.PlateauAttributeDisplay
 {
     /// <summary>
     /// シーンマネージャ
+    /// GIS Sampleの主要機能を提供します。
     /// カメラ、入力、UIの制御を行います。
     /// </summary>
     public class SceneManager : MonoBehaviour
@@ -142,7 +142,11 @@ namespace GISSample.PlateauAttributeDisplay
 
                     // ロードしたデータをアプリ用に扱いやすくしたクラスに変換します。
                     var gml = new SampleGml(go);
-                    gmls.Add(go.name, gml);
+                    if (!gmls.ContainsKey(go.name))
+                    {
+                        gmls.Add(go.name, gml);
+                    }
+                    
                 }
             }
 
@@ -229,10 +233,12 @@ namespace GISSample.PlateauAttributeDisplay
             Transform nearestTransform = null;
             foreach (var hit in Physics.RaycastAll(ray))
             {
+                var hitTrans = hit.transform;
+                if (hitTrans.name.Contains("Cesium")) continue;
                 if (hit.distance <= nearestDistance)
                 {
                     nearestDistance = hit.distance;
-                    nearestTransform = hit.transform;
+                    nearestTransform = hitTrans;
                 }
             }
 
@@ -282,6 +288,7 @@ namespace GISSample.PlateauAttributeDisplay
                 // 選択されたオブジェクトの色を変更
                 selectedCityObject = gmls[trans.parent.parent.name].CityObjects[trans.name];
                 selectedCityObject.SetMaterialColorAndShow(selectedColor);
+                
 
                 userGuideUi.gameObject.SetActive(false);
                 attributeUi.gameObject.SetActive(true);

@@ -17,9 +17,12 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:Label text="天候" display-tooltip-when-elided="true" class="menu-header" />
-        <ui:Label text="時間" display-tooltip-when-elided="true" />
-        <ui:Slider picking-mode="Ignore" value="0.3" high-value="1" name="TimeSlider" />
+        <ui:Slider picking-mode="Ignore" value="0.3" high-value="1" name="TimeSlider" label="時間" />
+        <ui:Slider picking-mode="Ignore" label="雨" value="0" high-value="1" name="RainSlider" />
+        <ui:Slider picking-mode="Ignore" label="雪" value="0" high-value="1" name="SnowSlider" />
+        <ui:Slider picking-mode="Ignore" label="曇" value="0.2" high-value="1" name="CloudySlider" />
         <ui:VisualElement name="ColorCodeElement">
+            <ui:Slider picking-mode="Ignore" label="雲の強さ" value="0.6" high-value="1" name="CloudIntensitySlider" />
             <ui:Label text="色分け" display-tooltip-when-elided="true" name="ColorCodeHeaderLabel" class="menu-header" />
             <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="色分けなし,高さ" name="ColorCodeGroup" class="content" />
         </ui:VisualElement>

@@ -1,15 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using GISSample;
-using GISSample.GISAttributeDisplay;
 using PlateauToolkit.Maps;
 using UnityEngine;
 
-public class GISAttrDisplayFactoryByPoint : GISAttrDisplayFactroyBase
+namespace GISSample.GISAttributeDisplay
 {
-    protected override Vector3 CalcPosition(DbfComponent dbf, out bool isSucceed)
+    /// <summary>
+    /// <see cref="GISAttrDisplayFactoryBase"/>の実装について、GISの形式がPointである場合の実装です。
+    /// </summary>
+    public class GISAttrDisplayFactoryByPoint : GISAttrDisplayFactoryBase
     {
-        isSucceed = true;
-        return dbf.transform.position + Vector3.up * HeightOffset;
+        protected override Vector3 CalcPosition(DbfComponent dbf, out bool isSucceed)
+        {
+            isSucceed = true;
+            return dbf.transform.position + Vector3.up * HeightOffset;
+        }
     }
 }
