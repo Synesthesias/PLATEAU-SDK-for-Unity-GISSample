@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using PlateauToolkit.Maps;
 using UnityEngine;
 
-namespace GISSample
+namespace GISSample.Misc
 {
     public static class GameObjectUtil
     {

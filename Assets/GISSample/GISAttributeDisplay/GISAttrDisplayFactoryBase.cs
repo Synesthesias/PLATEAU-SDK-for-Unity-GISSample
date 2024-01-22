@@ -1,9 +1,14 @@
-﻿using PlateauToolkit.Maps;
+﻿using GISSample.Misc;
+using PlateauToolkit.Maps;
 using UnityEngine;
 
 namespace GISSample.GISAttributeDisplay
 {
-    public abstract class GISAttrDisplayFactroyBase : MonoBehaviour
+    /// <summary>
+    /// 国土数値情報を格納したゲームオブジェクトを参照し、
+    /// それを元に指定した色で属性ディスプレイ（宙に浮かぶ文字ウィンドウとその下に突き刺さる円柱）を生成します。
+    /// </summary>
+    public abstract class GISAttrDisplayFactoryBase : MonoBehaviour
     {
         [SerializeField] private GameObject target;
         [SerializeField] private int propertyIndex;

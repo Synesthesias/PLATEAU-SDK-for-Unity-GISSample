@@ -2,7 +2,6 @@
 using System.Linq;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
-using PlateauToolkit.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -11,6 +10,7 @@ namespace GISSample.PlateauAttributeDisplay
 {
     /// <summary>
     /// シーンマネージャ
+    /// GIS Sampleの主要機能を提供します。
     /// カメラ、入力、UIの制御を行います。
     /// </summary>
     public class SceneManager : MonoBehaviour
