@@ -118,5 +118,6 @@ namespace GISSample.Misc
             }
         }
     }
-#endif
+
 }
+#endif

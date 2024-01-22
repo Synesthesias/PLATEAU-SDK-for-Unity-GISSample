@@ -1,13 +1,21 @@
 # NOTICES (権利表記)
+
 This software incorporates material as listed below or described in the code.  
 このソフトウェアには、次の制作物が含まれています。
 
 ## 国土数値情報
-**Source:** [https://nlftp.mlit.go.jp/](https://nlftp.mlit.go.jp/)
-**License:** [https://nlftp.mlit.go.jp/ksj/other/agreement.html](https://nlftp.mlit.go.jp/ksj/other/agreement.html)
+
+- **Source:** [https://nlftp.mlit.go.jp/](https://nlftp.mlit.go.jp/)
+- **License:** [https://nlftp.mlit.go.jp/ksj/other/agreement.html](https://nlftp.mlit.go.jp/ksj/other/agreement.html)
+
+## フォント MPlusRounded1c
+
+- **Source:** [https://fonts.google.com/specimen/M+PLUS+Rounded+1c](https://fonts.google.com/specimen/M+PLUS+Rounded+1c)
+- **License:** [SIL Open Font License](https://openfontlicense.org/)
 
 ## PLATEAU SDK for Unity
 **Source:** [https://github.com/Project-PLATEAU/PLATEAU-SDK-for-Unity](https://github.com/Project-PLATEAU/PLATEAU-SDK-for-Unity)
+
 ### License
 ```
 MIT License
