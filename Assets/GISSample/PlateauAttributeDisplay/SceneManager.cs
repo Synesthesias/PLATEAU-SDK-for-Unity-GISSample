@@ -315,9 +315,11 @@ namespace GISSample.PlateauAttributeDisplay
                         valueLabel.AddToClassList("value");
                         elem.Add(valueLabel);
 
-                        elem.style.backgroundColor = i % 2 == 0 
-                            ? Color.white 
-                            : new Color((float)0xED / 0xFF, (float)0xED / 0xFF, (float)0xED / 0xFF);
+                        // 属性情報テーブルの背景色ストライプ
+                        var bgColor = elem.style.backgroundColor.value;
+                        elem.style.backgroundColor = (i % 2 == 0) 
+                            ? bgColor:
+                            bgColor + new Color(0.2f, 0.2f, 0.2f);
 
                         return elem;
                     });
