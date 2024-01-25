@@ -1,6 +1,6 @@
 .unity-text-element {
     -unity-font-definition: url('project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&guid=16ebc954c776e604e8d8693a34969fdb&type=2#MPLUSRounded1c-Regular SDF');
-    color: rgba(217, 236, 221, 255);
+    color: rgba(255, 255, 255, 255);
 }
 
 .header {
