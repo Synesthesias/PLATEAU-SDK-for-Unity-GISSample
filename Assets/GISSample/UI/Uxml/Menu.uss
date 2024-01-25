@@ -4,20 +4,7 @@
     background-color: rgb(255, 255, 255);
 }
 
-.menu-header {
-    font-size: 20px;
-    -unity-font-style: bold;
-    margin-left: 0;
-    margin-right: 0;
-    color: rgb(255, 255, 255);
-    background-color: rgba(0, 190, 190, 255);
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 11px;
-    padding-right: 12px;
-    padding-top: 4px;
-    padding-bottom: 6px;
-}
+
 
 .content {
     margin-left: 10px;
@@ -60,8 +47,4 @@
 #ColorCodeGroup Label {
     white-space: normal;
     padding-right: 46px;
-}
-
-.unity-text-element {
-    -unity-font-definition: url('project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&guid=16ebc954c776e604e8d8693a34969fdb&type=2#MPLUSRounded1c-Regular SDF');
 }

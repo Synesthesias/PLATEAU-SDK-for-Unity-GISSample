@@ -1,7 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/GISSample/UI/Uxml/UserGuide.uss?fileID=7433441132597879392&amp;guid=9c0bd08d42f70ab46a6cf4f89aaec1bd&amp;type=3#UserGuide" />
-    <ui:ScrollView class="userguide">
-        <ui:Label text="操作方法" display-tooltip-when-elided="true" name="Header" class="userguide-header" />
+    <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
+    <ui:ScrollView class="userguide gis-background-window">
+        <ui:Label text="操作方法" display-tooltip-when-elided="true" name="Header" class="header" />
         <ui:Label text="マウス左ボタン + ドラッグ" display-tooltip-when-elided="true" name="LeftButtonLabel" class="userguide-label" />
         <ui:Label text="--- 水平移動" display-tooltip-when-elided="true" name="HorizontalMoveLabel" class="userguide-label" />
         <ui:VisualElement name="Splitter" class="splitter" />
