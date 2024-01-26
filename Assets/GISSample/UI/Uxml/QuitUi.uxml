@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
+    <Style src="project://database/Assets/GISSample/UI/Uxml/QuitUi.uss?fileID=7433441132597879392&amp;guid=3676009603ac834489fe91fbac5baa4b&amp;type=3#QuitUi" />
+    <ui:VisualElement name="QuitWindow" class="quit-window">
+        <ui:VisualElement class="gis-background-window">
+            <ui:Button text="アプリ終了" display-tooltip-when-elided="true" name="quit-app-button" class="open-close-button" style="position: relative; right: 1px; top: auto; width: 75px; bottom: 1px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
