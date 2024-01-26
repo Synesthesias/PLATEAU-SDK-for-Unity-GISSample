@@ -8,21 +8,37 @@ namespace GISSample.PlateauAttributeDisplay
     {
         private UIDocument uiDoc;
         private Button closeButton;
+        private SceneManager sceneManager;
+        
+        /// <summary>
+        /// 選択中のCityObject
+        /// </summary>
+        private SampleCityObject selectedCityObject;
 
         private void Awake()
         {
             uiDoc = GetComponent<UIDocument>();
             closeButton = uiDoc.rootVisualElement.Q<Button>("attr-open-close-button");
+            sceneManager = FindObjectOfType<SceneManager>();
         }
+
+        private void OnEnable()
+        {
+            // UI Documentをdisableにするとイベントがなくなることに注意してください。ここで再登録します。
+            closeButton.clicked += Close;
+        }
+        
         public void Close()
         {
-            uiDoc.gameObject.SetActive(false);
+            selectedCityObject = null;
+            sceneManager.RecolorFlooding();
+            uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
+        
 
         public void Open()
         {
-            
-            uiDoc.gameObject.SetActive(true);
+            uiDoc.rootVisualElement.style.display = DisplayStyle.Flex;
             var scrollView = GetScrollView();
             var header = scrollView.ElementAt(0);
             scrollView.Clear();
@@ -71,6 +87,16 @@ namespace GISSample.PlateauAttributeDisplay
             var view = uiDoc;
             var viewRect = view.rootVisualElement?.Q<ScrollView>()?.worldBound;
             return viewRect != null && viewRect.Value.Contains(mousePos);
+        }
+
+        /// <summary>
+        /// 都市オブジェクトを選択して色を付けます。
+        /// </summary>
+        public void SelectCityObj(SampleCityObject cityObj, Color selectedColor)
+        {
+            selectedCityObject = cityObj;
+            selectedCityObject.SetMaterialColorAndShow(selectedColor);
+            
         }
         
     }
