@@ -1,6 +1,6 @@
 .unity-text-element {
     -unity-font-definition: url('project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&guid=16ebc954c776e604e8d8693a34969fdb&type=2#MPLUSRounded1c-Regular SDF');
-    color: rgba(255, 255, 255, 255);
+    color: rgb(255, 255, 255);
 }
 
 .header {
@@ -14,7 +14,6 @@
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    margin-right: 5px;
 }
 
 .gis-background-window {
@@ -38,7 +37,7 @@
 }
 
 Scroller #unity-dragger {
-    background-color: rgba(0, 190, 190, 255);
+    background-color: rgb(0, 190, 190);
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     border-top-right-radius: 3px;
@@ -46,7 +45,7 @@ Scroller #unity-dragger {
 }
 
 Scroller #unity-tracker {
-    background-color: rgba(96, 96, 96, 255);
+    background-color: rgb(96, 96, 96);
 }
 
 #unity-low-button {
@@ -59,13 +58,35 @@ Scroller #unity-tracker {
 }
 
 #unity-high-button {
-    background-color: rgba(79, 79, 79, 255);
+    background-color: rgb(79, 79, 79);
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
-    -unity-background-image-tint-color: rgba(185, 185, 185, 255);
+    -unity-background-image-tint-color: rgb(185, 185, 185);
 }
 
 Scroller #unity-drag-container {
+}
+
+.open-close-button {
+    background-color: rgb(110, 135, 117);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 11px;
+    height: 0;
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    width: 50px;
+}
+
+.header-inner-text {
+    width: 100px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
