@@ -18,11 +18,13 @@ namespace GISSample.PlateauAttributeDisplay
         [SerializeField, Tooltip("初期化中")] private UIDocument initializingUi;
         [SerializeField, Tooltip("メニュー（フィルター、色分け部分）")] private UIDocument menuUi;
         [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
-        [SerializeField, Tooltip("属性情報")] private UIDocument attributeUi;
+        // [SerializeField, Tooltip("属性情報")] private UIDocument attributeUi;
 
         [SerializeField, Tooltip("選択中オブジェクトの色")] private Color selectedColor;
         [SerializeField, Tooltip("色分け（高さ）の色テーブル")] private Color[] heightColorTable;
         [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] private Color[] floodingRankColorTable;
+
+        private AttributeUi attrUi;
 
 
         /// <summary>
@@ -81,9 +83,9 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void Start()
         {
-            
+            attrUi = GetComponentInChildren<AttributeUi>();
 
-            attributeUi.gameObject.SetActive(false);
+            attrUi.Close();
             userGuideUi.gameObject.SetActive(true);
 
             var menuRoot = menuUi.rootVisualElement;
@@ -256,9 +258,7 @@ namespace GISSample.PlateauAttributeDisplay
             var mousePos = scale * Mouse.current.position.ReadValue();
 
             var leftViewRect = menuUi.rootVisualElement.Q<ScrollView>().worldBound;
-            var rightView = userGuideUi.gameObject.activeSelf ? userGuideUi : attributeUi;
-            var rightViewRect = rightView.rootVisualElement.Q<ScrollView>().worldBound;
-            return leftViewRect.Contains(mousePos) || rightViewRect.Contains(mousePos); ;
+            return leftViewRect.Contains(mousePos) || attrUi.IsMouseInWindow(mousePos);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace GISSample.PlateauAttributeDisplay
                     selectedCityObject = null;
 
                     userGuideUi.gameObject.SetActive(true);
-                    attributeUi.gameObject.SetActive(false);
+                    attrUi.Close();
 
                     return;
                 };
@@ -290,44 +290,12 @@ namespace GISSample.PlateauAttributeDisplay
                 selectedCityObject.SetMaterialColorAndShow(selectedColor);
                 
 
-                userGuideUi.gameObject.SetActive(false);
-                attributeUi.gameObject.SetActive(true);
+                attrUi.Open();
 
                 var data = GetAttribute(trans.parent.parent.name, trans.name);
+                attrUi.SetAttributes(data);
 
-                var scrollView = attributeUi.rootVisualElement.Q<ScrollView>();
-                var header = scrollView.ElementAt(0);
-                scrollView.Clear();
-                scrollView.Add(header);
-
-                // 属性データに合わせてUIElementを追加
-                var elems = data.GetKeyValues()
-                    .Select((v, i) =>
-                    {
-                        var elem = new VisualElement();
-                        elem.AddToClassList("key-value");
-
-                        var keyLabel = new Label(v.Key.Path);
-                        keyLabel.AddToClassList("key");
-                        elem.Add(keyLabel);
-
-                        var valueLabel = new Label(v.Value);
-                        valueLabel.AddToClassList("value");
-                        elem.Add(valueLabel);
-
-                        // 属性情報テーブルの背景色ストライプ
-                        var bgColor = elem.style.backgroundColor.value;
-                        elem.style.backgroundColor = (i % 2 == 0) 
-                            ? bgColor:
-                            bgColor + new Color(0.2f, 0.2f, 0.2f);
-
-                        return elem;
-                    });
-
-                foreach (var elem in elems)
-                {
-                    scrollView.Add(elem);
-                }
+                
             }
         }
 

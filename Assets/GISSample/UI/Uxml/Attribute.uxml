@@ -2,7 +2,10 @@
     <Style src="project://database/Assets/GISSample/UI/Uxml/Attribute.uss?fileID=7433441132597879392&amp;guid=50dd6a51c688f59488ddf4621b943098&amp;type=3#Attribute" />
     <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
     <ui:ScrollView class="attribute gis-background-window">
-        <ui:Label text="属性情報" display-tooltip-when-elided="true" name="Header" class="header" />
+        <ui:VisualElement name="Header" class="header">
+            <ui:Label text="属性情報" display-tooltip-when-elided="true" name="Header" class="header-inner-text" />
+            <ui:Button text="閉じる" display-tooltip-when-elided="true" name="attr-open-close-guide" class="open-close-button" style="top: 9px;" />
+        </ui:VisualElement>
         <ui:VisualElement class="key-value">
             <ui:Label text="Label" display-tooltip-when-elided="true" class="key" />
             <ui:Label text="Label" display-tooltip-when-elided="true" class="value" />
