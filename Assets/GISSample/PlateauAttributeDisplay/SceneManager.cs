@@ -49,11 +49,6 @@ namespace GISSample.PlateauAttributeDisplay
         private readonly List<string> floodingAreaNames = new List<string>(); 
 
         /// <summary>
-        /// 選択中のCityObject
-        /// </summary>
-        private SampleCityObject selectedCityObject;
-
-        /// <summary>
         /// 色分けタイプ
         /// </summary>
         private ColorCodeType colorCodeType;
@@ -272,23 +267,15 @@ namespace GISSample.PlateauAttributeDisplay
                 var trans = PickObject();
                 if (trans == null)
                 {
-                    ColorCity(colorCodeType, floodingAreaName);
-
-                    selectedCityObject = null;
-
-                    userGuideUi.gameObject.SetActive(true);
                     attrUi.Close();
-
                     return;
                 };
 
                 // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
-                ColorCity(colorCodeType, floodingAreaName);
+                RecolorFlooding();
 
                 // 選択されたオブジェクトの色を変更
-                selectedCityObject = gmls[trans.parent.parent.name].CityObjects[trans.name];
-                selectedCityObject.SetMaterialColorAndShow(selectedColor);
-                
+                attrUi.SelectCityObj(gmls[trans.parent.parent.name].CityObjects[trans.name], selectedColor);
 
                 attrUi.Open();
 
@@ -297,6 +284,11 @@ namespace GISSample.PlateauAttributeDisplay
 
                 
             }
+        }
+
+        public void RecolorFlooding()
+        {
+            ColorCity(colorCodeType, floodingAreaName);
         }
 
         /// <summary>
@@ -320,7 +312,7 @@ namespace GISSample.PlateauAttributeDisplay
                 floodingAreaName = colorCodeGroup.choices.ElementAt(e.newValue);
             }
 
-            ColorCity(colorCodeType, floodingAreaName);
+            RecolorFlooding();
         }
 
     }

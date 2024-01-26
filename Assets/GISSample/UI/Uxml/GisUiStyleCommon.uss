@@ -76,7 +76,7 @@ Scroller #unity-drag-container {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     font-size: 11px;
-    height: 0;
+    height: 10px;
     position: absolute;
     right: 5px;
     top: 3px;
