@@ -3,6 +3,7 @@ using System.Linq;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
@@ -25,6 +26,7 @@ namespace GISSample.PlateauAttributeDisplay
         [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] private Color[] floodingRankColorTable;
 
         private AttributeUi attrUi;
+        private TimeUi timeUi;
 
 
         /// <summary>
@@ -79,6 +81,7 @@ namespace GISSample.PlateauAttributeDisplay
         private void Start()
         {
             attrUi = GetComponentInChildren<AttributeUi>();
+            timeUi = FindObjectOfType<TimeUi>();
 
             attrUi.Close();
             userGuideUi.gameObject.SetActive(true);
@@ -253,7 +256,8 @@ namespace GISSample.PlateauAttributeDisplay
             var mousePos = scale * Mouse.current.position.ReadValue();
 
             var leftViewRect = menuUi.rootVisualElement.Q<ScrollView>().worldBound;
-            return leftViewRect.Contains(mousePos) || attrUi.IsMouseInWindow(mousePos);
+            return leftViewRect.Contains(mousePos) || attrUi.IsMouseInWindow(mousePos) ||
+                   timeUi.IsMouseInWindow(mousePos) || EventSystem.current.IsPointerOverGameObject();
         }
 
         /// <summary>

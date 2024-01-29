@@ -36,6 +36,57 @@
     border-bottom-width: 2px;
 }
 
+.weather-slider #unity-dragger {
+    -unity-slice-left: 24;
+    -unity-slice-right: 24;
+    background-color: rgb(0, 190, 190);
+    height: 20px;
+    margin-top: -10px;
+    border-radius: 4px;
+    min-width: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 18px;
+}
+
+.unity-min-max-slider__dragger {
+    -unity-slice-left: 24;
+    -unity-slice-right: 24;
+    background-color: rgb(0, 190, 190);
+    height: 12px;
+    margin-top: -6px;
+    border-radius: 4px;
+    min-width: 20px;
+}
+
+.unity-min-max-slider__min-thumb {
+    border-radius: 4px;
+    margin-top: -6px;
+    background-color: rgb(0, 190, 190);
+    width: 20px;
+    height: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-left: -4px;
+}
+
+.unity-min-max-slider__max-thumb {
+    border-radius: 4px;
+    margin-top: -6px;
+    background-color: rgb(0, 190, 190);
+    width: 20px;
+    height: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-left: 4px;
+}
+
 Scroller #unity-dragger {
     background-color: rgb(0, 190, 190);
     border-top-left-radius: 3px;
