@@ -22,9 +22,4 @@ public class TimeUi : MonoBehaviour
     {
         environmentController.TimeOfDay = evt.newValue;
     }
-
-    public bool IsMouseInWindow(Vector2 mousePos)
-    {
-        return timeHeader.worldBound.Contains(mousePos);
-    }
 }

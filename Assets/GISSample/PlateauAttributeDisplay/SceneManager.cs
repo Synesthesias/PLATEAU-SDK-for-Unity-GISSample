@@ -251,13 +251,19 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         public bool IsMousePositionInUiRect()
         {
-            var refW = (float)menuUi.panelSettings.referenceResolution.x;
-            var scale = refW / Screen.width;
-            var mousePos = scale * Mouse.current.position.ReadValue();
+            var pointer = new PointerEventData(EventSystem.current);
+            pointer.position = Input.mousePosition;
+            var raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointer, raycastResults);
+            foreach (var r in raycastResults)
+            {
+                if (r.gameObject.name == "GISSamplePanelSettings")
+                {
+                    return true;
+                }
+            }
 
-            var leftViewRect = menuUi.rootVisualElement.Q<ScrollView>().worldBound;
-            return leftViewRect.Contains(mousePos) || attrUi.IsMouseInWindow(mousePos) ||
-                   timeUi.IsMouseInWindow(mousePos) || EventSystem.current.IsPointerOverGameObject();
+            return false;
         }
 
         /// <summary>
@@ -279,11 +285,13 @@ namespace GISSample.PlateauAttributeDisplay
                 RecolorFlooding();
 
                 // 選択されたオブジェクトの色を変更
-                attrUi.SelectCityObj(gmls[trans.parent.parent.name].CityObjects[trans.name], selectedColor);
+                var nameKey = trans.parent.parent.name;
+                if (nameKey.Contains("Cesium")) return;
+                attrUi.SelectCityObj(gmls[nameKey].CityObjects[trans.name], selectedColor);
 
                 attrUi.Open();
 
-                var data = GetAttribute(trans.parent.parent.name, trans.name);
+                var data = GetAttribute(nameKey, trans.name);
                 attrUi.SetAttributes(data);
 
                 

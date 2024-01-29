@@ -82,13 +82,6 @@ namespace GISSample.PlateauAttributeDisplay
             return uiDoc.rootVisualElement.Q<ScrollView>();
         }
 
-        public bool IsMouseInWindow(Vector2 mousePos)
-        {
-            var view = uiDoc;
-            var viewRect = view.rootVisualElement?.Q<ScrollView>()?.worldBound;
-            return viewRect != null && viewRect.Value.Contains(mousePos);
-        }
-
         /// <summary>
         /// 都市オブジェクトを選択して色を付けます。
         /// </summary>
