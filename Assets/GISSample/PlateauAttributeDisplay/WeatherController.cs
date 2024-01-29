@@ -16,7 +16,6 @@ namespace GISSample.PlateauAttributeDisplay
         {
             this.menuUi = menuUi;
             var menuRoot = menuUi.rootVisualElement;
-            menuRoot.Q<Slider>("TimeSlider").RegisterValueChangedCallback(OnTimeSliderChanged);
             menuRoot.Q<Slider>("RainSlider").RegisterValueChangedCallback(OnRainSliderChanged);
             menuRoot.Q<Slider>("SnowSlider").RegisterValueChangedCallback(OnSnowSliderChanged);
             menuRoot.Q<Slider>("CloudySlider").RegisterValueChangedCallback(OnCloudySliderChanged);
@@ -24,11 +23,6 @@ namespace GISSample.PlateauAttributeDisplay
             this.environmentController = Object.FindObjectOfType<EnvironmentController>();
         }
         
-        
-        private void OnTimeSliderChanged(ChangeEvent<float> e)
-        {
-            environmentController.TimeOfDay = e.newValue;
-        }
 
         private void OnRainSliderChanged(ChangeEvent<float> e)
         {

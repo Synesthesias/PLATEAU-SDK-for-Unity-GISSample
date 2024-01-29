@@ -1,0 +1,9 @@
+.time-window {
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.time-slider {
+    min-width: 30%;
+}
