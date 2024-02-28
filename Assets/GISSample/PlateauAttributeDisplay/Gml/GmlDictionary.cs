@@ -34,10 +34,10 @@ public class GmlDictionary
 
                 // ロードしたデータをアプリ用に扱いやすくしたクラスに変換します。
                 var gml = new SampleGml(go);
-                if (!gmls.ContainsKey(go.name))
+                if (!gmls.TryAdd(go.name, gml))
                 {
-                    gmls.Add(go.name, gml);
-                }
+                    Debug.LogWarning("Duplicate GML name detected.");
+                };
             }
         }
 
