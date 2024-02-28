@@ -91,7 +91,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnZoomCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && !sceneManager.IsMousePositionInUiRect())
+            if (context.performed && !sceneManager.gisUiController.IsMousePositionInUiRect())
             {
                 var delta = context.ReadValue<float>();
                 var dir = delta * Vector3.forward;
@@ -102,7 +102,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void OnSelectObject(InputAction.CallbackContext context)
         {
-            sceneManager.OnSelectObject(context);
+            sceneManager.gisUiController.OnSelectObject(context);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (context.started)
             {
-                isCameraControllActive = !sceneManager.IsMousePositionInUiRect();
+                isCameraControllActive = !sceneManager.gisUiController.IsMousePositionInUiRect();
             }
 
             if (context.canceled)
