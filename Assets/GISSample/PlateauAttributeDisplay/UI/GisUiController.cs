@@ -8,22 +8,20 @@ using UnityEngine.UIElements;
 
 public class GisUiController : MonoBehaviour
 {
-    [SerializeField, Tooltip("メニュー（フィルター、色分け部分）")] private UIDocument menuUi;
-    public UIDocument MenuUi => menuUi;
+    private MenuUi menuUi;
+    public MenuUi MenuUi => menuUi;
     [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
-    public AttributeUi attrUi;
+    private AttributeUi attrUi;
     private TimeUi timeUi;
 
     private SceneManager sceneManager;
     
-    /// <summary>
-    /// 色分けグループ
-    /// </summary>
-    private RadioButtonGroup colorCodeGroup;
+    
 
     [SerializeField, Tooltip("選択中オブジェクトの色")] private Color selectedColor;
     [SerializeField, Tooltip("色分け（高さ）の色テーブル")] private Color[] heightColorTable;
     [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] private Color[] floodingRankColorTable;
+    
     
     /// <summary>
     /// 色分けタイプ
@@ -38,25 +36,18 @@ public class GisUiController : MonoBehaviour
     public void Init(SceneManager sceneManagerArg)
     {
         sceneManager = sceneManagerArg;
+        menuUi = GetComponentInChildren<MenuUi>();
         attrUi = GetComponentInChildren<AttributeUi>();
         timeUi = FindObjectOfType<TimeUi>();
 
         attrUi.Close();
         userGuideUi.gameObject.SetActive(true);
-
-        var menuRoot = menuUi.rootVisualElement;
-        colorCodeGroup = menuRoot.Q<RadioButtonGroup>("ColorCodeGroup");
-        colorCodeGroup.RegisterValueChangedCallback(OnColorCodeGroupValueChanged);
-
-
-        if (sceneManagerArg.floodingAreaNames.Count > 0)
-        {
-            var choices = colorCodeGroup.choices.ToList();
-            choices.AddRange(sceneManagerArg.floodingAreaNames);
-            colorCodeGroup.choices = choices;
-        }
+        menuUi.Init(this, sceneManagerArg);
+        
         
         ColorCity(colorCodeType, floodingAreaName);
+        
+        
     }
     
     /// <summary>
@@ -108,7 +99,7 @@ public class GisUiController : MonoBehaviour
             // 選択されたオブジェクトの色を変更
             var nameKey = trans.parent.parent.name;
             if (nameKey.Contains("Cesium")) return;
-            attrUi.SelectCityObj(sceneManager.gmls[nameKey].CityObjects[trans.name], selectedColor);
+            attrUi.SelectCityObj(sceneManager.gmls.GetCityObject(nameKey, trans.name), selectedColor);
 
             attrUi.Open();
 
@@ -150,15 +141,7 @@ public class GisUiController : MonoBehaviour
     /// <returns>属性情報</returns>
     private SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
     {
-        if (sceneManager.gmls.TryGetValue(gmlFileName, out SampleGml gml))
-        {
-            if (gml.CityObjects.TryGetValue(cityObjectID, out SampleCityObject city))
-            {
-                return city.Attribute;
-            }
-        }
-
-        return null;
+        return sceneManager.gmls.GetAttribute(gmlFileName, cityObjectID);
     }
     
     /// <summary>
@@ -166,23 +149,7 @@ public class GisUiController : MonoBehaviour
     /// </summary>
     public void ColorCity(ColorCodeType type, string areaName)
     {
-        foreach (var keyValue in sceneManager.gmls)
-        {
-            Color[] colorTable = null;
-            switch (type)
-            {
-                case ColorCodeType.Height:
-                    colorTable = heightColorTable;
-                    break;
-                case ColorCodeType.FloodingRank:
-                    colorTable = floodingRankColorTable;
-                    break;
-                default:
-                    break;
-            }
-
-            keyValue.Value.ColorGml(type, colorTable, areaName);
-        }
+        sceneManager.gmls.ColorCity(type, areaName, heightColorTable, floodingRankColorTable);
     }
     
     /// <summary>
@@ -203,7 +170,7 @@ public class GisUiController : MonoBehaviour
         else
         {
             colorCodeType = ColorCodeType.FloodingRank;
-            floodingAreaName = colorCodeGroup.choices.ElementAt(e.newValue);
+            floodingAreaName = menuUi.colorCodeGroup.choices.ElementAt(e.newValue);
         }
 
         RecolorFlooding();
@@ -213,5 +180,8 @@ public class GisUiController : MonoBehaviour
     {
         ColorCity(colorCodeType, floodingAreaName);
     }
+
+    
+
     
 }

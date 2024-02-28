@@ -28,11 +28,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         private PLATEAUInstancedCityModel[] instancedCityModels;
 
-        /// <summary>
-        /// GMLテーブル
-        /// 対象GameObjectやGMLの属性情報等の必要な情報をまとめたものです。
-        /// </summary>
-        public readonly Dictionary<string, SampleGml> gmls = new Dictionary<string, SampleGml>();
+        public readonly GmlDictionary gmls = new GmlDictionary();
 
         public readonly List<string> floodingAreaNames = new List<string>(); 
         
@@ -86,36 +82,8 @@ namespace GISSample.PlateauAttributeDisplay
             }
 
             
-
-            foreach (var instancedCityModel in instancedCityModels)
-            {
-
-                for (int i = 0; i < instancedCityModel.transform.childCount; ++i)
-                {
-                    // 子オブジェクトの名前はGMLファイル名です。
-                    // ロードするときは、一引数に、対応するGameObjectを渡します。
-                    var go = instancedCityModel.transform.GetChild(i).gameObject;
-
-                    // サンプルではdemを除外します。
-                    if (go.name.Contains("dem")) continue;
-                    
-
-                    // ロードしたデータをアプリ用に扱いやすくしたクラスに変換します。
-                    var gml = new SampleGml(go);
-                    if (!gmls.ContainsKey(go.name))
-                    {
-                        gmls.Add(go.name, gml);
-                    }
-                }
-            }
-
-            var areaNames = new HashSet<string>();
-            foreach(var names in gmls.Select(pair => pair.Value.FloodingAreaNames))
-            {
-                areaNames.UnionWith(names);
-            }
-            floodingAreaNames.AddRange(areaNames);
-            floodingAreaNames.Sort();
+            gmls.Init(instancedCityModels, this);
+            
 
             inputActions.GISSample.SetCallbacks(gisCameraMove);
 
