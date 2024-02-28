@@ -3,9 +3,6 @@ using System.Linq;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace GISSample.PlateauAttributeDisplay
 {
@@ -16,18 +13,7 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class SceneManager : MonoBehaviour
     {
-        [SerializeField, Tooltip("初期化中")] private UIDocument initializingUi;
-        [SerializeField, Tooltip("メニュー（フィルター、色分け部分）")] private UIDocument menuUi;
-        [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
-        // [SerializeField, Tooltip("属性情報")] private UIDocument attributeUi;
-
-        [SerializeField, Tooltip("選択中オブジェクトの色")] private Color selectedColor;
-        [SerializeField, Tooltip("色分け（高さ）の色テーブル")] private Color[] heightColorTable;
-        [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] private Color[] floodingRankColorTable;
-
-        private AttributeUi attrUi;
-        private TimeUi timeUi;
-
+        public GisUiController gisUiController;
 
         /// <summary>
         /// InputActions
@@ -46,26 +32,10 @@ namespace GISSample.PlateauAttributeDisplay
         /// GMLテーブル
         /// 対象GameObjectやGMLの属性情報等の必要な情報をまとめたものです。
         /// </summary>
-        private readonly Dictionary<string, SampleGml> gmls = new Dictionary<string, SampleGml>();
+        public readonly Dictionary<string, SampleGml> gmls = new Dictionary<string, SampleGml>();
 
-        private readonly List<string> floodingAreaNames = new List<string>(); 
-
-        /// <summary>
-        /// 色分けタイプ
-        /// </summary>
-        private ColorCodeType colorCodeType;
-
-        /// <summary>
-        /// 浸水エリア名（色分け用）
-        /// </summary>
-        private string floodingAreaName;
-
+        public readonly List<string> floodingAreaNames = new List<string>(); 
         
-
-        /// <summary>
-        /// 色分けグループ
-        /// </summary>
-        private RadioButtonGroup colorCodeGroup;
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
@@ -80,16 +50,6 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void Start()
         {
-            attrUi = GetComponentInChildren<AttributeUi>();
-            timeUi = FindObjectOfType<TimeUi>();
-
-            attrUi.Close();
-            userGuideUi.gameObject.SetActive(true);
-
-            var menuRoot = menuUi.rootVisualElement;
-            colorCodeGroup = menuRoot.Q<RadioButtonGroup>("ColorCodeGroup");
-            colorCodeGroup.RegisterValueChangedCallback(OnColorCodeGroupValueChanged);
-
             Initialize();
         }
 
@@ -125,7 +85,7 @@ namespace GISSample.PlateauAttributeDisplay
                 return;
             }
 
-            initializingUi.gameObject.SetActive(true);
+            
 
             foreach (var instancedCityModel in instancedCityModels)
             {
@@ -146,7 +106,6 @@ namespace GISSample.PlateauAttributeDisplay
                     {
                         gmls.Add(go.name, gml);
                     }
-                    
                 }
             }
 
@@ -158,174 +117,16 @@ namespace GISSample.PlateauAttributeDisplay
             floodingAreaNames.AddRange(areaNames);
             floodingAreaNames.Sort();
 
-            if (floodingAreaNames.Count > 0)
-            {
-                var choices = colorCodeGroup.choices.ToList();
-                choices.AddRange(floodingAreaNames);
-                colorCodeGroup.choices = choices;
-            }
-            ColorCity(colorCodeType, floodingAreaName);
-
             inputActions.GISSample.SetCallbacks(gisCameraMove);
 
-            initializingUi.gameObject.SetActive(false);
             
-            filterByLodAndHeight = new FilterByLodAndHeight(menuUi, gmls);
-            weatherController = new WeatherController(menuUi);
+            gisUiController = GetComponentInChildren<GisUiController>();
+            gisUiController.Init(this);
+            filterByLodAndHeight = new FilterByLodAndHeight(gisUiController.MenuUi, gmls);
+            weatherController = new WeatherController(gisUiController.MenuUi);
         }
-
-        /// <summary>
-        /// 色分け処理
-        /// </summary>
-        /// <param name="type"></param>
-        private void ColorCity(ColorCodeType type, string areaName)
-        {
-            foreach (var keyValue in gmls)
-            {
-                Color[] colorTable = null;
-                switch (type)
-                {
-                    case ColorCodeType.Height:
-                        colorTable = heightColorTable;
-                        break;
-                    case ColorCodeType.FloodingRank:
-                        colorTable = floodingRankColorTable;
-                        break;
-                    default:
-                        break;
-                }
-
-                keyValue.Value.ColorGml(type, colorTable, areaName);
-            }
-        }
-
-        /// <summary>
-        /// 属性情報を取得
-        /// </summary>
-        /// <param name="gmlFileName">GMLファイル名</param>
-        /// <param name="cityObjectID">CityObjectID</param>
-        /// <returns>属性情報</returns>
-        private SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
-        {
-            if (gmls.TryGetValue(gmlFileName, out SampleGml gml))
-            {
-                if (gml.CityObjects.TryGetValue(cityObjectID, out SampleCityObject city))
-                {
-                    return city.Attribute;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// オブジェクトのピック
-        /// マウスの位置からレイキャストしてヒットしたオブジェクトのTransformを返します。
-        /// </summary>
-        /// <returns>Transform</returns>
-        private Transform PickObject()
-        {
-            var camera = Camera.main;
-            var ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-            // 一番手前のオブジェクトを選びます。
-            float nearestDistance = float.MaxValue;
-            Transform nearestTransform = null;
-            foreach (var hit in Physics.RaycastAll(ray))
-            {
-                var hitTrans = hit.transform;
-                if (hitTrans.name.Contains("Cesium")) continue;
-                if (hit.distance <= nearestDistance)
-                {
-                    nearestDistance = hit.distance;
-                    nearestTransform = hitTrans;
-                }
-            }
-
-            return nearestTransform;
-        }
-
-        /// <summary>
-        /// マウスの位置がUI上にあるかどうか
-        /// </summary>
-        /// <returns></returns>
-        public bool IsMousePositionInUiRect()
-        {
-            var pointer = new PointerEventData(EventSystem.current);
-            pointer.position = Input.mousePosition;
-            var raycastResults = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(pointer, raycastResults);
-            foreach (var r in raycastResults)
-            {
-                if (r.gameObject.name == "GISSamplePanelSettings")
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// オブジェクト選択
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnSelectObject(InputAction.CallbackContext context)
-        {
-            if (context.performed && !IsMousePositionInUiRect())
-            {
-                var trans = PickObject();
-                if (trans == null)
-                {
-                    attrUi.Close();
-                    return;
-                };
-
-                // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
-                RecolorFlooding();
-
-                // 選択されたオブジェクトの色を変更
-                var nameKey = trans.parent.parent.name;
-                if (nameKey.Contains("Cesium")) return;
-                attrUi.SelectCityObj(gmls[nameKey].CityObjects[trans.name], selectedColor);
-
-                attrUi.Open();
-
-                var data = GetAttribute(nameKey, trans.name);
-                attrUi.SetAttributes(data);
-
-                
-            }
-        }
-
-        public void RecolorFlooding()
-        {
-            ColorCity(colorCodeType, floodingAreaName);
-        }
-
-        /// <summary>
-        /// 色分け選択変更イベントコールバック
-        /// </summary>
-        /// <param name="e"></param>
-        private void OnColorCodeGroupValueChanged(ChangeEvent<int> e)
-        {
-            // valueは
-            // 0: 色分けなし
-            // 1: 高さ
-            // 2～: 浸水ランク
-            if (e.newValue < 2)
-            {
-                colorCodeType = (ColorCodeType)e.newValue;
-                floodingAreaName = null;
-            }
-            else
-            {
-                colorCodeType = ColorCodeType.FloodingRank;
-                floodingAreaName = colorCodeGroup.choices.ElementAt(e.newValue);
-            }
-
-            RecolorFlooding();
-        }
+        
+        
 
     }
 }
