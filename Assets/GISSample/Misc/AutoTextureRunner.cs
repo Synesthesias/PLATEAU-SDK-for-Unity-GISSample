@@ -20,14 +20,18 @@ namespace GISSample.Misc
     {
         [SerializeField, Tooltip("処理の対象となるPLATEAU都市オブジェクトを指定してください。")]
         private GameObject target;
-    
-        [SerializeField, Tooltip("洪水モデルに適用するマテリアルを指定してください。")]
-        private Material floodingMaterial;
+
+        private const string FloodingMaterialName = "FloodingMaterial";
 
         public void Run()
         {
+            Run(target);   
+        }
+
+        public static void Run(GameObject targetObj)
+        {
             // Rendering ToolkitsのAuto Texturingの機能を用意します。
-            var renderers = target.transform.GetComponentsInChildren<MeshRenderer>(true);
+            var renderers = targetObj.transform.GetComponentsInChildren<MeshRenderer>(true);
             var assembly = typeof(EnvironmentControllerEditor).Assembly;
             var autoTexturingType = assembly.GetType("PlateauToolkit.Rendering.Editor.AutoTexturing");
             var autoTexturing = CreateInstanceOfType(autoTexturingType);
@@ -58,7 +62,7 @@ namespace GISSample.Misc
                 // 洪水モデルにマテリアルを適用します。
                 if (objName.Contains("fld"))
                 {
-                    r.sharedMaterial = floodingMaterial;
+                    r.sharedMaterial = Resources.Load<Material>(FloodingMaterialName);
                 }
             
                 // Auto Texturingで光らせたいのは建物だけなので、建物以外は飛ばします。
