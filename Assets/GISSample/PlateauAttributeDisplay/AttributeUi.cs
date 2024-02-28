@@ -8,7 +8,7 @@ namespace GISSample.PlateauAttributeDisplay
     {
         private UIDocument uiDoc;
         private Button closeButton;
-        private SceneManager sceneManager;
+        private GisUiController gisUiController;
         
         /// <summary>
         /// 選択中のCityObject
@@ -19,7 +19,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             uiDoc = GetComponent<UIDocument>();
             closeButton = uiDoc.rootVisualElement.Q<Button>("attr-open-close-button");
-            sceneManager = FindObjectOfType<SceneManager>();
+            gisUiController = FindObjectOfType<GisUiController>();
         }
 
         private void OnEnable()
@@ -31,7 +31,7 @@ namespace GISSample.PlateauAttributeDisplay
         public void Close()
         {
             selectedCityObject = null;
-            sceneManager.RecolorFlooding();
+            gisUiController.RecolorFlooding();
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
         
