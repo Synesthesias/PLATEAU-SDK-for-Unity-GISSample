@@ -71,7 +71,11 @@ namespace GISSample.PlateauAttributeDisplay
                 foreach (Transform cityObjectTransform in lodTransform)
                 {
                     var id = cityObjectTransform.name;
-                    if (!CityObjects.ContainsKey(id))
+                    if (CityObjects.ContainsKey(id))
+                    {
+                        Debug.LogWarning("Duplicate CityObject id detected.");
+                    }
+                    else
                     {
                         try
                         {
@@ -85,7 +89,6 @@ namespace GISSample.PlateauAttributeDisplay
                                     FloodingAreaNames.Add(info.AreaName);
                                 }
                             }
-                            
                         }
                         catch (KeyNotFoundException)
                         {
@@ -123,6 +126,7 @@ namespace GISSample.PlateauAttributeDisplay
                     }
                 }
             }
+            
         }
 
         /// <summary>
