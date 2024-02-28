@@ -9,17 +9,14 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class WeatherController
     {
-        private UIDocument menuUi;
-        private EnvironmentController environmentController;
+        private readonly EnvironmentController environmentController;
 
-        public WeatherController(UIDocument menuUi)
+        public WeatherController(MenuUi menuUi)
         {
-            this.menuUi = menuUi;
-            var menuRoot = menuUi.rootVisualElement;
-            menuRoot.Q<Slider>("RainSlider").RegisterValueChangedCallback(OnRainSliderChanged);
-            menuRoot.Q<Slider>("SnowSlider").RegisterValueChangedCallback(OnSnowSliderChanged);
-            menuRoot.Q<Slider>("CloudySlider").RegisterValueChangedCallback(OnCloudySliderChanged);
-            menuRoot.Q<Slider>("CloudIntensitySlider").RegisterValueChangedCallback(OnCloudIntensitySliderChanged);
+            menuUi.rainSlider.RegisterValueChangedCallback(OnRainSliderChanged);
+            menuUi.snowSlider.RegisterValueChangedCallback(OnSnowSliderChanged);
+            menuUi.cloudSlider.RegisterValueChangedCallback(OnCloudySliderChanged);
+            menuUi.cloudIntensitySlider.RegisterValueChangedCallback(OnCloudIntensitySliderChanged);
             this.environmentController = Object.FindObjectOfType<EnvironmentController>();
         }
         
