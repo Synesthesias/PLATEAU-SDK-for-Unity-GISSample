@@ -1,34 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// GISサンプルにおいて、都市モデルのゲームオブジェクト1つに関する情報を格納するクラスです。
-/// </summary>
-public class FeatureGameObj
+namespace GISSample.PlateauAttributeDisplay.Gml
 {
-    /// <summary> 対象となるゲームオブジェクトです。 </summary>
-    private GameObject gameObj;
-
     /// <summary>
-    /// 表示すべきかどうかを格納します。
-    /// この結果は<see cref="ApplyFilter"/>で適用します。
+    /// GISサンプルにおいて、都市モデルのゲームオブジェクト1つに関する情報を格納するクラスです。
     /// </summary>
-    public FeatureObjFilter Filter { get; set; }
-
-    public FeatureGameObj(GameObject gameObj, bool isFlooding)
+    public class FeatureGameObj
     {
-        this.gameObj = gameObj;
-        Filter = new FeatureObjFilter(isFlooding);
-    }
+        /// <summary> 対象となるゲームオブジェクトです。 </summary>
+        private GameObject gameObj;
 
-    /// <summary>
-    /// ShouldActiveの結果を適用します。
-    /// </summary>
-    public void ApplyFilter()
-    {
-        gameObj.SetActive(Filter.ShouldActive());
-    }
+        /// <summary>
+        /// 表示すべきかどうかを格納します。
+        /// この結果は<see cref="ApplyFilter"/>で適用します。
+        /// </summary>
+        public FeatureObjFilter Filter { get; set; }
 
-    public Renderer GetRenderer() => gameObj.GetComponent<Renderer>();
+        public FeatureGameObj(GameObject gameObj, bool isFlooding)
+        {
+            this.gameObj = gameObj;
+            Filter = new FeatureObjFilter(isFlooding);
+        }
+
+        /// <summary>
+        /// ShouldActiveの結果を適用します。
+        /// </summary>
+        public void ApplyFilter()
+        {
+            gameObj.SetActive(Filter.ShouldActive());
+        }
+
+        public Renderer GetRenderer() => gameObj.GetComponent<Renderer>();
+    }
 }
