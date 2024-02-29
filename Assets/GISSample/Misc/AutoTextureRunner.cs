@@ -52,13 +52,6 @@ namespace GISSample.Misc
                 if (objName == "FloorEmission") continue;
                 if (objName == "ObstacleLight") continue;
             
-                // インポートで非表示になっているものはGIS Sampleでは使わないので削除します。
-                if (!r.gameObject.activeInHierarchy)
-                {
-                    DestroyImmediate(r.gameObject);
-                    continue;
-                }
-            
                 // 洪水モデルにマテリアルを適用します。
                 if (objName.Contains("fld"))
                 {

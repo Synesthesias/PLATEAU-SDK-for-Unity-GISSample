@@ -65,19 +65,17 @@ public class GmlDictionary
 
     public SampleCityObject GetCityObject(string gmlName, string cityObjName)
     {
-        return GetGml(gmlName).CityObjects[cityObjName];
+        return GetGml(gmlName).GetCityObject(cityObjName);
     }
 
-    public SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
+    public SampleAttribute GetAttribute(string gmlFileName, string cityObjectId)
     {
         if (gmls.TryGetValue(gmlFileName, out SampleGml gml))
         {
-            if (gml.CityObjects.TryGetValue(cityObjectID, out SampleCityObject city))
-            {
-                return city.Attribute;
-            }
+            return gml.GetAttribute(cityObjectId);
         }
 
+        Debug.LogWarning("gml not found.");
         return null;
     }
     
