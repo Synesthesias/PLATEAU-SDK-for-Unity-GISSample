@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PLATEAU.CityGML;
 using PLATEAU.CityInfo;
 
-namespace GISSample.PlateauAttributeDisplay
+namespace GISSample.PlateauAttributeDisplay.Gml
 {
     /// <summary>
     /// 属性情報のラッパー
