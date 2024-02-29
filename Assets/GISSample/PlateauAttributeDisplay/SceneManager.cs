@@ -20,7 +20,6 @@ namespace GISSample.PlateauAttributeDisplay
         /// Assets/GISSample/GISSampleInputActionsから生成されたクラスです。
         /// </summary>
         private GISSampleInputActions inputActions;
-        
 
         /// <summary>
         /// シーン中のPLATEAUInstancedCityModel
@@ -29,8 +28,6 @@ namespace GISSample.PlateauAttributeDisplay
         private PLATEAUInstancedCityModel[] instancedCityModels;
 
         private readonly GmlDictionary gmlDict = new ();
-
-
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
