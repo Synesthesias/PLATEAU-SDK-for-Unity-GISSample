@@ -39,7 +39,7 @@ public class LodCityObjs
         int maxLodToShow = Math.Min(maxLodExist, parameter.MaxLod);
         foreach (var (lod, featureObj) in lodToFeatureObj)
         {
-            featureObj.Filter.SetLodFilter(lod == maxLodToShow);
+            featureObj.Filter.SetLodFilter(lod == maxLodToShow && lod >= parameter.MinLod);
         }
     }
 
