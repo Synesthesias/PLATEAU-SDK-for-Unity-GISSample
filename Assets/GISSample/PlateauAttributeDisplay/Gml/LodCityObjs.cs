@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PLATEAU.Util;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -73,19 +74,28 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             foreach (var (lod, feature) in lodToFeatureObj)
             {
-                var renderer = feature.GetRenderer();
+                var renderer = feature.Renderer;
                 if(renderer == null) continue;
-                for (int i = 0; i < renderer.materials.Length; ++i)
+                var coloredMaterials = feature.ColoredMaterials;
+                for (int i = 0; i < coloredMaterials.Length; ++i)
                 {
-                    var mat = renderer.materials[i];
-                    mat.color = color;
-                    
+                    coloredMaterials[i].color = color;
                     // Rendering Toolkitsのauto textureに対応
-                    if (mat.HasProperty(BuildingColorPropertyId))
-                    {
-                        mat.SetColor(BuildingColorPropertyId, color);
-                    }
+                    // if (mat.HasProperty(BuildingColorPropertyId))
+                    // {
+                    //     mat.SetColor(BuildingColorPropertyId, color);
+                    // }
                 }
+
+                renderer.materials = coloredMaterials;
+            }
+        }
+
+        public void RestoreDefaultMaterials()
+        {
+            foreach (var feature in lodToFeatureObj.Values)
+            {
+                feature.RestoreInitialMaterials();
             }
         }
     }

@@ -25,7 +25,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     var id = cityObjectTransform.name;
                     if (dict.ContainsKey(id))
                     {
-                        Debug.LogWarning("Duplicate CityObject id detected.");
+                        // Debug.LogWarning("Duplicate CityObject id detected.");
                     }
                     else
                     {

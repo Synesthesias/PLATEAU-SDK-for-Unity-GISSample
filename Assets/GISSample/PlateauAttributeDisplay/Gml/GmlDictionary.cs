@@ -88,7 +88,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         public void ColorCity(ColorCodeType type, string areaName, Color[] heightColorTable, Color[] floodingRankColorTable)
         {
-            foreach (var keyValue in gmls)
+            foreach (var gml in gmls.Values)
             {
                 Color[] colorTable = null;
                 switch (type)
@@ -103,7 +103,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                         break;
                 }
 
-                keyValue.Value.ColorGml(type, colorTable, areaName);
+                gml.ColorGml(type, colorTable, areaName);
             }
         }
     
