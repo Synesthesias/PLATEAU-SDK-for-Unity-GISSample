@@ -9,10 +9,14 @@ using UnityEngine.UIElements;
 
 namespace GISSample.PlateauAttributeDisplay.UI
 {
+    /// <summary>
+    /// GISサンプルにおけるUI全般を制御します。
+    /// UIウィンドウの管理とクリックでの選択を管理します。
+    /// </summary>
     public class GisUiController : MonoBehaviour
     {
-        private MenuUi menuUi;
-        public MenuUi MenuUi => menuUi;
+        public MenuUi MenuUi { get; private set; }
+
         [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
         private AttributeUi attrUi;
         private TimeUi timeUi;
@@ -39,13 +43,13 @@ namespace GISSample.PlateauAttributeDisplay.UI
         public void Init(SceneManager sceneManagerArg, HashSet<string> floodingAreaNames)
         {
             sceneManager = sceneManagerArg;
-            menuUi = GetComponentInChildren<MenuUi>();
+            MenuUi = GetComponentInChildren<MenuUi>();
             attrUi = GetComponentInChildren<AttributeUi>();
             timeUi = FindObjectOfType<TimeUi>();
 
             attrUi.Close();
             userGuideUi.gameObject.SetActive(true);
-            menuUi.Init(this, sceneManagerArg, floodingAreaNames);
+            MenuUi.Init(this, sceneManagerArg, floodingAreaNames);
         
         
             ColorCity(colorCodeType, floodingAreaName);
@@ -61,6 +65,11 @@ namespace GISSample.PlateauAttributeDisplay.UI
         private Transform PickObject()
         {
             var cam = Camera.main;
+            if (cam == null)
+            {
+                Debug.LogError("main camera is not found.");
+                return null;
+            }
             var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
             // 一番手前のオブジェクトを選びます。
@@ -94,7 +103,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
                 {
                     attrUi.Close();
                     return;
-                };
+                }
 
                 // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
                 RecolorFlooding();
@@ -173,7 +182,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             else
             {
                 colorCodeType = ColorCodeType.FloodingRank;
-                floodingAreaName = menuUi.colorCodeGroup.choices.ElementAt(e.newValue);
+                floodingAreaName = MenuUi.colorCodeGroup.choices.ElementAt(e.newValue);
             }
 
             RecolorFlooding();

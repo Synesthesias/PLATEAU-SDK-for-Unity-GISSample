@@ -15,9 +15,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         private FilterParameter filterParameter;
 
-        private MenuUi menuUi;
-        
-        
+        private readonly MenuUi menuUi;
         private readonly GmlDictionary gmls;
 
         public FilterByLodAndHeight(MenuUi menuUi, GmlDictionary gmls)
@@ -39,7 +37,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// 高さフィルタースライダーの値変更イベントコールバック
         /// </summary>
         /// <param name="e"></param>
-        public void OnHeightSliderValueChanged(ChangeEvent<Vector2> e)
+        private void OnHeightSliderValueChanged(ChangeEvent<Vector2> e)
         {
             filterParameter = GetFilterParameterFromSliders();
             Filter(filterParameter);
@@ -50,7 +48,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// LODフィルタースライダーの値変更イベントコールバック
         /// </summary>
         /// <param name="e"></param>
-        public void OnLodSliderValueChanged(ChangeEvent<Vector2> e)
+        private void OnLodSliderValueChanged(ChangeEvent<Vector2> e)
         {
             menuUi.lodSlider.value = new Vector2(Mathf.Round(e.newValue.x), Mathf.Round(e.newValue.y));
 
@@ -67,8 +65,6 @@ namespace GISSample.PlateauAttributeDisplay
         {
             gmls.Filter(parameter);
         }
-        
-        
         
         /// <summary>
         /// フィルターパラメータを取得

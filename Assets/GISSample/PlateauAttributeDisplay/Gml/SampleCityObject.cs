@@ -149,9 +149,9 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         private void ChangeToDefaultState()
         {
-            SetMaterialColor(Color.white); 
             lodCityObjs.FilterByFlooding(false);
             lodCityObjs.ApplyFilter();
+            lodCityObjs.RestoreDefaultMaterials();
         }
     }
 }
