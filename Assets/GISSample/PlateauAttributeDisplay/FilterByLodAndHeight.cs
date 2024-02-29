@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using GISSample.PlateauAttributeDisplay.Gml;
+using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using UnityEngine;
 using UnityEngine.UIElements;
 

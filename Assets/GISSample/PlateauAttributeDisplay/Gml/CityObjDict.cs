@@ -1,91 +1,92 @@
-using System.Collections;
 using System.Collections.Generic;
-using GISSample.PlateauAttributeDisplay;
 using PLATEAU.CityInfo;
 using UnityEngine;
 
-/// <summary>
-/// GISサンプルにおいて、1つのGMLファイルに含まれる地物の辞書です。
-/// キーはIDです。
-/// </summary>
-public class CityObjDict
+namespace GISSample.PlateauAttributeDisplay.Gml
 {
-    private readonly Dictionary<string, SampleCityObject> dict;
-
     /// <summary>
-    /// GML相当のゲームオブジェクトの子をもとに<see cref="CityObjDict"/>を構築します。
+    /// GISサンプルにおいて、1つのGMLファイルに含まれる地物の辞書です。
+    /// キーはIDです。
     /// </summary>
-    public CityObjDict(GameObject gmlGameObj)
+    public class CityObjDict
     {
-        dict = new();
-        foreach (Transform lodTransform in gmlGameObj.transform)
+        private readonly Dictionary<string, SampleCityObject> dict;
+
+        /// <summary>
+        /// GML相当のゲームオブジェクトの子をもとに<see cref="CityObjDict"/>を構築します。
+        /// </summary>
+        public CityObjDict(GameObject gmlGameObj)
         {
-            foreach (Transform cityObjectTransform in lodTransform)
+            dict = new();
+            foreach (Transform lodTransform in gmlGameObj.transform)
             {
-                var id = cityObjectTransform.name;
-                if (dict.ContainsKey(id))
+                foreach (Transform cityObjectTransform in lodTransform)
                 {
-                    Debug.LogWarning("Duplicate CityObject id detected.");
-                }
-                else
-                {
-                    var cityObjComponent = cityObjectTransform.GetComponent<PLATEAUCityObjectGroup>();
-                    if (cityObjComponent != null)
+                    var id = cityObjectTransform.name;
+                    if (dict.ContainsKey(id))
                     {
-                        dict[id] = new SampleCityObject(id, cityObjComponent);
+                        Debug.LogWarning("Duplicate CityObject id detected.");
                     }
+                    else
+                    {
+                        var cityObjComponent = cityObjectTransform.GetComponent<PLATEAUCityObjectGroup>();
+                        if (cityObjComponent != null)
+                        {
+                            dict[id] = new SampleCityObject(cityObjComponent);
+                        }
+                    
+                    }
+
+                    if (dict.TryGetValue(id, out var o))
+                    {
+                        bool isFlooding = gmlGameObj.name.Contains("fld");
+                        o.AddCityObjectForLod(lodTransform, cityObjectTransform, isFlooding);
+                    }
+
                     
                 }
-
-                if (dict.TryGetValue(id, out var o))
-                {
-                    bool isFlooding = gmlGameObj.name.Contains("fld");
-                    o.LodCityObjs.Add(lodTransform, cityObjectTransform, isFlooding);
-                }
-
-                    
             }
         }
-    }
 
-    public HashSet<string> FindAllFloodingAreaNames()
-    {
-        var floodingNames = new HashSet<string>();
-        foreach (var cityObj in dict.Values)
+        public HashSet<string> FindAllFloodingAreaNames()
         {
-            foreach (var flood in cityObj.Attribute.GetFloodingAreaInfos())
+            var floodingNames = new HashSet<string>();
+            foreach (var cityObj in dict.Values)
             {
-                floodingNames.Add(flood.AreaName);
+                foreach (var flood in cityObj.Attribute.GetFloodingAreaInfos())
+                {
+                    floodingNames.Add(flood.AreaName);
+                }
+            }
+
+            return floodingNames;
+        }
+
+        public void Filter(FilterParameter parameter)
+        {
+            foreach (var cityObj in dict.Values)
+            {
+                cityObj.Filter(parameter);
+            }
+        }
+    
+        /// <summary>
+        /// 色分け
+        /// </summary>
+        /// <param name="type">色分けタイプ</param>
+        /// <param name="colorTable">色テーブル</param>
+        /// <param name="areaName">浸水エリア名</param>
+        public void ColorGml(ColorCodeType type, Color[] colorTable, string areaName = null)
+        {
+            foreach (var cityObj in dict.Values)
+            {
+                cityObj.ColorCityObj(type, colorTable, areaName);
             }
         }
 
-        return floodingNames;
-    }
-
-    public void Filter(FilterParameter parameter)
-    {
-        foreach (var cityObj in dict.Values)
+        public SampleCityObject Get(string cityObjName)
         {
-            cityObj.Filter(parameter);
+            return dict[cityObjName];
         }
-    }
-    
-    /// <summary>
-    /// 色分け
-    /// </summary>
-    /// <param name="type">色分けタイプ</param>
-    /// <param name="colorTable">色テーブル</param>
-    /// <param name="areaName">浸水エリア名</param>
-    public void ColorGml(ColorCodeType type, Color[] colorTable, string areaName = null)
-    {
-        foreach (var cityObj in dict.Values)
-        {
-            cityObj.ColorCityObj(type, colorTable, areaName);
-        }
-    }
-
-    public SampleCityObject Get(string cityObjName)
-    {
-        return dict[cityObjName];
     }
 }
