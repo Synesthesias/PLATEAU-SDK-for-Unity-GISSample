@@ -1,4 +1,5 @@
-﻿using PLATEAU.Samples;
+﻿using GISSample.PlateauAttributeDisplay.UI;
+using PLATEAU.Samples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,12 +22,12 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         private Transform cameraTransform;
 
-        private SceneManager sceneManager;
+        private GisUiController gisUiController;
 
-        public GISCameraMove(SceneManager sceneManager)
+        public GISCameraMove(GisUiController gisUiController)
         {
             cameraTransform = Camera.main.transform;
-            this.sceneManager = sceneManager;
+            this.gisUiController = gisUiController;
         }
         
         /// <summary>
@@ -91,7 +92,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnZoomCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && !sceneManager.gisUiController.IsMousePositionInUiRect())
+            if (context.performed && !gisUiController.IsMousePositionInUiRect())
             {
                 var delta = context.ReadValue<float>();
                 var dir = delta * Vector3.forward;
@@ -102,7 +103,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void OnSelectObject(InputAction.CallbackContext context)
         {
-            sceneManager.gisUiController.OnSelectObject(context);
+            gisUiController.OnSelectObject(context);
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (context.started)
             {
-                isCameraControllActive = !sceneManager.gisUiController.IsMousePositionInUiRect();
+                isCameraControllActive = !gisUiController.IsMousePositionInUiRect();
             }
 
             if (context.canceled)

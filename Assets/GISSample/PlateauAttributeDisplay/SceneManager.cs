@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using GISSample.PlateauAttributeDisplay.Gml;
+using GISSample.PlateauAttributeDisplay.UI;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class SceneManager : MonoBehaviour
     {
-        public GisUiController gisUiController;
+        private GisUiController gisUiController;
 
         /// <summary>
         /// InputActions
@@ -28,10 +28,9 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         private PLATEAUInstancedCityModel[] instancedCityModels;
 
-        public readonly GmlDictionary gmls = new GmlDictionary();
+        private readonly GmlDictionary gmlDict = new ();
 
-        public readonly List<string> floodingAreaNames = new List<string>(); 
-        
+
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
@@ -74,7 +73,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         private void Initialize()
         {
-            gisCameraMove = new GISCameraMove(this);
+            
             instancedCityModels = FindObjectsOfType<PLATEAUInstancedCityModel>();
             if (instancedCityModels == null || instancedCityModels.Length == 0)
             {
@@ -82,19 +81,32 @@ namespace GISSample.PlateauAttributeDisplay
             }
 
             
-            gmls.Init(instancedCityModels, this);
-            
-
-            inputActions.GISSample.SetCallbacks(gisCameraMove);
-
+            gmlDict.Init(instancedCityModels);
+            var floodingAreaNames = gmlDict.FindAllAreaNames();
             
             gisUiController = GetComponentInChildren<GisUiController>();
-            gisUiController.Init(this);
-            filterByLodAndHeight = new FilterByLodAndHeight(gisUiController.MenuUi, gmls);
+            gisUiController.Init(this, floodingAreaNames);
+            gisCameraMove = new GISCameraMove(gisUiController);
+            inputActions.GISSample.SetCallbacks(gisCameraMove);
+            
+            filterByLodAndHeight = new FilterByLodAndHeight(gisUiController.MenuUi, gmlDict);
             weatherController = new WeatherController(gisUiController.MenuUi);
         }
-        
-        
+
+        public SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
+        {
+            return gmlDict.GetAttribute(gmlFileName, cityObjectID);
+        }
+
+        public void ColorCity(ColorCodeType type, string areaName)
+        {
+            gmlDict.ColorCity(type, areaName, gisUiController.heightColorTable, gisUiController.floodingRankColorTable);
+        }
+
+        public SampleCityObject GetCityObject(string gmlName, string cityObjName)
+        {
+            return gmlDict.GetCityObject(gmlName, cityObjName);
+        }
 
     }
 }

@@ -1,32 +1,24 @@
-using System;
 using System.Linq;
 using PLATEAU.CityGML;
 using PLATEAU.CityInfo;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace GISSample.PlateauAttributeDisplay
+namespace GISSample.PlateauAttributeDisplay.Gml
 {
     /// <summary>
     /// CityObjectのラッパー
     /// </summary>
     public class SampleCityObject
     {
-        public readonly string Id;
-        public readonly PLATEAUCityObjectGroup CityObjComponent;
-        
-        public readonly LodCityObjs LodCityObjs;
-
-        public readonly SampleAttribute Attribute;
+        private readonly LodCityObjs lodCityObjs;
+        public SampleAttribute Attribute { get; }
         
 
-        public SampleCityObject(string id, PLATEAUCityObjectGroup cityObjComponent)
+        public SampleCityObject(PLATEAUCityObjectGroup cityObjComponent)
         {
-            Id = id;
-            CityObjComponent = cityObjComponent;
             Attribute = new SampleAttribute(cityObjComponent.PrimaryCityObjects.First().AttributesMap);
-            LodCityObjs = new LodCityObjs();
+            lodCityObjs = new LodCityObjs();
         }
 
         /// <summary>
@@ -40,11 +32,11 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 var measuredHeight = Attribute.MeasuredHeight.Value;
                 bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
-                LodCityObjs.FilterByHeight(heightFilter);
+                lodCityObjs.FilterByHeight(heightFilter);
                 
             }
-            LodCityObjs.FilterByLod(parameter);
-            LodCityObjs.ApplyFilter();
+            lodCityObjs.FilterByLod(parameter);
+            lodCityObjs.ApplyFilter();
         }
 
         /// <summary>
@@ -68,6 +60,11 @@ namespace GISSample.PlateauAttributeDisplay
                     ColorByFloodingRank(colorTable, areaName);
                     break;
             }
+        }
+
+        public void AddCityObjectForLod(Transform lodTrans, Transform cityObjectTrans, bool isFlooding)
+        {
+            lodCityObjs.Add(lodTrans, cityObjectTrans, isFlooding);
         }
 
 
@@ -119,8 +116,8 @@ namespace GISSample.PlateauAttributeDisplay
                 ChangeToDefaultState();
                 return;
             }
-            LodCityObjs.FilterByFlooding(true);
-            LodCityObjs.ApplyFilter();
+            lodCityObjs.FilterByFlooding(true);
+            lodCityObjs.ApplyFilter();
             var info = infos[index];
             switch (info.Rank)
             {
@@ -147,21 +144,14 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void SetMaterialColor(Color color)
         {
-            LodCityObjs.SetMaterialColor(color);
+            lodCityObjs.SetMaterialColor(color);
         }
 
         private void ChangeToDefaultState()
         {
             SetMaterialColor(Color.white); 
-            LodCityObjs.FilterByFlooding(false);
-            LodCityObjs.ApplyFilter();
-        }
-        
-        
-        private bool IsFloodingType()
-        {
-            var t = CityObjComponent.PrimaryCityObjects.First().CityObjectType;
-            return t == CityObjectType.COT_WaterBody;
+            lodCityObjs.FilterByFlooding(false);
+            lodCityObjs.ApplyFilter();
         }
     }
 }

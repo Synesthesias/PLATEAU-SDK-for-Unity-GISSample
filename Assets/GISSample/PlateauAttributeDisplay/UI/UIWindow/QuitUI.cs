@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace GISSample.PlateauAttributeDisplay
+namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 {
     public class QuitUI : MonoBehaviour
     {

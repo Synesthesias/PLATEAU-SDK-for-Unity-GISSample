@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GISSample.PlateauAttributeDisplay
+namespace GISSample.PlateauAttributeDisplay.Gml
 {
     /// <summary>
     /// フィルターパラメータ
@@ -58,7 +58,7 @@ namespace GISSample.PlateauAttributeDisplay
     public class SampleGml
     {
         private readonly CityObjDict cityObjDict;
-        public readonly HashSet<string> FloodingAreaNames;
+        public HashSet<string> FloodingAreaNames { get; }
 
         public SampleGml(GameObject gmlGameObj)
         {
