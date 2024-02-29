@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using PLATEAU.CityGML;
 using PLATEAU.CityInfo;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -14,22 +15,18 @@ namespace GISSample.PlateauAttributeDisplay
     {
         public readonly string Id;
         public readonly PLATEAUCityObjectGroup CityObjComponent;
-
-        /// <summary>
-        /// CityObjectに対応するGameObjectリスト
-        /// 配列のインデックスがLODのレベルに対応しています。
-        /// </summary>
-        public readonly GameObject[] LodObjects;
+        
+        public readonly LodCityObjs LodCityObjs;
 
         public readonly SampleAttribute Attribute;
-        private static readonly int BuildingColorPropertyId = Shader.PropertyToID("_BaseColor");
+        
 
         public SampleCityObject(string id, PLATEAUCityObjectGroup cityObjComponent)
         {
             Id = id;
             CityObjComponent = cityObjComponent;
             Attribute = new SampleAttribute(cityObjComponent.PrimaryCityObjects.First().AttributesMap);
-            LodObjects = new GameObject[4];
+            LodCityObjs = new LodCityObjs();
         }
 
         /// <summary>
@@ -41,32 +38,13 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (Attribute.MeasuredHeight.HasValue)
             {
-                SetActive(false);
-
                 var measuredHeight = Attribute.MeasuredHeight.Value;
-                if (measuredHeight < parameter.MinHeight || measuredHeight > parameter.MaxHeight)
-                {
-                    return;
-                }
-
-                try
-                {
-                    int level = -1;
-                    for (int i = 0; i < LodObjects.Length; ++i)
-                    {
-                        if (LodObjects[i] != null && i >= parameter.MinLod && i <= parameter.MaxLod) level = i;
-                    }
-
-                    if (level >= 0 && level <= 3)
-                    {
-                        LodObjects[level].SetActive(true);
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    return;
-                }
+                bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
+                LodCityObjs.FilterByHeight(heightFilter);
+                
             }
+            LodCityObjs.FilterByLod(parameter);
+            LodCityObjs.ApplyFilter();
         }
 
         /// <summary>
@@ -106,27 +84,27 @@ namespace GISSample.PlateauAttributeDisplay
             var height = Attribute.MeasuredHeight.Value;
             if (height <= 12)
             {
-                SetMaterialColorAndShow(colorTable[0]);
+                SetMaterialColor(colorTable[0]);
             }
             else if (height > 12 && height <= 31)
             {
-                SetMaterialColorAndShow(colorTable[1]);
+                SetMaterialColor(colorTable[1]);
             }
             else if (height > 31 && height <= 60)
             {
-                SetMaterialColorAndShow(colorTable[2]);
+                SetMaterialColor(colorTable[2]);
             }
             else if (height > 60 && height <= 120)
             {
-                SetMaterialColorAndShow(colorTable[3]);
+                SetMaterialColor(colorTable[3]);
             }
             else if (height > 120 && height <= 180)
             {
-                SetMaterialColorAndShow(colorTable[4]);
+                SetMaterialColor(colorTable[4]);
             }
             else
             {
-                SetMaterialColorAndShow(colorTable[5]);
+                SetMaterialColor(colorTable[5]);
             }
         }
 
@@ -141,24 +119,25 @@ namespace GISSample.PlateauAttributeDisplay
                 ChangeToDefaultState();
                 return;
             }
-
+            LodCityObjs.FilterByFlooding(true);
+            LodCityObjs.ApplyFilter();
             var info = infos[index];
             switch (info.Rank)
             {
                 case 1:
-                    SetMaterialColorAndShow(colorTable[0]);
+                    SetMaterialColor(colorTable[0]);
                     break;
                 case 2:
-                    SetMaterialColorAndShow(colorTable[1]);
+                    SetMaterialColor(colorTable[1]);
                     break;
                 case 3:
-                    SetMaterialColorAndShow(colorTable[2]);
+                    SetMaterialColor(colorTable[2]);
                     break;
                 case 4:
-                    SetMaterialColorAndShow(colorTable[3]);
+                    SetMaterialColor(colorTable[3]);
                     break;
                 case 5:
-                    SetMaterialColorAndShow(colorTable[4]);
+                    SetMaterialColor(colorTable[4]);
                     break;
                 default:
                     ChangeToDefaultState();
@@ -166,51 +145,20 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
-        public void SetMaterialColorAndShow(Color color)
+        public void SetMaterialColor(Color color)
         {
-            SetActive(true);
-            foreach (var lod in LodObjects)
-            {
-                if (lod == null) continue;
-                var renderer = lod.GetComponent<Renderer>();
-                if(renderer == null) continue;
-                for (int i = 0; i < renderer.materials.Length; ++i)
-                {
-                    var mat = renderer.materials[i];
-                    mat.color = color;
-                    
-                    // Rendering Toolkitsのauto textureに対応
-                    if (mat.HasProperty(BuildingColorPropertyId))
-                    {
-                        mat.SetColor(BuildingColorPropertyId, color);
-                    }
-                }
-            }
+            LodCityObjs.SetMaterialColor(color);
         }
 
         private void ChangeToDefaultState()
         {
-            SetMaterialColorAndShow(Color.white);
-            if (ShouldBeInactiveOnDeselect())
-            {
-                SetActive(false);
-            }
-            
+            SetMaterialColor(Color.white); 
+            LodCityObjs.FilterByFlooding(false);
+            LodCityObjs.ApplyFilter();
         }
-
-        private void SetActive(bool isActive)
-        {
-            foreach (var lod in LodObjects)
-            {
-                if (lod == null) continue;
-                lod.SetActive(isActive);
-            }
-        }
-
-        /// <summary>
-        /// 洪水モデルは選択時のみ表示します。
-        /// </summary>
-        private bool ShouldBeInactiveOnDeselect()
+        
+        
+        private bool IsFloodingType()
         {
             var t = CityObjComponent.PrimaryCityObjects.First().CityObjectType;
             return t == CityObjectType.COT_WaterBody;
