@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PLATEAU.CityInfo;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay
@@ -58,75 +57,14 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class SampleGml
     {
-        public readonly Dictionary<string, SampleCityObject> CityObjects;
+        private readonly CityObjDict cityObjDict;
         public readonly HashSet<string> FloodingAreaNames;
 
         public SampleGml(GameObject gmlGameObj)
         {
-            CityObjects = new Dictionary<string, SampleCityObject>();
             FloodingAreaNames = new HashSet<string>();
-
-            foreach (Transform lodTransform in gmlGameObj.transform)
-            {
-                foreach (Transform cityObjectTransform in lodTransform)
-                {
-                    var id = cityObjectTransform.name;
-                    if (CityObjects.ContainsKey(id))
-                    {
-                        Debug.LogWarning("Duplicate CityObject id detected.");
-                    }
-                    else
-                    {
-                        try
-                        {
-                            var cityObjComponent = cityObjectTransform.GetComponent<PLATEAUCityObjectGroup>();
-                            if (cityObjComponent != null)
-                            {
-                                CityObjects[id] = new SampleCityObject(id, cityObjComponent);
-
-                                foreach (var info in CityObjects[id].Attribute.GetFloodingAreaInfos())
-                                {
-                                    FloodingAreaNames.Add(info.AreaName);
-                                }
-                            }
-                        }
-                        catch (KeyNotFoundException)
-                        {
-                            continue;
-                        }
-                    }
-
-                    var level = -1;
-                    if (lodTransform.name == "LOD0")
-                    {
-                        level = 0;
-                    }
-                    else if (lodTransform.name == "LOD1")
-                    {
-                        level = 1;
-                    }
-                    else if (lodTransform.name == "LOD2")
-                    {
-                        level = 2;
-                    }
-                    else if (lodTransform.name == "LOD3")
-                    {
-                        level = 3;
-                    }
-
-                    if (level != -1)
-                    {
-                        var go = cityObjectTransform.gameObject;
-                        var material = cityObjectTransform.GetComponent<Renderer>()?.material;
-                        if (CityObjects.TryGetValue(id, out var o))
-                        {
-                            o.LodObjects[level] = go;
-                        }
-                        
-                    }
-                }
-            }
-            
+            cityObjDict = new CityObjDict(gmlGameObj);
+            FloodingAreaNames = cityObjDict.FindAllFloodingAreaNames();
         }
 
         /// <summary>
@@ -135,10 +73,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="parameter"></param>
         public void Filter(FilterParameter parameter)
         {
-            foreach (var keyValue in CityObjects)
-            {
-                keyValue.Value.Filter(parameter);
-            }
+            cityObjDict.Filter(parameter);
         }
 
         /// <summary>
@@ -149,10 +84,18 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="areaName">浸水エリア名</param>
         public void ColorGml(ColorCodeType type, Color[] colorTable, string areaName = null)
         {
-            foreach (var keyValue in CityObjects)
-            {
-                keyValue.Value.ColorCityObj(type, colorTable, areaName);
-            }
+            cityObjDict.ColorGml(type, colorTable, areaName);
+        }
+
+        public SampleCityObject GetCityObject(string cityObjId)
+        {
+            return cityObjDict.Get(cityObjId);
+        }
+
+        public SampleAttribute GetAttribute(string cityObjID)
+        {
+            var cityObj = GetCityObject(cityObjID);
+            return cityObj.Attribute;
         }
     }
 
