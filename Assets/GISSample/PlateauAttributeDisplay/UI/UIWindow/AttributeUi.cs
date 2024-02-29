@@ -88,7 +88,7 @@ namespace GISSample.PlateauAttributeDisplay
         public void SelectCityObj(SampleCityObject cityObj, Color selectedColor)
         {
             selectedCityObject = cityObj;
-            selectedCityObject.SetMaterialColorAndShow(selectedColor);
+            selectedCityObject.SetMaterialColor(selectedColor);
             
         }
         
