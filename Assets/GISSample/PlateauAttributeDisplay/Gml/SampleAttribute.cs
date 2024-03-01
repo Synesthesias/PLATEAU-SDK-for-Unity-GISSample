@@ -46,7 +46,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                         2 => 3f,
                         3 => 5f,
                         4 => 10f,
-                        5 => 20f
+                        5 => 20f,
+                        _ => 0f
                     };
                 }
             }
