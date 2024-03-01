@@ -1,4 +1,3 @@
-using PLATEAU.Util;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -9,7 +8,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     public class FeatureGameObj
     {
         /// <summary> 対象となるゲームオブジェクトです。 </summary>
-        private readonly GameObject gameObj;
+        public GameObject GameObj { get; }
 
         /// <summary> アプリケーション開始時のマテリアルを、あとで戻せるように記憶します </summary>
         private readonly Material[] initialMaterials;
@@ -20,8 +19,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public Renderer Renderer { get; }
 
         /// <summary> 色分け時に使うマテリアル </summary>
-        private static readonly Material materialForColor = Resources.Load<Material>("ColorByAttributesMaterial");
-
+        private static readonly Material MaterialForColor = Resources.Load<Material>("ColorByAttributesMaterial");
+        
         /// <summary>
         /// 表示すべきかどうかを格納します。
         /// この結果は<see cref="ApplyFilter"/>で適用します。
@@ -30,7 +29,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public FeatureGameObj(GameObject gameObj, bool isFlooding)
         {
-            this.gameObj = gameObj;
+            this.GameObj = gameObj;
             Filter = new FeatureObjFilter(isFlooding);
             Renderer = gameObj.GetComponent<Renderer>();
             if (Renderer == null)
@@ -45,7 +44,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 ColoredMaterials = new Material[initialMaterials.Length];
                 for (int i = 0; i < ColoredMaterials.Length; i++)
                 {
-                    ColoredMaterials[i] = new Material(materialForColor);
+                    ColoredMaterials[i] = new Material(MaterialForColor);
                 }
             }
         }
@@ -55,7 +54,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         public void ApplyFilter()
         {
-            gameObj.SetActive(Filter.ShouldActive());
+            GameObj.SetActive(Filter.ShouldActive());
         }
 
         public void RestoreInitialMaterials()
