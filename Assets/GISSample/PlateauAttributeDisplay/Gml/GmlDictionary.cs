@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PLATEAU.CityInfo;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -37,7 +39,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     if (!gmls.TryAdd(go.name, gml))
                     {
                         Debug.LogWarning("Duplicate GML name detected.");
-                    };
+                    }
                 }
             }
         
@@ -64,12 +66,18 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         private SampleGml GetGml(string gmlName)
         {
-            return gmls[gmlName];
+            if (gmls.TryGetValue(gmlName, out var gml))
+            {
+                return gml;
+            }
+
+            return null;
         }
 
-        public SampleCityObject GetCityObject(string gmlName, string cityObjName)
+        public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
-            return GetGml(gmlName).GetCityObject(cityObjName);
+            var gml = GetGml(gmlName);
+            return gml?.GetCityObject(cityObjName);
         }
 
         public SampleAttribute GetAttribute(string gmlFileName, string cityObjectId)
@@ -90,20 +98,26 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             foreach (var gml in gmls.Values)
             {
-                Color[] colorTable = null;
-                switch (type)
+                Color[] colorTable = type switch
                 {
-                    case ColorCodeType.Height:
-                        colorTable = heightColorTable;
-                        break;
-                    case ColorCodeType.FloodingRank:
-                        colorTable = floodingRankColorTable;
-                        break;
-                    default:
-                        break;
-                }
+                    ColorCodeType.Height => heightColorTable,
+                    ColorCodeType.FloodingRank => floodingRankColorTable,
+                    ColorCodeType.None => null,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
 
                 gml.ColorGml(type, colorTable, areaName);
+            }
+        }
+
+        public IEnumerator<FeatureGameObj> FeatureGameObjs()
+        {
+            foreach (var gml in gmls.Values)
+            {
+                foreach (var obj in gml.FeatureGameObjs())
+                {
+                    yield return obj;
+                }
             }
         }
     

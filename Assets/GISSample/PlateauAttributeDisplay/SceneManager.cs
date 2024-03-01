@@ -1,4 +1,5 @@
-﻿using GISSample.PlateauAttributeDisplay.Gml;
+﻿using System.Collections.Generic;
+using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI;
 using PLATEAU.CityInfo;
 using PLATEAU.Samples;
@@ -100,9 +101,14 @@ namespace GISSample.PlateauAttributeDisplay
             gmlDict.ColorCity(type, areaName, gisUiController.heightColorTable, gisUiController.floodingRankColorTable);
         }
 
-        public SampleCityObject GetCityObject(string gmlName, string cityObjName)
+        public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
             return gmlDict.GetCityObject(gmlName, cityObjName);
+        }
+
+        public IEnumerator<FeatureGameObj> FeatureGameObjs()
+        {
+            return gmlDict.FeatureGameObjs();
         }
 
     }
