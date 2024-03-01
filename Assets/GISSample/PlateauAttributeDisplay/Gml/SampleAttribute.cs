@@ -27,6 +27,44 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             public string Path;
         }
 
+        public struct FloodingRank
+        {
+            public int Rank;
+
+            private FloodingRank(int rank)
+            {
+                Rank = rank;
+            }
+            
+            public float Height
+            {
+                get
+                {
+                    return Rank switch
+                    {
+                        1 => 0.5f,
+                        2 => 3f,
+                        3 => 5f,
+                        4 => 10f,
+                        5 => 20f
+                    };
+                }
+            }
+
+            public static FloodingRank FromString(string str)
+            {
+                return str switch
+                {
+                    "0.5m未満" => new FloodingRank(1),
+                    "0.5m以上3m未満" => new FloodingRank(2),
+                    "3m以上5m未満" => new FloodingRank(3),
+                    "5m以上10m未満" => new FloodingRank(4),
+                    "10m以上20m未満" => new FloodingRank(5),
+                    _ => throw new ArgumentOutOfRangeException($"Unknown value: {str}")
+                };
+            }
+        }
+
         /// <summary>
         /// 浸水エリア情報
         /// </summary>
@@ -40,22 +78,14 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             /// <summary>
             /// 浸水ランク
             /// </summary>
-            public int Rank;
+            public FloodingRank Rank;
 
             public static FloodingAreaInfo CreateFromAttrValue(CityObjectList.Attributes.Value floodingRisk,
                 string gmlName)
             {
                 if (!floodingRisk.AttributesMapValue.TryGetValue("uro:rank", out var rankVal)) return null;
                 var rankStr = rankVal.StringValue;
-                int rank = rankStr switch
-                {
-                    "0.5m未満" => 1,
-                    "0.5m以上3m未満" => 2,
-                    "3m以上5m未満" => 3,
-                    "5m以上10m未満" => 4,
-                    "10m以上20m未満" => 5,
-                    _ => throw new ArgumentOutOfRangeException($"Unknown value: {rankStr}")
-                };
+                FloodingRank rank = FloodingRank.FromString(rankStr);
                 return new FloodingAreaInfo
                 {
                     AreaName = gmlName,
@@ -65,15 +95,13 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         }
 
         public readonly double? MeasuredHeight;
-        public readonly CityObjectList.Attributes Attributes;
-        public readonly string RawText;
+        private readonly CityObjectList.Attributes attributes;
 
         public SampleAttribute(CityObjectList.Attributes attributes)
         {
-            Attributes = attributes;
-            RawText = Attributes.ToString();
+            this.attributes = attributes;
 
-            if (Attributes.TryGetValue("bldg:measuredheight", out var val))
+            if (this.attributes.TryGetValue("bldg:measuredheight", out var val))
             {
                 MeasuredHeight = val.DoubleValue;
             }
@@ -81,7 +109,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             {
                 MeasuredHeight = null;
             }
-            // MeasuredHeight = Attributes.GetValueOrNull("bldg:measuredheight")?.AsDouble;
         }
 
         /// <summary>
@@ -92,7 +119,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public List<KeyValuePair<KeyPath, string>> GetKeyValues()
         {
             var keyValues = new List<KeyValuePair<KeyPath, string>>();
-            GetKeyValuesInner(Attributes, "", keyValues);
+            GetKeyValuesInner(attributes, "", keyValues);
 
             return keyValues;
         }
@@ -104,9 +131,21 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public List<FloodingAreaInfo> GetFloodingAreaInfos()
         {
             var infos = new List<FloodingAreaInfo>();
-            GetFloodingAreaInfosInner(Attributes, infos);
+            GetFloodingAreaInfosInner(attributes, infos);
 
             return infos;
+        }
+
+        public FloodingAreaInfo GetFloodingAreaInfoByName(string areaName)
+        {
+            var infos = GetFloodingAreaInfos();
+            var index = infos.FindIndex(info => info.AreaName == areaName);
+            if (index < 0)
+            {
+                return null;
+            }
+
+            return infos[index];
         }
 
         private void GetKeyValuesInner(

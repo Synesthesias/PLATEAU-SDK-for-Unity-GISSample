@@ -59,13 +59,18 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     {
         private readonly CityObjDict cityObjDict;
         public HashSet<string> FloodingAreaNames { get; }
+        private GameObject gmlGameObj;
 
-        public SampleGml(GameObject gmlGameObj)
+        public SampleGml(GameObject gmlGameObjArg)
         {
+            gmlGameObj = gmlGameObjArg;
             FloodingAreaNames = new HashSet<string>();
-            cityObjDict = new CityObjDict(gmlGameObj);
+            cityObjDict = new CityObjDict(gmlGameObjArg, IsFlooding(gmlGameObjArg));
             FloodingAreaNames = cityObjDict.FindAllFloodingAreaNames();
         }
+
+        
+        private static bool IsFlooding(GameObject gmlGameObj) => gmlGameObj.name.Contains("fld");
 
         /// <summary>
         /// フィルタリング
@@ -87,7 +92,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             cityObjDict.ColorGml(type, colorTable, areaName);
         }
 
-        public SampleCityObject GetCityObject(string cityObjId)
+        public SemanticCityObject GetCityObject(string cityObjId)
         {
             return cityObjDict.Get(cityObjId);
         }
@@ -96,6 +101,16 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             var cityObj = GetCityObject(cityObjID);
             return cityObj.Attribute;
+        }
+
+        public IEnumerable<FeatureGameObj> FeatureGameObjs()
+        {
+            return cityObjDict.FeatureGameObjs();
+        }
+
+        public IEnumerable<SemanticCityObject> SemanticCityObjs()
+        {
+            return cityObjDict.SemanticCityObjs();
         }
     }
 

@@ -34,7 +34,7 @@ namespace GISSample.PlateauAttributeDisplay
             // 都市モデルをCesiumGeoReferenceの子にします
             var cesiumGeoReference = FindObjectOfType<CesiumGeoreference>();
             target.transform.parent = cesiumGeoReference.transform;
-            var cesiumGlobeAnchor = target.AddComponent<CesiumGlobeAnchor>();
+            target.AddComponent<CesiumGlobeAnchor>();
         
             // Cesiumとの位置合わせをします。
             // 内容はPlateauToolkitMapsWindowとほぼ同じです。
@@ -51,6 +51,19 @@ namespace GISSample.PlateauAttributeDisplay
         
             // AutoTextureRunnerを実行します。
             AutoTextureRunner.Run(target.gameObject);
+            
+            
+            // 洪水情報はstaticをoffにします（高さを変えるため）
+            foreach (Transform gmlTrans in target.transform)
+            {
+                if (gmlTrans.name.Contains("_fld_"))
+                {
+                    foreach (var r in gmlTrans.GetComponentsInChildren<Renderer>())
+                    {
+                        r.gameObject.isStatic = false;
+                    }
+                }
+            }
         
         }
 
@@ -85,30 +98,28 @@ namespace GISSample.PlateauAttributeDisplay
     
         IEnumerator RequestGeoidHeightToUri(string uri, PlateauMapsHeightClient.GeoidDataCallback callback)
         {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
-            {
-                // Request and wait for the desired page.
-                yield return webRequest.SendWebRequest();
+            using UnityWebRequest webRequest = UnityWebRequest.Get(uri);
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
 
-                if (webRequest.result == UnityWebRequest.Result.Success)
-                {
-                    RootObject rootObject = JsonUtility.FromJson<RootObject>(webRequest.downloadHandler.text);
-                    callback.Invoke(rootObject.OutputData.geoidHeight);
-                }
-                else
-                {
-                    Debug.Log(": Error: " + webRequest.error);
-                    callback.Invoke(0f);
-                }
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                RootObject rootObject = JsonUtility.FromJson<RootObject>(webRequest.downloadHandler.text);
+                callback.Invoke(rootObject.OutputData.geoidHeight);
+            }
+            else
+            {
+                Debug.Log(": Error: " + webRequest.error);
+                callback.Invoke(0f);
             }
         }
 
     
         // ここの内容はPlateauToolkitMapsWindowとほぼ同じです
-        public void MoveCityModel(double2 cityModelPosition, float resultOfGeoidHeightQuery, PLATEAUInstancedCityModel target)
+        public void MoveCityModel(double2 cityModelPosition, float resultOfGeoidHeightQuery, PLATEAUInstancedCityModel targetCityModel)
         {
             double3 longLatHeight = new double3 { x = cityModelPosition.y, y = cityModelPosition.x, z = resultOfGeoidHeightQuery };
-            var targetTrans = target.transform;
+            var targetTrans = targetCityModel.transform;
             targetTrans.parent.GetComponent<CesiumGeoreference>().SetOriginLongitudeLatitudeHeight(longLatHeight[0], longLatHeight[1], longLatHeight[2]);
             targetTrans.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = longLatHeight;
             targetTrans.rotation = Quaternion.identity;

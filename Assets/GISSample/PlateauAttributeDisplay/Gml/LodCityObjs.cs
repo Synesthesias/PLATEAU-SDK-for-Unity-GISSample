@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PLATEAU.Util;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -11,8 +10,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     /// </summary>
     public class LodCityObjs
     {
-        private SortedDictionary<int, FeatureGameObj> lodToFeatureObj = new();
-        private static readonly int BuildingColorPropertyId = Shader.PropertyToID("_BaseColor");
+        private readonly SortedDictionary<int, FeatureGameObj> lodToFeatureObj = new();
 
         /// <summary>
         /// LODとゲームオブジェクトの対応関係を1つ記憶します。
@@ -72,19 +70,14 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public void SetMaterialColor(Color color)
         {
-            foreach (var (lod, feature) in lodToFeatureObj)
+            foreach (var feature in lodToFeatureObj.Values)
             {
                 var renderer = feature.Renderer;
                 if(renderer == null) continue;
                 var coloredMaterials = feature.ColoredMaterials;
-                for (int i = 0; i < coloredMaterials.Length; ++i)
+                foreach (var mat in coloredMaterials)
                 {
-                    coloredMaterials[i].color = color;
-                    // Rendering Toolkitsのauto textureに対応
-                    // if (mat.HasProperty(BuildingColorPropertyId))
-                    // {
-                    //     mat.SetColor(BuildingColorPropertyId, color);
-                    // }
+                    mat.color = color;
                 }
 
                 renderer.materials = coloredMaterials;
@@ -96,6 +89,14 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             foreach (var feature in lodToFeatureObj.Values)
             {
                 feature.RestoreInitialMaterials();
+            }
+        }
+
+        public IEnumerable<FeatureGameObj> FeatureGameObjs()
+        {
+            foreach (var featureObj in lodToFeatureObj.Values)
+            {
+                yield return featureObj;
             }
         }
     }

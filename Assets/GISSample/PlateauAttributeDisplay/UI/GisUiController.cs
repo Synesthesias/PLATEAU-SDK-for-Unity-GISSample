@@ -47,9 +47,11 @@ namespace GISSample.PlateauAttributeDisplay.UI
             attrUi = GetComponentInChildren<AttributeUi>();
             timeUi = FindObjectOfType<TimeUi>();
 
-            attrUi.Close();
+            
             userGuideUi.gameObject.SetActive(true);
             MenuUi.Init(this, sceneManagerArg, floodingAreaNames);
+            timeUi.Init();
+            attrUi.Init();
         
         
             ColorCity(colorCodeType, floodingAreaName);
@@ -75,6 +77,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             // 一番手前のオブジェクトを選びます。
             float nearestDistance = float.MaxValue;
             Transform nearestTransform = null;
+            // ReSharper disable once Unity.PreferNonAllocApi
             foreach (var hit in Physics.RaycastAll(ray))
             {
                 var hitTrans = hit.transform;
@@ -96,30 +99,33 @@ namespace GISSample.PlateauAttributeDisplay.UI
         /// <param name="context"></param>
         public void OnSelectObject(InputAction.CallbackContext context)
         {
-            if (context.performed && !IsMousePositionInUiRect())
+            if (!context.performed || IsMousePositionInUiRect()) return;
+            var trans = PickObject();
+            if (trans == null)
             {
-                var trans = PickObject();
-                if (trans == null)
-                {
-                    attrUi.Close();
-                    return;
-                }
-
-                // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
-                RecolorFlooding();
-
-                // 選択されたオブジェクトの色を変更
-                var nameKey = trans.parent.parent.name;
-                if (nameKey.Contains("Cesium")) return;
-                attrUi.SelectCityObj(sceneManager.GetCityObject(nameKey, trans.name), selectedColor);
-
-                attrUi.Open();
-
-                var data = GetAttribute(nameKey, trans.name);
-                attrUi.SetAttributes(data);
-
-                
+                // 何もない箇所がクリックされたら属性情報UIを閉じる
+                attrUi.Close();
+                return;
             }
+
+            // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
+            RecolorFlooding();
+
+            // 選択されたオブジェクトの色を変更
+            var nameKey = trans.parent.parent.name;
+            var cityObj = sceneManager.GetCityObject(nameKey, trans.name);
+            if (cityObj == null)
+            {
+                // 地物でないものがクリックされたら属性情報UIを閉じる
+                attrUi.Close();
+                return;
+            }
+            attrUi.SelectCityObj(cityObj, selectedColor);
+
+            attrUi.Open();
+
+            var data = GetAttribute(nameKey, trans.name);
+            attrUi.SetAttributes(data);
         }
     
     
@@ -127,21 +133,15 @@ namespace GISSample.PlateauAttributeDisplay.UI
         /// マウスの位置がUI上にあるかどうか
         /// </summary>
         /// <returns></returns>
-        public bool IsMousePositionInUiRect()
+        public static bool IsMousePositionInUiRect()
         {
-            var pointer = new PointerEventData(EventSystem.current);
-            pointer.position = Input.mousePosition;
+            var pointer = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
             var raycastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointer, raycastResults);
-            foreach (var r in raycastResults)
-            {
-                if (r.gameObject.name == "GISSamplePanelSettings")
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return raycastResults.Any(r => r.gameObject.name == "GISSamplePanelSettings");
         }
     
     
