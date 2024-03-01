@@ -1,5 +1,4 @@
 ﻿using GISSample.PlateauAttributeDisplay.UI;
-using PLATEAU.Samples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +13,11 @@ namespace GISSample.PlateauAttributeDisplay
         /// カメラ操作が有効かどうか
         /// ドラッグの起点がUI上の場合はカメラ操作できないようにするための判定用フラグです。
         /// </summary>
-        private bool isCameraControlActive;
+        private bool isMouseDraggingFromNonUi;
+
+        private Vector2 horizontalMoveByKeyboard;
+        private Vector2 verticalMoveByKeyboard;
+        private const float MoveSpeedByKeyboard = 400f;
         
         
         /// <summary>
@@ -40,35 +43,78 @@ namespace GISSample.PlateauAttributeDisplay
         /// カメラ水平移動
         /// </summary>
         /// <param name="context"></param>
-        public void OnHorizontalMoveCamera(InputAction.CallbackContext context)
+        public void OnHorizontalMoveCameraByMouse(InputAction.CallbackContext context)
         {
-            if (context.performed && isCameraControlActive)
+            
+            if (context.performed && isMouseDraggingFromNonUi)
             {
                 // 左右同時押下時は上下移動を優先
                 if (Mouse.current.rightButton.isPressed) return;
 
                 var delta = context.ReadValue<Vector2>();
-                var dir = new Vector3(delta.x, 0.0f, delta.y);
-                var rotY = cameraTransform.eulerAngles.y;
-                dir = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f)) * dir;
-                cameraTransform.position -= dir;
+                MoveCameraHorizontal(delta);
             }
+        }
+
+        public void OnHorizontalMoveCameraByKeyboard(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                var delta = context.ReadValue<Vector2>();
+                horizontalMoveByKeyboard = delta;
+            }else if (context.canceled)
+            {
+                horizontalMoveByKeyboard = Vector2.zero;
+            }
+        }
+
+        private void MoveCameraHorizontal(Vector2 delta)
+        {
+            var dir = new Vector3(delta.x, 0.0f, delta.y);
+            var rotY = cameraTransform.eulerAngles.y;
+            dir = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f)) * dir;
+            cameraTransform.position -= dir;
         }
 
         /// <summary>
         /// カメラ上下移動
         /// </summary>
         /// <param name="context"></param>
-        public void OnVerticalMoveCamera(InputAction.CallbackContext context)
+        public void OnVerticalMoveCameraByMouse(InputAction.CallbackContext context)
         {
-            if (context.performed && isCameraControlActive)
+            if (context.performed && isMouseDraggingFromNonUi)
             {
                 var delta = context.ReadValue<Vector2>();
-                var dir = new Vector3(delta.x, delta.y, 0.0f);
-                var rotY = cameraTransform.eulerAngles.y;
-                dir = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f)) * dir;
-                cameraTransform.position -= dir;
+                MoveCameraVertical(delta * -1);
             }
+        }
+
+        public void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                var delta = Vector2.up * context.ReadValue<float>();
+                verticalMoveByKeyboard = delta;
+            }
+            else
+            {
+                verticalMoveByKeyboard = Vector2.zero;
+            }
+        }
+
+        private void MoveCameraVertical(Vector2 delta)
+        {
+            var dir = new Vector3(delta.x, delta.y, 0.0f);
+            var rotY = cameraTransform.eulerAngles.y;
+            dir = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f)) * dir;
+            cameraTransform.position += dir;
+        }
+        
+        public void Update()
+        {
+            float moveFactor = MoveSpeedByKeyboard * Time.deltaTime;
+            MoveCameraHorizontal(moveFactor * horizontalMoveByKeyboard);
+            MoveCameraVertical(moveFactor * verticalMoveByKeyboard);
         }
 
         /// <summary>
@@ -77,7 +123,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnRotateCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && isCameraControlActive)
+            if (context.performed && isMouseDraggingFromNonUi)
             {
                 // 左右同時押下時は上下移動を優先
                 if (Mouse.current.leftButton.isPressed) return;
@@ -122,12 +168,12 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (context.started)
             {
-                isCameraControlActive = !GisUiController.IsMousePositionInUiRect();
+                isMouseDraggingFromNonUi = !GisUiController.IsMousePositionInUiRect();
             }
 
             if (context.canceled)
             {
-                isCameraControlActive = false;
+                isMouseDraggingFromNonUi = false;
             }
         }
         

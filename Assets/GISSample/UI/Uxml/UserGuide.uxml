@@ -9,7 +9,7 @@
         <ui:VisualElement name="guide-body" class="guide-body">
             <ui:VisualElement name="table-row" class="table-row">
                 <ui:Label text="水平移動" display-tooltip-when-elided="true" name="HorizontalMoveLabel" class="userguide-label table-cell1" />
-                <ui:Label text="マウス左ボタン + ドラッグ" display-tooltip-when-elided="true" name="LeftButtonLabel" class="userguide-label table-cell2" />
+                <ui:Label text="マウス左ボタン + ドラッグ&lt;br&gt;または WASDキー" display-tooltip-when-elided="true" name="LeftButtonLabel" class="userguide-label table-cell2" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="table-row" class="table-row">
@@ -24,7 +24,7 @@
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="table-row" class="table-row">
                 <ui:Label text="上下左右&lt;br&gt;移動" display-tooltip-when-elided="true" name="VerticalMoveLabel" class="userguide-label table-cell table-cell1" />
-                <ui:Label text="マウス中央ボタン + ドラッグ&lt;br&gt;  or&lt;br&gt;マウス左右ボタン同時押し +&lt;br&gt;ドラッグ" display-tooltip-when-elided="true" name="CenterButtonLabel" class="userguide-label table-cell2" />
+                <ui:Label text="マウス中央ボタン + ドラッグ&lt;br&gt; または QEADキー または&lt;br&gt;マウス左右ボタン同時押し +&lt;br&gt;ドラッグ" display-tooltip-when-elided="true" name="CenterButtonLabel" class="userguide-label table-cell2" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:ScrollView>
