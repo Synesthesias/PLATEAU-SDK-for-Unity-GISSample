@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.Linq;
-using PLATEAU.CityGML;
 using PLATEAU.CityInfo;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -7,15 +7,18 @@ using UnityEngine.Assertions;
 namespace GISSample.PlateauAttributeDisplay.Gml
 {
     /// <summary>
-    /// CityObjectのラッパー
+    /// ある地物を、意味的に意味のある単位でまとめたものです。
+    /// 具体的には、LODと<see cref="FeatureGameObj"/>の対応関係をまとめた<see cref="LodCityObjs"/>と、属性情報を保持します。
+    /// 例えば建物ならば、建物1つに関する情報(LOD0～3, 属性情報)をこのクラスが保持します。
     /// </summary>
-    public class SampleCityObject
+    public class SemanticCityObject
     {
         private readonly LodCityObjs lodCityObjs;
         public SampleAttribute Attribute { get; }
-        
 
-        public SampleCityObject(PLATEAUCityObjectGroup cityObjComponent)
+        private const float FloodingHeightMultiplier = 1f;
+
+        public SemanticCityObject(PLATEAUCityObjectGroup cityObjComponent)
         {
             Attribute = new SampleAttribute(cityObjComponent.PrimaryCityObjects.First().AttributesMap);
             lodCityObjs = new LodCityObjs();
@@ -33,8 +36,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 var measuredHeight = Attribute.MeasuredHeight.Value;
                 bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
                 lodCityObjs.FilterByHeight(heightFilter);
-                
             }
+
             lodCityObjs.FilterByLod(parameter);
             lodCityObjs.ApplyFilter();
         }
@@ -79,29 +82,26 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
 
             var height = Attribute.MeasuredHeight.Value;
-            if (height <= 12)
+            switch (height)
             {
-                SetMaterialColor(colorTable[0]);
-            }
-            else if (height > 12 && height <= 31)
-            {
-                SetMaterialColor(colorTable[1]);
-            }
-            else if (height > 31 && height <= 60)
-            {
-                SetMaterialColor(colorTable[2]);
-            }
-            else if (height > 60 && height <= 120)
-            {
-                SetMaterialColor(colorTable[3]);
-            }
-            else if (height > 120 && height <= 180)
-            {
-                SetMaterialColor(colorTable[4]);
-            }
-            else
-            {
-                SetMaterialColor(colorTable[5]);
+                case <= 12:
+                    SetMaterialColor(colorTable[0]);
+                    break;
+                case > 12 and <= 31:
+                    SetMaterialColor(colorTable[1]);
+                    break;
+                case > 31 and <= 60:
+                    SetMaterialColor(colorTable[2]);
+                    break;
+                case > 60 and <= 120:
+                    SetMaterialColor(colorTable[3]);
+                    break;
+                case > 120 and <= 180:
+                    SetMaterialColor(colorTable[4]);
+                    break;
+                default:
+                    SetMaterialColor(colorTable[5]);
+                    break;
             }
         }
 
@@ -109,37 +109,31 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             Assert.AreEqual(5, colorTable.Length, "ランクの色分けは5色");
 
-            var infos = Attribute.GetFloodingAreaInfos();
-            var index = infos.FindIndex(info => info.AreaName == areaName);
-            if (index < 0)
+            var info = Attribute.GetFloodingAreaInfoByName(areaName);
+            if(info == null)
             {
                 ChangeToDefaultState();
                 return;
             }
+
             lodCityObjs.FilterByFlooding(true);
             lodCityObjs.ApplyFilter();
-            var info = infos[index];
-            switch (info.Rank)
+            var rank = info.Rank;
+            int colorTableIndex = rank.Rank - 1;
+            if (colorTableIndex < colorTable.Length)
             {
-                case 1:
-                    SetMaterialColor(colorTable[0]);
-                    break;
-                case 2:
-                    SetMaterialColor(colorTable[1]);
-                    break;
-                case 3:
-                    SetMaterialColor(colorTable[2]);
-                    break;
-                case 4:
-                    SetMaterialColor(colorTable[3]);
-                    break;
-                case 5:
-                    SetMaterialColor(colorTable[4]);
-                    break;
-                default:
-                    ChangeToDefaultState();
-                    break;
+                SetMaterialColor(colorTable[colorTableIndex]);
+                foreach (var feature in FeatureGameObjs())
+                {
+                    var trans = feature.GameObj.transform;
+                    trans.position += Vector3.up * rank.Height * FloodingHeightMultiplier;
+                }
             }
+            else
+            {
+                ChangeToDefaultState();
+            }
+            
         }
 
         public void SetMaterialColor(Color color)
@@ -152,6 +146,11 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             lodCityObjs.FilterByFlooding(false);
             lodCityObjs.ApplyFilter();
             lodCityObjs.RestoreDefaultMaterials();
+        }
+
+        public IEnumerable<FeatureGameObj> FeatureGameObjs()
+        {
+            return lodCityObjs.FeatureGameObjs();
         }
     }
 }

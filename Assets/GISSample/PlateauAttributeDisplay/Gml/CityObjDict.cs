@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using PLATEAU.CityInfo;
+using PlateauToolkit.Maps.Editor;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -10,12 +11,12 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     /// </summary>
     public class CityObjDict
     {
-        private readonly Dictionary<string, SampleCityObject> dict;
+        private readonly Dictionary<string, SemanticCityObject> dict;
 
         /// <summary>
         /// GML相当のゲームオブジェクトの子をもとに<see cref="CityObjDict"/>を構築します。
         /// </summary>
-        public CityObjDict(GameObject gmlGameObj)
+        public CityObjDict(GameObject gmlGameObj, bool isFlooding)
         {
             dict = new();
             foreach (Transform lodTransform in gmlGameObj.transform)
@@ -32,14 +33,13 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                         var cityObjComponent = cityObjectTransform.GetComponent<PLATEAUCityObjectGroup>();
                         if (cityObjComponent != null)
                         {
-                            dict[id] = new SampleCityObject(cityObjComponent);
+                            dict[id] = new SemanticCityObject(cityObjComponent);
                         }
                     
                     }
 
                     if (dict.TryGetValue(id, out var o))
                     {
-                        bool isFlooding = gmlGameObj.name.Contains("fld");
                         o.AddCityObjectForLod(lodTransform, cityObjectTransform, isFlooding);
                     }
 
@@ -84,9 +84,28 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
         }
 
-        public SampleCityObject Get(string cityObjName)
+        public SemanticCityObject Get(string cityObjName)
         {
             return dict[cityObjName];
+        }
+
+        public IEnumerable<FeatureGameObj> FeatureGameObjs()
+        {
+            foreach (var cityObj in dict.Values)
+            {
+                foreach (var obj in cityObj.FeatureGameObjs())
+                {
+                    yield return obj;
+                }
+            }
+        }
+
+        public IEnumerable<SemanticCityObject> SemanticCityObjs()
+        {
+            foreach (var semanticObj in dict.Values)
+            {
+                yield return semanticObj;
+            }
         }
     }
 }

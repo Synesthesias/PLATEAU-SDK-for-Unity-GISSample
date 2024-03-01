@@ -14,19 +14,25 @@ namespace GISSample.PlateauAttributeDisplay
         /// カメラ操作が有効かどうか
         /// ドラッグの起点がUI上の場合はカメラ操作できないようにするための判定用フラグです。
         /// </summary>
-        public bool isCameraControllActive = false;
+        private bool isCameraControlActive;
         
         
         /// <summary>
         /// カメラのTransform
         /// </summary>
-        private Transform cameraTransform;
+        private readonly Transform cameraTransform;
 
-        private GisUiController gisUiController;
+        private readonly GisUiController gisUiController;
 
         public GISCameraMove(GisUiController gisUiController)
         {
-            cameraTransform = Camera.main.transform;
+            var mainCam = Camera.main;
+            if (mainCam == null)
+            {
+                Debug.LogError("Main camera is not found.");
+                return;
+            }
+            cameraTransform = mainCam.transform;
             this.gisUiController = gisUiController;
         }
         
@@ -36,7 +42,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnHorizontalMoveCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && isCameraControllActive)
+            if (context.performed && isCameraControlActive)
             {
                 // 左右同時押下時は上下移動を優先
                 if (Mouse.current.rightButton.isPressed) return;
@@ -55,7 +61,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnVerticalMoveCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && isCameraControllActive)
+            if (context.performed && isCameraControlActive)
             {
                 var delta = context.ReadValue<Vector2>();
                 var dir = new Vector3(delta.x, delta.y, 0.0f);
@@ -71,7 +77,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnRotateCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && isCameraControllActive)
+            if (context.performed && isCameraControlActive)
             {
                 // 左右同時押下時は上下移動を優先
                 if (Mouse.current.leftButton.isPressed) return;
@@ -92,7 +98,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="context"></param>
         public void OnZoomCamera(InputAction.CallbackContext context)
         {
-            if (context.performed && !gisUiController.IsMousePositionInUiRect())
+            if (context.performed && !GisUiController.IsMousePositionInUiRect())
             {
                 var delta = context.ReadValue<float>();
                 var dir = delta * Vector3.forward;
@@ -116,12 +122,12 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (context.started)
             {
-                isCameraControllActive = !gisUiController.IsMousePositionInUiRect();
+                isCameraControlActive = !GisUiController.IsMousePositionInUiRect();
             }
 
             if (context.canceled)
             {
-                isCameraControllActive = false;
+                isCameraControlActive = false;
             }
         }
         

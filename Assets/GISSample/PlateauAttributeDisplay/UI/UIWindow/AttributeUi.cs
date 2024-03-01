@@ -14,24 +14,25 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         /// <summary>
         /// 選択中のCityObject
         /// </summary>
-        private SampleCityObject selectedCityObject;
+        private SemanticCityObject selectedSemanticCityObject;
 
-        private void Awake()
+        public void Init()
         {
             uiDoc = GetComponent<UIDocument>();
             closeButton = uiDoc.rootVisualElement.Q<Button>("attr-open-close-button");
             gisUiController = FindObjectOfType<GisUiController>();
+            closeButton.clicked += Close;
+            Close();
         }
 
         private void OnEnable()
         {
-            // UI Documentをdisableにするとイベントがなくなることに注意してください。ここで再登録します。
-            closeButton.clicked += Close;
+            
         }
         
         public void Close()
         {
-            selectedCityObject = null;
+            selectedSemanticCityObject = null;
             gisUiController.RecolorFlooding();
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
@@ -86,10 +87,10 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         /// <summary>
         /// 都市オブジェクトを選択して色を付けます。
         /// </summary>
-        public void SelectCityObj(SampleCityObject cityObj, Color selectedColor)
+        public void SelectCityObj(SemanticCityObject semanticCityObj, Color selectedColor)
         {
-            selectedCityObject = cityObj;
-            selectedCityObject.SetMaterialColor(selectedColor);
+            selectedSemanticCityObject = semanticCityObj;
+            selectedSemanticCityObject.SetMaterialColor(selectedColor);
             
         }
         

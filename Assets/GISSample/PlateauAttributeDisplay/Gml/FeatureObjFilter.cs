@@ -15,7 +15,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public FeatureObjFilter(bool isFlooding)
         {
-            filters = new bool[] { true, true, isFlooding, false };
+            filters = new[] { true, true, isFlooding, false };
         }
 
         /// <summary>
