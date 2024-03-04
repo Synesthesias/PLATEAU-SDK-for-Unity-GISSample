@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     /// </summary>
     public class LodCityObjs
     {
-        private readonly SortedDictionary<int, FeatureGameObj> lodToFeatureObj = new();
+        public readonly SortedDictionary<int, FeatureGameObj> LodToFeatureObj = new();
 
         /// <summary>
         /// LODとゲームオブジェクトの対応関係を1つ記憶します。
@@ -26,51 +25,18 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
 
             var featureGameObj = new FeatureGameObj(cityObjectTrans.gameObject, isFlooding);
-            if (!lodToFeatureObj.TryAdd(lod, featureGameObj))
+            if (!LodToFeatureObj.TryAdd(lod, featureGameObj))
             {
                 Debug.LogError($"Failed to add {cityObjectTrans.name} for lod {lod}");
             }
         }
 
-        public void FilterByLod(FilterParameter parameter)
-        {
-            int maxLodExist = lodToFeatureObj.Keys.Max();
-            int maxLodToShow = Math.Min(maxLodExist, parameter.MaxLod);
-            foreach (var (lod, featureObj) in lodToFeatureObj)
-            {
-                featureObj.Filter.SetLodFilter(lod == maxLodToShow && lod >= parameter.MinLod);
-            }
-        }
-
-        public void FilterByFlooding(bool shouldActive)
-        {
-            foreach (var featureObj in lodToFeatureObj.Values)
-            {
-                featureObj.Filter.SetFloodingFilter(shouldActive);
-            }
-        }
-
-        public void FilterByHeight(bool shouldActive)
-        {
-            foreach (var featureObj in lodToFeatureObj.Values)
-            {
-                featureObj.Filter.SetHeightFilter(shouldActive);
-            }
-        }
-    
-
-        public void ApplyFilter()
-        {
-            foreach (var feature in lodToFeatureObj.Values)
-            {
-                feature.ApplyFilter();
-            }
-        }
-
+        public int MaxLodExist => LodToFeatureObj.Keys.Max();
+        
 
         public void SetMaterialColor(Color color)
         {
-            foreach (var feature in lodToFeatureObj.Values)
+            foreach (var feature in LodToFeatureObj.Values)
             {
                 var renderer = feature.Renderer;
                 if(renderer == null) continue;
@@ -84,17 +50,9 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
         }
 
-        public void RestoreDefaultMaterials()
-        {
-            foreach (var feature in lodToFeatureObj.Values)
-            {
-                feature.RestoreInitialMaterials();
-            }
-        }
-
         public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
-            foreach (var featureObj in lodToFeatureObj.Values)
+            foreach (var featureObj in LodToFeatureObj.Values)
             {
                 yield return featureObj;
             }

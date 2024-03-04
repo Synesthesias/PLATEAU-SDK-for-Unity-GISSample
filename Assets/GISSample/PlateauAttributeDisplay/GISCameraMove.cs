@@ -40,9 +40,8 @@ namespace GISSample.PlateauAttributeDisplay
         }
         
         /// <summary>
-        /// カメラ水平移動
+        /// マウスでのカメラ水平移動
         /// </summary>
-        /// <param name="context"></param>
         public void OnHorizontalMoveCameraByMouse(InputAction.CallbackContext context)
         {
             
@@ -56,6 +55,9 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        /// <summary>
+        /// キーボードでのカメラ水平移動
+        /// </summary>
         public void OnHorizontalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -68,6 +70,9 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        /// <summary>
+        /// カメラ水平移動
+        /// </summary>
         private void MoveCameraHorizontal(Vector2 delta)
         {
             var dir = new Vector3(delta.x, 0.0f, delta.y);
@@ -77,9 +82,8 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
         /// <summary>
-        /// カメラ上下移動
+        /// マウスでのカメラ上下左右移動
         /// </summary>
-        /// <param name="context"></param>
         public void OnVerticalMoveCameraByMouse(InputAction.CallbackContext context)
         {
             if (context.performed && isMouseDraggingFromNonUi)
@@ -89,6 +93,9 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        /// <summary>
+        /// キーボードでのカメラ上下移動
+        /// </summary>
         public void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -102,6 +109,9 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        /// <summary>
+        /// カメラ上下左右移動
+        /// </summary>
         private void MoveCameraVertical(Vector2 delta)
         {
             var dir = new Vector3(delta.x, delta.y, 0.0f);
@@ -153,6 +163,9 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        /// <summary>
+        /// クリックでの選択操作
+        /// </summary>
         public void OnSelectObject(InputAction.CallbackContext context)
         {
             gisUiController.OnSelectObject(context);
@@ -176,7 +189,5 @@ namespace GISSample.PlateauAttributeDisplay
                 isMouseDraggingFromNonUi = false;
             }
         }
-        
-        
     }
 }
