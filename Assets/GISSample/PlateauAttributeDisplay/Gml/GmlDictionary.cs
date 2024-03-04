@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using PLATEAU.CityInfo;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -56,14 +54,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             return areaNames;
         }
 
-        public void Filter(FilterParameter parameter)
-        {
-            foreach (var gml in gmls.Values)
-            {
-                gml.Filter(parameter);
-            }
-        }
-
         private SampleGml GetGml(string gmlName)
         {
             if (gmls.TryGetValue(gmlName, out var gml))
@@ -90,27 +80,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             Debug.LogWarning("gml not found.");
             return null;
         }
-    
-        /// <summary>
-        /// 色分け処理
-        /// </summary>
-        public void ColorCity(ColorCodeType type, string areaName, Color[] heightColorTable, Color[] floodingRankColorTable)
-        {
-            foreach (var gml in gmls.Values)
-            {
-                Color[] colorTable = type switch
-                {
-                    ColorCodeType.Height => heightColorTable,
-                    ColorCodeType.FloodingRank => floodingRankColorTable,
-                    ColorCodeType.None => null,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
 
-                gml.ColorGml(type, colorTable, areaName);
-            }
-        }
-
-        public IEnumerator<FeatureGameObj> FeatureGameObjs()
+        public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
             foreach (var gml in gmls.Values)
             {
@@ -118,6 +89,25 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 {
                     yield return obj;
                 }
+            }
+        }
+
+        public IEnumerable<SemanticCityObject> SemanticCityObjects()
+        {
+            foreach (var gml in gmls.Values)
+            {
+                foreach (var obj in gml.SemanticCityObjs())
+                {
+                    yield return obj;
+                }
+            }
+        }
+
+        public IEnumerable<SampleGml> Gmls()
+        {
+            foreach (var gml in gmls.Values)
+            {
+                yield return gml;
             }
         }
     

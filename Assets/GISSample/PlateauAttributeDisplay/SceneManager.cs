@@ -13,7 +13,7 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class SceneManager : MonoBehaviour
     {
-        private GisUiController gisUiController;
+        public GisUiController GisUiController { get; private set; }
 
         /// <summary>
         /// InputActions
@@ -31,6 +31,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
+        private ColorChanger colorChanger;
         private GISCameraMove gisCameraMove;
 
 
@@ -85,13 +86,15 @@ namespace GISSample.PlateauAttributeDisplay
             gmlDict.Init(instancedCityModels);
             var floodingAreaNames = gmlDict.FindAllAreaNames();
             
-            gisUiController = GetComponentInChildren<GisUiController>();
-            gisUiController.Init(this, floodingAreaNames);
-            gisCameraMove = new GISCameraMove(gisUiController);
+            colorChanger = new ColorChanger(this);
+            
+            GisUiController = GetComponentInChildren<GisUiController>();
+            GisUiController.Init(this, floodingAreaNames);
+            gisCameraMove = new GISCameraMove(GisUiController);
             inputActions.GISSample.SetCallbacks(gisCameraMove);
             
-            filterByLodAndHeight = new FilterByLodAndHeight(gisUiController.MenuUi, gmlDict);
-            weatherController = new WeatherController(gisUiController.MenuUi);
+            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict);
+            weatherController = new WeatherController(GisUiController.MenuUi);
         }
 
         public SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
@@ -101,7 +104,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void ColorCity(ColorCodeType type, string areaName)
         {
-            gmlDict.ColorCity(type, areaName, gisUiController.heightColorTable, gisUiController.floodingRankColorTable);
+            colorChanger.ChangeColor(type, areaName);
         }
 
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
@@ -109,9 +112,14 @@ namespace GISSample.PlateauAttributeDisplay
             return gmlDict.GetCityObject(gmlName, cityObjName);
         }
 
-        public IEnumerator<FeatureGameObj> FeatureGameObjs()
+        public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
             return gmlDict.FeatureGameObjs();
+        }
+
+        public IEnumerable<SampleGml> Gmls()
+        {
+            return gmlDict.Gmls();
         }
 
     }
