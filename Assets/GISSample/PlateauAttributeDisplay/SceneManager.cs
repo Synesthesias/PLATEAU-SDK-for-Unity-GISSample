@@ -2,7 +2,6 @@
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI;
 using PLATEAU.CityInfo;
-using PLATEAU.Samples;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay
@@ -62,6 +61,10 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
 
+        private void Update()
+        {
+            gisCameraMove.Update();
+        }
 
 
         /// <summary>

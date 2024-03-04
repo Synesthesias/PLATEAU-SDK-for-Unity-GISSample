@@ -6,7 +6,7 @@
             "id": "e5b8e29e-3654-4249-9e14-dd8648f8dbf0",
             "actions": [
                 {
-                    "name": "HorizontalMoveCamera",
+                    "name": "HorizontalMoveCameraByMouse",
                     "type": "Value",
                     "id": "fa426d65-f63f-4613-bf12-2404d0bd6912",
                     "expectedControlType": "Vector2",
@@ -15,10 +15,28 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "VerticalMoveCamera",
+                    "name": "HorizontalMoveCameraByKeyboard",
+                    "type": "Value",
+                    "id": "a8d58dbf-3b8d-4ae0-b6d6-c624e8654c61",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "VerticalMoveCameraByMouse",
                     "type": "Value",
                     "id": "38e32fc5-2dd3-4517-b41c-1cb8c30770d5",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "VerticalMoveCameraByKeyboard",
+                    "type": "Value",
+                    "id": "e84d8a2b-1a21-465e-8a81-28a8e2409c0b",
+                    "expectedControlType": "Double",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -68,7 +86,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HorizontalMoveCamera",
+                    "action": "HorizontalMoveCameraByMouse",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -79,7 +97,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "HorizontalMoveCamera",
+                    "action": "HorizontalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -90,7 +108,7 @@
                     "interactions": "",
                     "processors": "ScaleVector2",
                     "groups": "KeyboardAndMouse",
-                    "action": "HorizontalMoveCamera",
+                    "action": "HorizontalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -145,7 +163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -156,7 +174,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -167,7 +185,7 @@
                     "interactions": "",
                     "processors": "ScaleVector2",
                     "groups": "KeyboardAndMouse",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -178,7 +196,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -189,7 +207,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -200,7 +218,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -211,7 +229,7 @@
                     "interactions": "",
                     "processors": "ScaleVector2",
                     "groups": "KeyboardAndMouse",
-                    "action": "VerticalMoveCamera",
+                    "action": "VerticalMoveCameraByMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -258,6 +276,94 @@
                     "action": "SelectObject",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "9a83d29a-729e-49ad-b918-2de82752c6fa",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "ScaleVector2,InvertVector2",
+                    "groups": "",
+                    "action": "HorizontalMoveCameraByKeyboard",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "6f90ed0d-b4a3-41d6-9853-66ee50028d52",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "HorizontalMoveCameraByKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "5744214d-68d3-4253-abaf-a3913e3c0ebc",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "HorizontalMoveCameraByKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "c243971c-92a1-4a89-8669-59de1731a428",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "HorizontalMoveCameraByKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "cacc2f50-0b64-4db0-9c2b-451afc8030c8",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "HorizontalMoveCameraByKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "365695d6-0caa-479b-bf62-56fc1460e910",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VerticalMoveCameraByKeyboard",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "a63758b2-125c-4ad2-9553-24cfbc38b4b2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VerticalMoveCameraByKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "23485e4b-4760-411c-8c0d-133f6765c347",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VerticalMoveCameraByKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
