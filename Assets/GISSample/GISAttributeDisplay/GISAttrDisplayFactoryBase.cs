@@ -16,6 +16,7 @@ namespace GISSample.GISAttributeDisplay
         [SerializeField] private Color backgroundColor;
         [SerializeField] private Color textColor;
         [SerializeField] private Color pillarColor;
+        [SerializeField] private Vector3 positionOffset;
         protected const float HeightOffset = 300;
         
         private void Start()
@@ -37,7 +38,7 @@ namespace GISSample.GISAttributeDisplay
                 
 
                 var instanced = Instantiate(display, dbf.transform);
-                instanced.transform.position = CalcPosition(dbf, out bool isSucceed);
+                instanced.transform.position = CalcPosition(dbf, out bool isSucceed) + positionOffset;
                 if (!isSucceed) return;
 
                 instanced.SetContent(dbf.Properties[propertyIndex].Trim());

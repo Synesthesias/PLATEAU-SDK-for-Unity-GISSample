@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using PLATEAU.CityInfo;
-using PlateauToolkit.Maps.Editor;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -60,28 +59,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
 
             return floodingNames;
-        }
-
-        public void Filter(FilterParameter parameter)
-        {
-            foreach (var cityObj in dict.Values)
-            {
-                cityObj.Filter(parameter);
-            }
-        }
-    
-        /// <summary>
-        /// 色分け
-        /// </summary>
-        /// <param name="type">色分けタイプ</param>
-        /// <param name="colorTable">色テーブル</param>
-        /// <param name="areaName">浸水エリア名</param>
-        public void ColorGml(ColorCodeType type, Color[] colorTable, string areaName = null)
-        {
-            foreach (var cityObj in dict.Values)
-            {
-                cityObj.ColorCityObj(type, colorTable, areaName);
-            }
         }
 
         public SemanticCityObject Get(string cityObjName)
