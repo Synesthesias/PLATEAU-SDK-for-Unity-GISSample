@@ -59,11 +59,9 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     {
         private readonly CityObjDict cityObjDict;
         public HashSet<string> FloodingAreaNames { get; }
-        private GameObject gmlGameObj;
 
         public SampleGml(GameObject gmlGameObjArg)
         {
-            gmlGameObj = gmlGameObjArg;
             FloodingAreaNames = new HashSet<string>();
             cityObjDict = new CityObjDict(gmlGameObjArg, IsFlooding(gmlGameObjArg));
             FloodingAreaNames = cityObjDict.FindAllFloodingAreaNames();
@@ -71,26 +69,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         
         private static bool IsFlooding(GameObject gmlGameObj) => gmlGameObj.name.Contains("fld");
-
-        /// <summary>
-        /// フィルタリング
-        /// </summary>
-        /// <param name="parameter"></param>
-        public void Filter(FilterParameter parameter)
-        {
-            cityObjDict.Filter(parameter);
-        }
-
-        /// <summary>
-        /// 色分け
-        /// </summary>
-        /// <param name="type">色分けタイプ</param>
-        /// <param name="colorTable">色テーブル</param>
-        /// <param name="areaName">浸水エリア名</param>
-        public void ColorGml(ColorCodeType type, Color[] colorTable, string areaName = null)
-        {
-            cityObjDict.ColorGml(type, colorTable, areaName);
-        }
+        
 
         public SemanticCityObject GetCityObject(string cityObjId)
         {

@@ -1,3 +1,4 @@
+using System;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using UnityEngine;
@@ -25,14 +26,13 @@ namespace GISSample.PlateauAttributeDisplay
 
             menuUi.RegisterHeightSliderChangedCallback(OnHeightSliderValueChanged);
             menuUi.RegisterLodSliderChangedCallback(OnLodSliderValueChanged);
-            
-            
-            
+
+
             var param = GetFilterParameterFromSliders();
             Filter(param);
             menuUi.UpdateFilterText(param);
         }
-        
+
         /// <summary>
         /// 高さフィルタースライダーの値変更イベントコールバック
         /// </summary>
@@ -43,7 +43,7 @@ namespace GISSample.PlateauAttributeDisplay
             Filter(filterParameter);
             menuUi.UpdateFilterText(filterParameter);
         }
-        
+
         /// <summary>
         /// LODフィルタースライダーの値変更イベントコールバック
         /// </summary>
@@ -56,16 +56,36 @@ namespace GISSample.PlateauAttributeDisplay
             Filter(filterParameter);
             menuUi.UpdateFilterText(filterParameter);
         }
-        
+
         /// <summary>
-        /// フィルター処理
+        /// 高さとLODでのフィルタ
         /// </summary>
-        /// <param name="parameter"></param>
         private void Filter(FilterParameter parameter)
         {
-            gmls.Filter(parameter);
+            foreach (var semantic in gmls.SemanticCityObjects())
+            {
+                if (semantic.Attribute.MeasuredHeight.HasValue)
+                {
+                    // 高さでのフィルタ
+                    var measuredHeight = semantic.Attribute.MeasuredHeight.Value;
+                    bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
+                    foreach(var feature in semantic.FeatureGameObjs())
+                    {
+                        feature.Filter.SetHeightFilter(heightFilter);
+                    }
+                }
+                
+                // LODでのフィルタ
+                int maxLodExist = semantic.MaxLodExist;
+                int maxLodToShow = Math.Min(maxLodExist, parameter.MaxLod);
+                foreach (var (lod, featureObj) in semantic.LodCityObjs.LodToFeatureObj)
+                {
+                    featureObj.Filter.SetLodFilter(lod == maxLodToShow && lod >= parameter.MinLod);
+                    featureObj.ApplyFilter();
+                }
+            }
         }
-        
+
         /// <summary>
         /// フィルターパラメータを取得
         /// UIのスライダーの状態からフィルターパラメータを作成します。
