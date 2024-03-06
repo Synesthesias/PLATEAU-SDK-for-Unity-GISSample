@@ -8,7 +8,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 {
     public class MenuUi : MonoBehaviour
     {
-        private HashSet<string> FloodingAreaNames { get; set; }
+        private HashSet<FloodingTitle> FloodingTitles { get; set; }
         private GisUiController gisUiController;
         private UIDocument uiDoc;
     
@@ -28,9 +28,9 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         /// </summary>
         public RadioButtonGroup colorCodeGroup;
 
-        public void Init(GisUiController gisUiControllerArg, SceneManager sceneManager, HashSet<string> floodingAreaNames)
+        public void Init(GisUiController gisUiControllerArg, SceneManager sceneManager, HashSet<FloodingTitle> floodingTitles)
         {
-            FloodingAreaNames = floodingAreaNames;
+            FloodingTitles = floodingTitles;
             uiDoc = GetComponent<UIDocument>();
             gisUiController = gisUiControllerArg;
             var menuRoot = uiDoc.rootVisualElement;
@@ -43,10 +43,10 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             heightValueLabel = uiRoot.Q<Label>("HeightValue");
             lodValueLabel = uiRoot.Q<Label>("LodValue");
         
-            if (FloodingAreaNames.Count > 0)
+            if (FloodingTitles.Count > 0)
             {
-                var choices = colorCodeGroup.choices.ToList();
-                choices.AddRange(FloodingAreaNames);
+                var choices = colorCodeGroup.choices.Select(title => title.ToString()).ToList();
+                choices.AddRange(FloodingTitles.Select(title => title.ToString()));
                 colorCodeGroup.choices = choices;
             }
 

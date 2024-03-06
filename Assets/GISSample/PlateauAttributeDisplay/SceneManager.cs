@@ -84,7 +84,7 @@ namespace GISSample.PlateauAttributeDisplay
 
             
             gmlDict.Init(instancedCityModels);
-            var floodingAreaNames = gmlDict.FindAllAreaNames();
+            var floodingAreaNames = gmlDict.FindAllFloodingTitles();
             
             colorChanger = new ColorChanger(this);
             
@@ -102,9 +102,9 @@ namespace GISSample.PlateauAttributeDisplay
             return gmlDict.GetAttribute(gmlFileName, cityObjectID);
         }
 
-        public void ColorCity(ColorCodeType type, string areaName)
+        public void ColorCity(ColorCodeType type, FloodingTitle floodingTitle)
         {
-            colorChanger.ChangeColor(type, areaName);
+            colorChanger.ChangeColor(type, floodingTitle);
         }
 
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)

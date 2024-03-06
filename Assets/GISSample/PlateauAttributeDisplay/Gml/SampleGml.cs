@@ -58,13 +58,13 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     public class SampleGml
     {
         private readonly CityObjDict cityObjDict;
-        public HashSet<string> FloodingAreaNames { get; }
+        public HashSet<FloodingTitle> FloodingTitles { get; }
 
         public SampleGml(GameObject gmlGameObjArg)
         {
-            FloodingAreaNames = new HashSet<string>();
+            FloodingTitles = new HashSet<FloodingTitle>();
             cityObjDict = new CityObjDict(gmlGameObjArg, IsFlooding(gmlGameObjArg));
-            FloodingAreaNames = cityObjDict.FindAllFloodingAreaNames();
+            FloodingTitles = cityObjDict.FindAllFloodingTitles();
         }
 
         
