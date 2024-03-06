@@ -18,7 +18,7 @@ namespace GISSample.PlateauAttributeDisplay
             this.sceneManager = sceneManager;
         }
 
-        public void ChangeColor(ColorCodeType type, string areaName)
+        public void ChangeColor(ColorCodeType type, FloodingTitle floodingTitle)
         {
             foreach (var gml in sceneManager.Gmls())
             {
@@ -44,7 +44,7 @@ namespace GISSample.PlateauAttributeDisplay
                             ColorByHeight(colorTable, semantic);
                             break;
                         case ColorCodeType.FloodingRank:
-                            ColorByFloodingRank(colorTable, areaName, semantic);
+                            ColorByFloodingRank(colorTable, floodingTitle, semantic);
                             break;
                         default:
                             throw new ArgumentException();
@@ -89,11 +89,11 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
         
-        private void ColorByFloodingRank(Color[] colorTable, string areaName, SemanticCityObject semantic)
+        private void ColorByFloodingRank(Color[] colorTable, FloodingTitle floodingTitle, SemanticCityObject semantic)
         {
             Assert.AreEqual(5, colorTable.Length, "ランクの色分けは5色");
 
-            var info = semantic.Attribute.GetFloodingAreaInfoByName(areaName);
+            var info = semantic.Attribute.GetFloodingAreaInfoByTitle(floodingTitle);
             if(info == null)
             {
                 semantic.ChangeToDefaultState();

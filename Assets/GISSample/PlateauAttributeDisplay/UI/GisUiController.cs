@@ -20,6 +20,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
         [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
         private AttributeUi attrUi;
         private TimeUi timeUi;
+        private HashSet<FloodingTitle> floodingTitles;
 
         private SceneManager sceneManager;
     
@@ -38,9 +39,9 @@ namespace GISSample.PlateauAttributeDisplay.UI
         /// <summary>
         /// 浸水エリア名（色分け用）
         /// </summary>
-        private string floodingAreaName;
+        private FloodingTitle floodingTitle;
 
-        public void Init(SceneManager sceneManagerArg, HashSet<string> floodingAreaNames)
+        public void Init(SceneManager sceneManagerArg, HashSet<FloodingTitle> floodingTitles)
         {
             sceneManager = sceneManagerArg;
             MenuUi = GetComponentInChildren<MenuUi>();
@@ -49,12 +50,12 @@ namespace GISSample.PlateauAttributeDisplay.UI
 
             
             userGuideUi.gameObject.SetActive(true);
-            MenuUi.Init(this, sceneManagerArg, floodingAreaNames);
+            MenuUi.Init(this, sceneManagerArg, floodingTitles);
             timeUi.Init();
             attrUi.Init();
+            this.floodingTitles = floodingTitles;
         
-        
-            ColorCity(colorCodeType, floodingAreaName);
+            ColorCity(colorCodeType, floodingTitle);
         
         
         }
@@ -159,9 +160,9 @@ namespace GISSample.PlateauAttributeDisplay.UI
         /// <summary>
         /// 色分け処理
         /// </summary>
-        public void ColorCity(ColorCodeType type, string areaName)
+        public void ColorCity(ColorCodeType type, FloodingTitle floodingTitleArg)
         {
-            sceneManager.ColorCity(type, areaName);
+            sceneManager.ColorCity(type, floodingTitleArg);
         }
     
         /// <summary>
@@ -177,12 +178,12 @@ namespace GISSample.PlateauAttributeDisplay.UI
             if (e.newValue < 2)
             {
                 colorCodeType = (ColorCodeType)e.newValue;
-                floodingAreaName = null;
+                floodingTitle = null;
             }
             else
             {
                 colorCodeType = ColorCodeType.FloodingRank;
-                floodingAreaName = MenuUi.colorCodeGroup.choices.ElementAt(e.newValue);
+                floodingTitle = floodingTitles.First(t => t.ToString() == MenuUi.colorCodeGroup.choices.ElementAt(e.newValue));
             }
 
             RecolorFlooding();
@@ -190,7 +191,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
 
         public void RecolorFlooding()
         {
-            ColorCity(colorCodeType, floodingAreaName);
+            ColorCity(colorCodeType, floodingTitle);
         }
 
     

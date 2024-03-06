@@ -43,15 +43,15 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         
         }
 
-        public HashSet<string> FindAllAreaNames()
+        public HashSet<FloodingTitle> FindAllFloodingTitles()
         {
-            var areaNames = new HashSet<string>();
-            foreach(var names in gmls.Select(pair => pair.Value.FloodingAreaNames))
+            var floodingTitles = new HashSet<FloodingTitle>();
+            foreach(var names in gmls.Select(pair => pair.Value.FloodingTitles))
             {
-                areaNames.UnionWith(names);
+                floodingTitles.UnionWith(names);
             }
 
-            return areaNames;
+            return floodingTitles;
         }
 
         private SampleGml GetGml(string gmlName)

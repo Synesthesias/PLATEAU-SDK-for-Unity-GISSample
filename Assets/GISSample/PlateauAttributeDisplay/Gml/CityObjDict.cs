@@ -47,14 +47,14 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
         }
 
-        public HashSet<string> FindAllFloodingAreaNames()
+        public HashSet<FloodingTitle> FindAllFloodingTitles()
         {
-            var floodingNames = new HashSet<string>();
+            var floodingNames = new HashSet<FloodingTitle>();
             foreach (var cityObj in dict.Values)
             {
                 foreach (var flood in cityObj.Attribute.GetFloodingAreaInfos())
                 {
-                    floodingNames.Add(flood.AreaName);
+                    floodingNames.Add(flood.FloodingTitle);
                 }
             }
 
