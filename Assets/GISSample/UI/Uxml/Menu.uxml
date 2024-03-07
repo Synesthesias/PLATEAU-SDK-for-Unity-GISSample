@@ -28,5 +28,7 @@
         </ui:VisualElement>
         <ui:Label text="表示" display-tooltip-when-elided="true" name="DisplayHeader" class="header" />
         <ui:Button text="空中文字の表示切替" display-tooltip-when-elided="true" name="FloatingTextSwitch" class="menu-unity-button" />
+        <ui:Button text="カメラ位置を記憶" display-tooltip-when-elided="true" name="CameraPositionSave" class="menu-unity-button" />
+        <ui:Button text="カメラ位置を復元" display-tooltip-when-elided="true" name="CameraPositionRestore" class="menu-unity-button" />
     </ui:ScrollView>
 </ui:UXML>
