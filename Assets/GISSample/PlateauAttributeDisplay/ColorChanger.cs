@@ -10,7 +10,7 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class ColorChanger
     {
-        private SceneManager sceneManager;
+        private readonly SceneManager sceneManager;
         private const float FloodingHeightMultiplier = 1f;
         
         public ColorChanger(SceneManager sceneManager)

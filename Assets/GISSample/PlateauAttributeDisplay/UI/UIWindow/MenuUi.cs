@@ -20,6 +20,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         public Slider snowSlider;
         public Slider cloudSlider;
         public Slider cloudIntensitySlider;
+        private Button floatingTextSwitchButton;
 
         public VisualElement RootVisualElement => uiDoc.rootVisualElement;
     
@@ -54,6 +55,8 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             snowSlider = uiRoot.Q<Slider>("SnowSlider");
             cloudSlider = uiRoot.Q<Slider>("CloudySlider");
             cloudIntensitySlider = uiRoot.Q<Slider>("CloudIntensitySlider");
+            floatingTextSwitchButton = uiRoot.Q<Button>("FloatingTextSwitch");
+            floatingTextSwitchButton.clicked += sceneManager.FloatingTextList.SwitchIsActive;
         }
     
         /// <summary>
