@@ -39,3 +39,23 @@
     align-items: center;
     bottom: 2px;
 }
+
+.menu-unity-button {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: rgba(110, 135, 117, 255);
+    border-left-color: rgba(156, 156, 156, 255);
+    border-right-color: rgba(156, 156, 156, 255);
+    border-top-color: rgba(156, 156, 156, 255);
+    border-bottom-color: rgba(156, 156, 156, 255);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
