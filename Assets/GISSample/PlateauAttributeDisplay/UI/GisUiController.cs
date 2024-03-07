@@ -59,6 +59,11 @@ namespace GISSample.PlateauAttributeDisplay.UI
         
         
         }
+
+        public void Update()
+        {
+            MenuUi.Update();
+        }
     
         /// <summary>
         /// オブジェクトのピック
