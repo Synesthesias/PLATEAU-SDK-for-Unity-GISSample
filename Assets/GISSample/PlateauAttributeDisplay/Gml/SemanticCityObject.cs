@@ -15,14 +15,17 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public LodCityObjs LodCityObjs { get; }
 
         public SampleAttribute Attribute { get; }
+        private CityObjDict parentDict;
 
-        public SemanticCityObject(PLATEAUCityObjectGroup cityObjComponent)
+        public SemanticCityObject(PLATEAUCityObjectGroup cityObjComponent, CityObjDict parentDict)
         {
             Attribute = new SampleAttribute(cityObjComponent.PrimaryCityObjects.First().AttributesMap);
             LodCityObjs = new LodCityObjs();
+            this.parentDict = parentDict;
         }
 
         public int MaxLodExist => LodCityObjs.MaxLodExist;
+        public bool IsFlooding => parentDict.IsFlooding;
         
 
         public void AddCityObjectForLod(Transform lodTrans, Transform cityObjectTrans, bool isFlooding)
