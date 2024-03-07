@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI;
+using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using PLATEAU.CityInfo;
 using UnityEngine;
 
@@ -34,6 +35,7 @@ namespace GISSample.PlateauAttributeDisplay
         private ColorChanger colorChanger;
         private GISCameraMove gisCameraMove;
         public FloatingTextList FloatingTextList { get; private set; }
+        public CameraPositionMemory CameraPositionMemory { get; private set; }
 
 
 
@@ -66,6 +68,7 @@ namespace GISSample.PlateauAttributeDisplay
         private void Update()
         {
             gisCameraMove.Update();
+            GisUiController.Update();
         }
 
 
@@ -87,6 +90,7 @@ namespace GISSample.PlateauAttributeDisplay
             gmlDict.Init(instancedCityModels);
             var floodingAreaNames = gmlDict.FindAllFloodingTitles();
             
+            CameraPositionMemory = new CameraPositionMemory(Camera.main);
             colorChanger = new ColorChanger(this);
             FloatingTextList = new FloatingTextList();
             GisUiController = GetComponentInChildren<GisUiController>();

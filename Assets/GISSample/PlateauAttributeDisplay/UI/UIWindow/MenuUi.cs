@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
+using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,6 +22,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         public Slider cloudSlider;
         public Slider cloudIntensitySlider;
         private Button floatingTextSwitchButton;
+        private CameraPositionMemoryUi cameraPositionMemoryUi;
 
         public VisualElement RootVisualElement => uiDoc.rootVisualElement;
     
@@ -57,6 +59,12 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             cloudIntensitySlider = uiRoot.Q<Slider>("CloudIntensitySlider");
             floatingTextSwitchButton = uiRoot.Q<Button>("FloatingTextSwitch");
             floatingTextSwitchButton.clicked += sceneManager.FloatingTextList.SwitchIsActive;
+            cameraPositionMemoryUi = new CameraPositionMemoryUi(sceneManager.CameraPositionMemory, uiRoot);
+        }
+
+        public void Update()
+        {
+            cameraPositionMemoryUi.Update();
         }
     
         /// <summary>
