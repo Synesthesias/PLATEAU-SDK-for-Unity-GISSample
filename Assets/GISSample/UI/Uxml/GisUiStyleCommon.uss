@@ -141,3 +141,11 @@ Scroller #unity-drag-container {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.unity-button:hover {
+    background-color: rgba(105, 149, 125, 255);
+}
+
+.unity-button:active {
+    background-color: rgba(24, 53, 33, 255);
+}

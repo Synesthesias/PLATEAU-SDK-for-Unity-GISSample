@@ -33,6 +33,7 @@ namespace GISSample.PlateauAttributeDisplay
         private WeatherController weatherController;
         private ColorChanger colorChanger;
         private GISCameraMove gisCameraMove;
+        public FloatingTextList FloatingTextList { get; private set; }
 
 
 
@@ -87,7 +88,7 @@ namespace GISSample.PlateauAttributeDisplay
             var floodingAreaNames = gmlDict.FindAllFloodingTitles();
             
             colorChanger = new ColorChanger(this);
-            
+            FloatingTextList = new FloatingTextList();
             GisUiController = GetComponentInChildren<GisUiController>();
             GisUiController.Init(this, floodingAreaNames);
             gisCameraMove = new GISCameraMove(GisUiController);
