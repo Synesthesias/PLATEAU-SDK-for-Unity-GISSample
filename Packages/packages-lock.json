@@ -136,14 +136,6 @@
         "com.cesium.unity": "1.6.3"
       }
     },
-    "com.unity.plateautoolkit.maps": {
-      "version": "file:com.unity.plateautoolkit.maps-1.0.0.tgz",
-      "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {
-        "com.synesthesias.plateau-unity-sdk": "1.0.0"
-      }
-    },
     "com.unity.render-pipelines.core": {
       "version": "12.1.12",
       "depth": 1,

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using PLATEAU.CityInfo;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
 {
@@ -11,13 +12,15 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     public class CityObjDict
     {
         private readonly Dictionary<string, SemanticCityObject> dict;
+        private readonly SampleGml parentGml;
 
         /// <summary>
         /// GML相当のゲームオブジェクトの子をもとに<see cref="CityObjDict"/>を構築します。
         /// </summary>
-        public CityObjDict(GameObject gmlGameObj, bool isFlooding)
+        public CityObjDict(GameObject gmlGameObj, SampleGml parentGml)
         {
             dict = new();
+            this.parentGml = parentGml;
             foreach (Transform lodTransform in gmlGameObj.transform)
             {
                 foreach (Transform cityObjectTransform in lodTransform)
@@ -32,20 +35,22 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                         var cityObjComponent = cityObjectTransform.GetComponent<PLATEAUCityObjectGroup>();
                         if (cityObjComponent != null)
                         {
-                            dict[id] = new SemanticCityObject(cityObjComponent);
+                            dict[id] = new SemanticCityObject(cityObjComponent, this);
                         }
                     
                     }
 
                     if (dict.TryGetValue(id, out var o))
                     {
-                        o.AddCityObjectForLod(lodTransform, cityObjectTransform, isFlooding);
+                        o.AddCityObjectForLod(lodTransform, cityObjectTransform, parentGml.IsFlooding);
                     }
 
                     
                 }
             }
         }
+
+        public bool IsFlooding => parentGml.IsFlooding;
 
         public HashSet<FloodingTitle> FindAllFloodingTitles()
         {

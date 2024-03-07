@@ -110,11 +110,17 @@ namespace GISSample.PlateauAttributeDisplay
             int colorTableIndex = rank.Rank - 1;
             if (colorTableIndex < colorTable.Length)
             {
+                // 色つけ
                 semantic.SetMaterialColor(colorTable[colorTableIndex]);
-                foreach (var feature in semantic.FeatureGameObjs())
+                
+                // fldをランクに応じて高さを変える
+                if (semantic.IsFlooding)
                 {
-                    var trans = feature.GameObj.transform;
-                    trans.position += Vector3.up * rank.Height * FloodingHeightMultiplier;
+                    foreach (var feature in semantic.FeatureGameObjs())
+                    {
+                        var trans = feature.GameObj.transform;
+                        trans.position = Vector3.up * rank.Height * FloodingHeightMultiplier;
+                    }
                 }
             }
             else
