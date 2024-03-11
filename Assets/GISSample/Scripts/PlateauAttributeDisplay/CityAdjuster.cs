@@ -5,7 +5,6 @@ using GISSample.Misc;
 using PLATEAU.CityInfo;
 using PLATEAU.Native;
 using PlateauToolkit.Maps;
-using PlateauToolkit.Maps.Editor;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -22,6 +21,7 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class CityAdjuster : MonoBehaviour
     {
+        #if UNITY_EDITOR
         [SerializeField] private PLATEAUInstancedCityModel target;
 
         public IEnumerator Exec()
@@ -41,7 +41,7 @@ namespace GISSample.PlateauAttributeDisplay
             var geoRef = target.GeoReference;
             GeoCoordinate geoCoord = geoRef.Unproject(new PlateauVector3d(0, 0, 0));
             var cityModelPosition = new double2 { x = geoCoord.Latitude, y = geoCoord.Longitude };
-            string geoidRequestUri = PlateauToolkitMapsConstants.k_GeoidApiUrl + "&latitude=" + cityModelPosition.x +
+            string geoidRequestUri = "http://vldb.gsi.go.jp/sokuchi/surveycalc/geoid/calcgh/cgi/geoidcalc.pl?outputType=json" + "&latitude=" + cityModelPosition.x +
                                      "&longitude=" + cityModelPosition.y;
             yield return StartCoroutine(RequestGeoidHeightToUri(geoidRequestUri, 
                 (height) => MoveCityModel(cityModelPosition, height, target)));
@@ -129,6 +129,7 @@ namespace GISSample.PlateauAttributeDisplay
                 Debug.LogError("高さ合わせが失敗しました\nインターネットに接続されていると確認した上で再度お試しください。高さはゼロに設定されました。");
             }
         }
+        #endif
     }
 
 
