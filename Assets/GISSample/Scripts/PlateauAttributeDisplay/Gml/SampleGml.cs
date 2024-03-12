@@ -33,7 +33,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     /// <summary>
     /// 色分けタイプ
     /// </summary>
-    public enum ColorCodeType
+    public enum BuildingColorType
     {
         /// <summary>
         /// なし
@@ -50,7 +50,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         FloodingRank,
     }
-
+    
 
     /// <summary>
     /// GMLファイル1つに対応するゲームオブジェクトをサンプル上で扱いやすくしたラッパーです。
@@ -58,12 +58,12 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     public class SampleGml
     {
         private readonly CityObjDict cityObjDict;
-        public HashSet<FloodingTitle> FloodingTitles { get; }
+        public FloodingTitleSet FloodingTitles { get; }
         public bool IsFlooding { get; private set; }
 
         public SampleGml(GameObject gmlGameObjArg)
         {
-            FloodingTitles = new HashSet<FloodingTitle>();
+            FloodingTitles = new FloodingTitleSet();
             IsFlooding = gmlGameObjArg.name.Contains("fld");
             cityObjDict = new CityObjDict(gmlGameObjArg, this);
             FloodingTitles = cityObjDict.FindAllFloodingTitles();

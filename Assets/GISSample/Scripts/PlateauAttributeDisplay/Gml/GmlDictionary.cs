@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PLATEAU.CityInfo;
@@ -43,14 +44,24 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         
         }
 
-        public HashSet<FloodingTitle> FindAllFloodingTitles()
+        public FloodingTitleSet FindAllFloodingTitlesOfBuildings()
         {
-            var floodingTitles = new HashSet<FloodingTitle>();
-            foreach(var names in gmls.Select(pair => pair.Value.FloodingTitles))
-            {
-                floodingTitles.UnionWith(names);
-            }
+            return FindAllFloodingTitlesWhere(gml => !gml.IsFlooding);
+        }
 
+        public FloodingTitleSet FindAllFloodingTitlesOfFlds()
+        {
+            return FindAllFloodingTitlesWhere(gml => gml.IsFlooding);
+        }
+
+        private FloodingTitleSet FindAllFloodingTitlesWhere(Func<SampleGml, bool> gmlCondition)
+        {
+            var floodingTitles = new FloodingTitleSet();
+            foreach (var (_, gml) in gmls)
+            {
+                if (!gmlCondition(gml)) continue;
+                floodingTitles.UnionWith(gml.FloodingTitles);
+            }
             return floodingTitles;
         }
 
