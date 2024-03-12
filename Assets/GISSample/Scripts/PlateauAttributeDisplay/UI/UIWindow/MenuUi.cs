@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
 using UnityEngine;
@@ -9,7 +7,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 {
     public class MenuUi : MonoBehaviour
     {
-        private GisUiController gisUiController;
         public ColorByAttrUi ColorByAttrUi { get; private set; }
         private UIDocument uiDoc;
     
@@ -24,16 +21,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private Button floatingTextSwitchButton;
         private CameraPositionMemoryUi cameraPositionMemoryUi;
 
-        public VisualElement RootVisualElement => uiDoc.rootVisualElement;
 
-        public void Init(GisUiController gisUiControllerArg, SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld)
+        public void Init(SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld)
         {
             
             
             uiDoc = GetComponent<UIDocument>();
-            gisUiController = gisUiControllerArg;
             var uiRoot = uiDoc.rootVisualElement;
-            ColorByAttrUi = new ColorByAttrUi(uiRoot, floodingTitlesBldg, floodingTitlesFld, sceneManager.ColorChanger);
+            ColorByAttrUi = new ColorByAttrUi(uiRoot, floodingTitlesBldg, floodingTitlesFld, sceneManager.ColorChangerByAttribute);
             heightSlider = uiRoot.Q<MinMaxSlider>("HeightSlider");
             lodSlider = uiRoot.Q<MinMaxSlider>("LodSlider");
             heightValueLabel = uiRoot.Q<Label>("HeightValue");

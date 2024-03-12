@@ -11,33 +11,24 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
     public class ColorByAttrUi
     {
         /// <summary> 色分け選択ラジオボタン（建物） </summary>
-        private RadioButtonGroup radioButtonBuilding;
+        private readonly RadioButtonGroup radioButtonBuilding;
 
         /// <summary> 色分け選択ラジオボタン（浸水区域） </summary>
-        private RadioButtonGroup radioButtonFld;
-        
-        /// <summary> 建築物色分けタイプ </summary>
-        public BuildingColorType BuildingColorType { get; private set; }
-        
-        /// <summary> 選択中の浸水タイトル（建物） </summary>
-        public FloodingTitle SelectedFloodingTitleBldg { get; private set; }
-        
-        /// <summary> 選択中の浸水タイトル（浸水区域） </summary>
-        public FloodingTitle SelectedFloodingTitleFld { get; private set; }
+        private readonly RadioButtonGroup radioButtonFld;
 
         /// <summary> 浸水色分けの選択肢（建物） </summary>
-        private FloodingTitleSet floodingTitlesBldg;
+        private readonly FloodingTitleSet floodingTitlesBldg;
 
         /// <summary> 浸水色分けの選択肢（浸水区域） </summary>
-        private FloodingTitleSet floodingTitlesFld;
+        private readonly FloodingTitleSet floodingTitlesFld;
         
-        private readonly ColorChanger colorChanger;
+        private readonly ColorChangerByAttribute colorChangerByAttribute;
 
-        public ColorByAttrUi(VisualElement menuRoot, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, ColorChanger colorChanger)
+        public ColorByAttrUi(VisualElement menuRoot, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, ColorChangerByAttribute colorChangerByAttribute)
         {
             this.floodingTitlesBldg = floodingTitlesBldg;
             this.floodingTitlesFld = floodingTitlesFld;
-            this.colorChanger = colorChanger;
+            this.colorChangerByAttribute = colorChangerByAttribute;
             radioButtonBuilding = menuRoot.Q<RadioButtonGroup>("ColorCodeGroupBuilding");
             radioButtonFld = menuRoot.Q<RadioButtonGroup>("GroupFlooding");
             radioButtonBuilding.RegisterValueChangedCallback(OnRadioButtonBuildingChanged);
@@ -66,44 +57,42 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         /// </summary>
         private void OnRadioButtonBuildingChanged(ChangeEvent<int> e)
         {
+            FloodingTitle selectedFloodingTitleBldg;
+            BuildingColorType selectedBuildingColorType;
             // valueは
             // 0: 色分けなし
             // 1: 高さ
             // 2～: 浸水ランク
             if (e.newValue < 2)
             {
-                BuildingColorType = (BuildingColorType)e.newValue;
-                SelectedFloodingTitleBldg = null;
+                selectedBuildingColorType = (BuildingColorType)e.newValue;
+                selectedFloodingTitleBldg = null;
             }
             else
             {
-                BuildingColorType = BuildingColorType.FloodingRank;
-                SelectedFloodingTitleBldg = floodingTitlesBldg.GetByTitleString(radioButtonBuilding.choices.ElementAt(e.newValue));
+                selectedBuildingColorType = BuildingColorType.FloodingRank;
+                selectedFloodingTitleBldg = floodingTitlesBldg.GetByTitleString(radioButtonBuilding.choices.ElementAt(e.newValue));
             }
 
-            ChangeColor();
+            colorChangerByAttribute.ChangeBuildings(selectedBuildingColorType, selectedFloodingTitleBldg);
         }
 
         private void OnRadioButtonFldChanged(ChangeEvent<int> e)
         {
+            FloodingTitle selectedFloodingTitleFld;
             // valueは
             // 0: 表示なし
             // 1～: 浸水ランク
             if (e.newValue <= 0)
             {
-                SelectedFloodingTitleFld = null;
+                selectedFloodingTitleFld = null;
             }
             else
             {
-                SelectedFloodingTitleFld =
+                selectedFloodingTitleFld =
                     floodingTitlesFld.GetByTitleString(radioButtonFld.choices.ElementAt(e.newValue));
             }
-            ChangeColor();
-        }
-
-        public void ChangeColor()
-        {
-            colorChanger.ChangeColor(BuildingColorType, SelectedFloodingTitleBldg, SelectedFloodingTitleFld);
+            colorChangerByAttribute.ChangeFlooding(selectedFloodingTitleFld);
         }
         
     }

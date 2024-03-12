@@ -32,7 +32,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
-        public ColorChanger ColorChanger { get; private set; }
+        public ColorChangerByAttribute ColorChangerByAttribute { get; private set; }
         private GISCameraMove gisCameraMove;
         public FloatingTextList FloatingTextList { get; private set; }
         public CameraPositionMemory CameraPositionMemory { get; private set; }
@@ -90,15 +90,15 @@ namespace GISSample.PlateauAttributeDisplay
             gmlDict.Init(instancedCityModels);
             
             CameraPositionMemory = new CameraPositionMemory(Camera.main);
-            ColorChanger = new ColorChanger(this);
+            ColorChangerByAttribute = new ColorChangerByAttribute(this);
             FloatingTextList = new FloatingTextList();
             
             GisUiController = GetComponentInChildren<GisUiController>();
             // どのような洪水情報があるか検索します
             var floodingAreaNamesBldg = gmlDict.FindAllFloodingTitlesOfBuildings();
             var floodingAreaNamesFld = gmlDict.FindAllFloodingTitlesOfFlds();
-            GisUiController.Init(this, floodingAreaNamesBldg, floodingAreaNamesFld);
-            ColorChanger.ChangeColor(BuildingColorType.None, null, null);
+            GisUiController.Init(this, ColorChangerByAttribute, floodingAreaNamesBldg, floodingAreaNamesFld);
+            ColorChangerByAttribute.ChangeToDefault();
             
             gisCameraMove = new GISCameraMove(GisUiController);
             inputActions.GISSample.SetCallbacks(gisCameraMove);

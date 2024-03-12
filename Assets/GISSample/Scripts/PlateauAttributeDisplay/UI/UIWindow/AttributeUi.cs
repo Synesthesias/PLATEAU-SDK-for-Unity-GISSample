@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
-using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,18 +9,18 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
     {
         private UIDocument uiDoc;
         private Button closeButton;
-        private ColorByAttrUi colorByAttrUi;
+        private ColorChangerByAttribute colorChangerByAttribute;
         
         /// <summary>
         /// 選択中のCityObject
         /// </summary>
         private SemanticCityObject selectedSemanticCityObject;
 
-        public void Init(ColorByAttrUi colorByAttrUiArg)
+        public void Init(ColorChangerByAttribute colorChangerByAttributeArg)
         {
+            colorChangerByAttribute = colorChangerByAttributeArg;
             uiDoc = GetComponent<UIDocument>();
             closeButton = uiDoc.rootVisualElement.Q<Button>("attr-open-close-button");
-            colorByAttrUi = colorByAttrUiArg;
             closeButton.clicked += Close;
             Close();
         }
@@ -29,7 +28,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         public void Close()
         {
             selectedSemanticCityObject = null;
-            colorByAttrUi.ChangeColor();
+            colorChangerByAttribute.Redraw();
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
         
