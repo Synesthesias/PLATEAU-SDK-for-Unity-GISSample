@@ -9,8 +9,8 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 {
     public class MenuUi : MonoBehaviour
     {
-        private HashSet<FloodingTitle> FloodingTitles { get; set; }
         private GisUiController gisUiController;
+        public ColorByAttrUi ColorByAttrUi { get; private set; }
         private UIDocument uiDoc;
     
         public MinMaxSlider heightSlider;
@@ -25,33 +25,21 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private CameraPositionMemoryUi cameraPositionMemoryUi;
 
         public VisualElement RootVisualElement => uiDoc.rootVisualElement;
-    
-        /// <summary>
-        /// 色分けグループ
-        /// </summary>
-        public RadioButtonGroup colorCodeGroup;
 
-        public void Init(GisUiController gisUiControllerArg, SceneManager sceneManager, HashSet<FloodingTitle> floodingTitles)
+        public void Init(GisUiController gisUiControllerArg, SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld)
         {
-            FloodingTitles = floodingTitles;
+            
+            
             uiDoc = GetComponent<UIDocument>();
             gisUiController = gisUiControllerArg;
-            var menuRoot = uiDoc.rootVisualElement;
-            colorCodeGroup = menuRoot.Q<RadioButtonGroup>("ColorCodeGroup");
-            colorCodeGroup.RegisterValueChangedCallback(gisUiControllerArg.OnColorCodeGroupValueChanged);
-
             var uiRoot = uiDoc.rootVisualElement;
+            ColorByAttrUi = new ColorByAttrUi(uiRoot, floodingTitlesBldg, floodingTitlesFld, sceneManager.ColorChanger);
             heightSlider = uiRoot.Q<MinMaxSlider>("HeightSlider");
             lodSlider = uiRoot.Q<MinMaxSlider>("LodSlider");
             heightValueLabel = uiRoot.Q<Label>("HeightValue");
             lodValueLabel = uiRoot.Q<Label>("LodValue");
         
-            if (FloodingTitles.Count > 0)
-            {
-                var choices = colorCodeGroup.choices.Select(title => title.ToString()).ToList();
-                choices.AddRange(FloodingTitles.Select(title => title.ToString()));
-                colorCodeGroup.choices = choices;
-            }
+            
 
             rainSlider = uiRoot.Q<Slider>("RainSlider");
             snowSlider = uiRoot.Q<Slider>("SnowSlider");

@@ -52,9 +52,9 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public bool IsFlooding => parentGml.IsFlooding;
 
-        public HashSet<FloodingTitle> FindAllFloodingTitles()
+        public FloodingTitleSet FindAllFloodingTitles()
         {
-            var floodingNames = new HashSet<FloodingTitle>();
+            var floodingNames = new FloodingTitleSet();
             foreach (var cityObj in dict.Values)
             {
                 foreach (var flood in cityObj.Attribute.GetFloodingAreaInfos())

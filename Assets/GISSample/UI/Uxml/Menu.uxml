@@ -23,9 +23,11 @@
         <ui:Slider picking-mode="Ignore" label="曇" value="0.2" high-value="1" name="CloudySlider" class="weather-slider" />
         <ui:VisualElement name="ColorCodeElement">
             <ui:Slider picking-mode="Ignore" label="雲の量" value="0.6" high-value="1" name="CloudIntensitySlider" class="weather-slider" />
-            <ui:Label text="色分け" display-tooltip-when-elided="true" name="ColorCodeHeaderLabel" class="header" />
-            <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="色分けなし,高さ" name="ColorCodeGroup" class="content" />
+            <ui:Label text="色分け(建築物)" display-tooltip-when-elided="true" name="ColorCodeBuildingHeaderLabel" class="header" />
+            <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="色分けなし,高さ" name="ColorCodeGroupBuilding" class="content color-by-attr-group" />
         </ui:VisualElement>
+        <ui:Label text="浸水区域" display-tooltip-when-elided="true" name="FloodingHeader" class="header" />
+        <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="表示なし" name="GroupFlooding" class="content color-by-attr-group" />
         <ui:Label text="表示" display-tooltip-when-elided="true" name="DisplayHeader" class="header" />
         <ui:Button text="空中文字の表示切替" display-tooltip-when-elided="true" name="FloatingTextSwitch" class="menu-unity-button" />
         <ui:Button text="カメラ位置を記憶" display-tooltip-when-elided="true" name="CameraPositionSave" class="menu-unity-button" />
