@@ -8,68 +8,98 @@ namespace GISSample.PlateauAttributeDisplay
     /// <summary>
     /// 高さや水害情報に応じて色分けします。
     /// </summary>
-    public class ColorChanger
+    public class ColorChangerByAttribute
     {
         private readonly SceneManager sceneManager;
         private const float FloodingHeightMultiplier = 1f;
+
+        /// <summary> 選択中の建物色分けタイプ </summary>
+        private BuildingColorType selectedBuildingColorType;
         
-        public ColorChanger(SceneManager sceneManager)
+        /// <summary> 選択中の浸水タイトル（建物） </summary>
+        private FloodingTitle selectedFloodingTitleBldg;
+
+        /// <summary> 選択中の浸水タイトル（浸水区域） 「表示なし」が選択されている時はnull</summary>
+        private FloodingTitle selectedFloodingTitleFld;
+        
+        public ColorChangerByAttribute(SceneManager sceneManager)
         {
             this.sceneManager = sceneManager;
         }
 
-        public void ChangeColor(BuildingColorType type, FloodingTitle floodingTitleBldg, FloodingTitle floodingTitleFld)
+        /// <summary> 色分けなしの状態にします。 </summary>
+        public void ChangeToDefault()
         {
-            var heightColorTable = sceneManager.GisUiController.heightColorTable;
+            ChangeFlooding(null);
+            ChangeBuildings(BuildingColorType.None, null);
+        }
+
+        /// <summary> 現在選択中の色で色分けをやり直します。 </summary>
+        public void Redraw()
+        {
+            ChangeBuildings(selectedBuildingColorType, selectedFloodingTitleBldg);
+            ChangeFlooding(selectedFloodingTitleFld);
+        }
+
+        
+        public void ChangeFlooding(FloodingTitle floodingTitleFld)
+        {
+            selectedFloodingTitleFld = floodingTitleFld;
             var floodingRankColorTable = sceneManager.GisUiController.floodingRankColorTable;
-            
+
             foreach (var gml in sceneManager.Gmls())
             {
-                // fldの場合
-                if (gml.IsFlooding)
+                if (!gml.IsFlooding) continue;
+                foreach (var semantic in gml.SemanticCityObjs())
                 {
-                    foreach (var semantic in gml.SemanticCityObjs())
+                    if (floodingTitleFld == null)
                     {
-                        if (floodingTitleFld == null)
-                        {
+                        semantic.ChangeToDefaultState();
+                    }
+                    else
+                    {
+                        ColorByFloodingRank(floodingRankColorTable, floodingTitleFld, semantic);
+                    }
+                }
+            }
+        } 
+
+        public void ChangeBuildings(BuildingColorType type, FloodingTitle floodingTitleBldg)
+        {
+            selectedFloodingTitleBldg = floodingTitleBldg;
+            selectedBuildingColorType = type;
+            var heightColorTable = sceneManager.GisUiController.heightColorTable;
+            var floodingRankColorTable = sceneManager.GisUiController.floodingRankColorTable;
+
+            foreach (var gml in sceneManager.Gmls())
+            {
+                if (gml.IsFlooding) continue;
+                Color[] colorTable = type switch
+                {
+                    BuildingColorType.Height => heightColorTable,
+                    BuildingColorType.FloodingRank => floodingRankColorTable,
+                    BuildingColorType.None => null,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                foreach (var semantic in gml.SemanticCityObjs())
+                {
+                    switch (type)
+                    {
+                        case BuildingColorType.None:
                             semantic.ChangeToDefaultState();
-                        }
-                        else
-                        {
-                            ColorByFloodingRank(floodingRankColorTable, floodingTitleFld, semantic);
-                        }
+                            break;
+                        case BuildingColorType.Height:
+                            ColorByHeight(colorTable, semantic);
+                            break;
+                        case BuildingColorType.FloodingRank:
+                            ColorByFloodingRank(colorTable, floodingTitleBldg, semantic);
+                            break;
+                        default:
+                            throw new ArgumentException();
                     }
                 }
-                // 建物の場合
-                else
-                {
-
-                    Color[] colorTable = type switch
-                    {
-                        BuildingColorType.Height => heightColorTable,
-                        BuildingColorType.FloodingRank => floodingRankColorTable,
-                        BuildingColorType.None => null,
-                        _ => throw new ArgumentOutOfRangeException()
-                    };
-
-                    foreach (var semantic in gml.SemanticCityObjs())
-                    {
-                        switch (type)
-                        {
-                            case BuildingColorType.None:
-                                semantic.ChangeToDefaultState();
-                                break;
-                            case BuildingColorType.Height:
-                                ColorByHeight(colorTable, semantic);
-                                break;
-                            case BuildingColorType.FloodingRank:
-                                ColorByFloodingRank(colorTable, floodingTitleBldg, semantic);
-                                break;
-                            default:
-                                throw new ArgumentException();
-                        }
-                    }
-                }
+                
 
             }
         }
