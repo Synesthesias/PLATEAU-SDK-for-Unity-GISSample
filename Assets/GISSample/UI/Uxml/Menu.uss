@@ -18,7 +18,7 @@
     background-color: rgb(0, 190, 190);
 }
 
-#ColorCodeGroup Label {
+.color-by-attr-group Label {
     white-space: normal;
     padding-right: 46px;
 }
@@ -45,11 +45,11 @@
     margin-right: 8px;
     margin-top: 8px;
     margin-bottom: 8px;
-    background-color: rgba(110, 135, 117, 255);
-    border-left-color: rgba(156, 156, 156, 255);
-    border-right-color: rgba(156, 156, 156, 255);
-    border-top-color: rgba(156, 156, 156, 255);
-    border-bottom-color: rgba(156, 156, 156, 255);
+    background-color: rgb(110, 135, 117);
+    border-left-color: rgb(156, 156, 156);
+    border-right-color: rgb(156, 156, 156);
+    border-top-color: rgb(156, 156, 156);
+    border-bottom-color: rgb(156, 156, 156);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
