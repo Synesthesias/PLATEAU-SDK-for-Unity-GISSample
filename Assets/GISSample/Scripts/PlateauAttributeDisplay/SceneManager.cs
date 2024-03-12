@@ -32,7 +32,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
-        private ColorChanger colorChanger;
+        public ColorChanger ColorChanger { get; private set; }
         private GISCameraMove gisCameraMove;
         public FloatingTextList FloatingTextList { get; private set; }
         public CameraPositionMemory CameraPositionMemory { get; private set; }
@@ -88,13 +88,18 @@ namespace GISSample.PlateauAttributeDisplay
 
             
             gmlDict.Init(instancedCityModels);
-            var floodingAreaNames = gmlDict.FindAllFloodingTitles();
             
             CameraPositionMemory = new CameraPositionMemory(Camera.main);
-            colorChanger = new ColorChanger(this);
+            ColorChanger = new ColorChanger(this);
             FloatingTextList = new FloatingTextList();
+            
             GisUiController = GetComponentInChildren<GisUiController>();
-            GisUiController.Init(this, floodingAreaNames);
+            // どのような洪水情報があるか検索します
+            var floodingAreaNamesBldg = gmlDict.FindAllFloodingTitlesOfBuildings();
+            var floodingAreaNamesFld = gmlDict.FindAllFloodingTitlesOfFlds();
+            GisUiController.Init(this, floodingAreaNamesBldg, floodingAreaNamesFld);
+            ColorChanger.ChangeColor(BuildingColorType.None, null, null);
+            
             gisCameraMove = new GISCameraMove(GisUiController);
             inputActions.GISSample.SetCallbacks(gisCameraMove);
             
@@ -105,11 +110,6 @@ namespace GISSample.PlateauAttributeDisplay
         public SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
         {
             return gmlDict.GetAttribute(gmlFileName, cityObjectID);
-        }
-
-        public void ColorCity(ColorCodeType type, FloodingTitle floodingTitle)
-        {
-            colorChanger.ChangeColor(type, floodingTitle);
         }
 
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
+using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,31 +10,26 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
     {
         private UIDocument uiDoc;
         private Button closeButton;
-        private GisUiController gisUiController;
+        private ColorByAttrUi colorByAttrUi;
         
         /// <summary>
         /// 選択中のCityObject
         /// </summary>
         private SemanticCityObject selectedSemanticCityObject;
 
-        public void Init()
+        public void Init(ColorByAttrUi colorByAttrUiArg)
         {
             uiDoc = GetComponent<UIDocument>();
             closeButton = uiDoc.rootVisualElement.Q<Button>("attr-open-close-button");
-            gisUiController = FindObjectOfType<GisUiController>();
+            colorByAttrUi = colorByAttrUiArg;
             closeButton.clicked += Close;
             Close();
-        }
-
-        private void OnEnable()
-        {
-            
         }
         
         public void Close()
         {
             selectedSemanticCityObject = null;
-            gisUiController.RecolorFlooding();
+            colorByAttrUi.ChangeColor();
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
         

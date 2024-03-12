@@ -20,28 +20,15 @@ namespace GISSample.PlateauAttributeDisplay.UI
         [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
         private AttributeUi attrUi;
         private TimeUi timeUi;
-        private HashSet<FloodingTitle> floodingTitles;
 
         private SceneManager sceneManager;
-    
-    
-
+ 
         [SerializeField, Tooltip("選択中オブジェクトの色")] private Color selectedColor;
         [SerializeField, Tooltip("色分け（高さ）の色テーブル")] public Color[] heightColorTable;
         [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] public Color[] floodingRankColorTable;
-    
-    
-        /// <summary>
-        /// 色分けタイプ
-        /// </summary>
-        private ColorCodeType colorCodeType;
-    
-        /// <summary>
-        /// 浸水エリア名（色分け用）
-        /// </summary>
-        private FloodingTitle floodingTitle;
+        
 
-        public void Init(SceneManager sceneManagerArg, HashSet<FloodingTitle> floodingTitles)
+        public void Init(SceneManager sceneManagerArg, FloodingTitleSet floodingTitlesBldgArg, FloodingTitleSet floodingTitlesFldArg)
         {
             sceneManager = sceneManagerArg;
             MenuUi = GetComponentInChildren<MenuUi>();
@@ -50,12 +37,9 @@ namespace GISSample.PlateauAttributeDisplay.UI
 
             
             userGuideUi.gameObject.SetActive(true);
-            MenuUi.Init(this, sceneManagerArg, floodingTitles);
+            MenuUi.Init(this, sceneManagerArg, floodingTitlesBldgArg, floodingTitlesFldArg);
             timeUi.Init();
-            attrUi.Init();
-            this.floodingTitles = floodingTitles;
-        
-            ColorCity(colorCodeType, floodingTitle);
+            attrUi.Init(MenuUi.ColorByAttrUi);
         
         
         }
@@ -115,7 +99,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             }
 
             // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
-            RecolorFlooding();
+            MenuUi.ColorByAttrUi.ChangeColor();
 
             // 選択されたオブジェクトの色を変更
             var nameKey = trans.parent.parent.name;
@@ -161,46 +145,6 @@ namespace GISSample.PlateauAttributeDisplay.UI
         {
             return sceneManager.GetAttribute(gmlFileName, cityObjectID);
         }
-    
-        /// <summary>
-        /// 色分け処理
-        /// </summary>
-        public void ColorCity(ColorCodeType type, FloodingTitle floodingTitleArg)
-        {
-            sceneManager.ColorCity(type, floodingTitleArg);
-        }
-    
-        /// <summary>
-        /// 色分け選択変更イベントコールバック
-        /// </summary>
-        /// <param name="e"></param>
-        public void OnColorCodeGroupValueChanged(ChangeEvent<int> e)
-        {
-            // valueは
-            // 0: 色分けなし
-            // 1: 高さ
-            // 2～: 浸水ランク
-            if (e.newValue < 2)
-            {
-                colorCodeType = (ColorCodeType)e.newValue;
-                floodingTitle = null;
-            }
-            else
-            {
-                colorCodeType = ColorCodeType.FloodingRank;
-                floodingTitle = floodingTitles.First(t => t.ToString() == MenuUi.colorCodeGroup.choices.ElementAt(e.newValue));
-            }
 
-            RecolorFlooding();
-        }
-
-        public void RecolorFlooding()
-        {
-            ColorCity(colorCodeType, floodingTitle);
-        }
-
-    
-
-    
     }
 }
