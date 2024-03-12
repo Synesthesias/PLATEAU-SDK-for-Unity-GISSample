@@ -22,24 +22,26 @@ namespace GISSample.PlateauAttributeDisplay.UI
         private TimeUi timeUi;
 
         private SceneManager sceneManager;
+        private ColorChangerByAttribute colorChangerByAttribute;
  
         [SerializeField, Tooltip("選択中オブジェクトの色")] private Color selectedColor;
         [SerializeField, Tooltip("色分け（高さ）の色テーブル")] public Color[] heightColorTable;
         [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] public Color[] floodingRankColorTable;
         
 
-        public void Init(SceneManager sceneManagerArg, FloodingTitleSet floodingTitlesBldgArg, FloodingTitleSet floodingTitlesFldArg)
+        public void Init(SceneManager sceneManagerArg, ColorChangerByAttribute colorChangerByAttributeArg, FloodingTitleSet floodingTitlesBldgArg, FloodingTitleSet floodingTitlesFldArg)
         {
             sceneManager = sceneManagerArg;
+            colorChangerByAttribute = colorChangerByAttributeArg;
             MenuUi = GetComponentInChildren<MenuUi>();
             attrUi = GetComponentInChildren<AttributeUi>();
             timeUi = FindObjectOfType<TimeUi>();
 
             
             userGuideUi.gameObject.SetActive(true);
-            MenuUi.Init(this, sceneManagerArg, floodingTitlesBldgArg, floodingTitlesFldArg);
+            MenuUi.Init(sceneManagerArg, floodingTitlesBldgArg, floodingTitlesFldArg);
             timeUi.Init();
-            attrUi.Init(MenuUi.ColorByAttrUi);
+            attrUi.Init(colorChangerByAttributeArg);
         
         
         }
@@ -99,7 +101,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             }
 
             // 前回選択中のオブジェクトの色を戻すために色分け処理を実行
-            MenuUi.ColorByAttrUi.ChangeColor();
+            colorChangerByAttribute.Redraw();
 
             // 選択されたオブジェクトの色を変更
             var nameKey = trans.parent.parent.name;
