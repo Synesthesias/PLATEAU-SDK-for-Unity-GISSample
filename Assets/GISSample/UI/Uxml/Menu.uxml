@@ -30,7 +30,26 @@
         <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="表示なし" name="GroupFlooding" class="content color-by-attr-group" />
         <ui:Label text="表示" display-tooltip-when-elided="true" name="DisplayHeader" class="header" />
         <ui:Button text="空中文字の表示切替" display-tooltip-when-elided="true" name="FloatingTextSwitch" class="menu-unity-button" />
-        <ui:Button text="カメラ位置を記憶" display-tooltip-when-elided="true" name="CameraPositionSave" class="menu-unity-button" />
-        <ui:Button text="カメラ位置を復元" display-tooltip-when-elided="true" name="CameraPositionRestore" class="menu-unity-button" />
+        <ui:Label text="カメラ" display-tooltip-when-elided="true" name="CameraHeader" class="header" />
+        <ui:VisualElement name="CameraPosition" style="margin-top: 15px; margin-right: 5px; margin-bottom: 15px; margin-left: 5px;">
+            <ui:VisualElement name="CameraTabs" class="tabs">
+                <ui:Label text="保存" display-tooltip-when-elided="true" name="CameraSaveTab" class="tab tab-leftmost tab-selected" />
+                <ui:Label text="復元" display-tooltip-when-elided="true" name="CameraRestoreTab" class="tab tab-rightmost" />
+            </ui:VisualElement>
+            <ui:VisualElement name="CameraTabContents" class="tab-contents">
+                <ui:VisualElement name="CameraSaveContent" class="tab-content">
+                    <ui:Label text="現在のカメラ位置を保存します" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
+                    <ui:Button text="スロット1" display-tooltip-when-elided="true" name="CameraSaveSlot1" class="menu-unity-button" />
+                    <ui:Button text="スロット2" display-tooltip-when-elided="true" name="CameraSaveSlot2" class="menu-unity-button" />
+                    <ui:Button text="スロット3" display-tooltip-when-elided="true" name="CameraSaveSlot3" class="menu-unity-button" />
+                </ui:VisualElement>
+                <ui:VisualElement name="CameraRestoreContent" class="tab-content">
+                    <ui:Label text="カメラ位置を復元します" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
+                    <ui:Button text="スロット1" display-tooltip-when-elided="true" name="CameraRestoreSlot1" class="menu-unity-button" />
+                    <ui:Button text="スロット2" display-tooltip-when-elided="true" name="CameraRestoreSlot2" class="menu-unity-button" />
+                    <ui:Button text="スロット3" display-tooltip-when-elided="true" name="CameraRestoreSlot3" class="menu-unity-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:ScrollView>
 </ui:UXML>
