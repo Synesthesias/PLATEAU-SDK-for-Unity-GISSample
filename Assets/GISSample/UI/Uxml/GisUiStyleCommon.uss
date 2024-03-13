@@ -143,9 +143,56 @@ Scroller #unity-drag-container {
 }
 
 .unity-button:hover {
-    background-color: rgba(105, 149, 125, 255);
+    background-color: rgb(105, 149, 125);
 }
 
 .unity-button:active {
-    background-color: rgba(24, 53, 33, 255);
+    background-color: rgb(24, 53, 33);
+}
+
+.tabs {
+    flex-direction: row;
+    -unity-font-style: bold;
+    font-size: 14px;
+}
+
+.tab {
+    flex-grow: 1;
+    -unity-text-align: middle-center;
+    background-color: rgba(80, 115, 105, 255);
+    margin-right: 1px;
+    margin-left: 1px;
+    min-height: 30px;
+}
+
+.tab:hover {
+    background-color: rgba(95, 135, 123, 255);
+}
+
+.tab-leftmost {
+    border-top-left-radius: 7px;
+}
+
+.tab-rightmost {
+    border-top-right-radius: 7px;
+}
+
+.tab-contents {
+    margin-right: 0;
+    margin-left: 0;
+    background-color: rgba(59, 75, 72, 0.56);
+    padding-left: 3px;
+    padding-top: 3px;
+}
+
+.tab-selected {
+    background-color: rgba(23, 96, 58, 255);
+}
+
+.tab-selected:hover {
+    background-color: rgba(23, 96, 58, 255);
+}
+
+.tab-content-unselected {
+    display: none;
 }
