@@ -12,6 +12,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         private readonly CameraPositionMemory cameraPositionMemory;
         private readonly ButtonWithClickMessage[] saveButtons; // 添字はスロットID
         private readonly ButtonWithClickMessage[] restoreButtons; // 添字はスロットID
+        private readonly Button saveRestButton;
         private float timeToResetSaveButton;
         private float timeToResetRestoreButton;
         private readonly RenameCameraSlotUi renameCameraSlotUi;
@@ -20,6 +21,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         private const string UiNameCameraSaveButton = "CameraSaveSlot";
         private const string UiNameCameraRestoreButton = "CameraRestoreSlot";
         private const string UiNameSlotRenameButton = "CameraRenameSlot";
+        private const string UiNameResetSaveButton = "ResetCameraSaveButton";
         
         public CameraPositionMemoryUi(CameraPositionMemory cameraPositionMemory, VisualElement menuUiRoot, RenameCameraSlotUi renameCameraSlotUi)
         {
@@ -70,6 +72,9 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
                     button.clicked += () => OnClickedRenameButton(slotIndex);
                 });
             }
+
+            saveRestButton = menuUiRoot.Q<Button>(UiNameResetSaveButton);
+            saveRestButton.clicked += OnClickedResetSaveButton; 
             
             UpdateButtonState();
         }
@@ -150,6 +155,17 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
                 }
                 button.NormalButtonText = text;
             }
+        }
+
+        /// <summary>
+        /// 「カメラ保存をリセット」ボタンが押された時
+        /// </summary>
+        private void OnClickedResetSaveButton()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+            cameraPositionMemory.LoadPersistenceDataOrDefault();
+            UpdateButtonState();
         }
     }
 }

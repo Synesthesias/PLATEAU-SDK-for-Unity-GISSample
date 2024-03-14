@@ -9,6 +9,9 @@ namespace GISSample.PlateauAttributeDisplay
     /// </summary>
     public class GISCameraMove : GISSampleInputActions.IGISSampleActions
     {
+        /// <summary> これがfalseの間はキーボードでのカメラ移動を無効化します。 </summary>
+        public static bool IsKeyboardActive = true;
+        
         /// <summary>
         /// カメラ操作が有効かどうか
         /// ドラッグの起点がUI上の場合はカメラ操作できないようにするための判定用フラグです。
@@ -18,7 +21,6 @@ namespace GISSample.PlateauAttributeDisplay
         private Vector2 horizontalMoveByKeyboard;
         private Vector2 verticalMoveByKeyboard;
         private const float MoveSpeedByKeyboard = 400f;
-        
         
         /// <summary>
         /// カメラのTransform
@@ -60,6 +62,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void OnHorizontalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
+            if (!IsKeyboardActive) return;
             if (context.performed)
             {
                 var delta = context.ReadValue<Vector2>();
@@ -98,6 +101,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
+            if (!IsKeyboardActive) return;
             if (context.performed)
             {
                 var delta = Vector2.up * context.ReadValue<float>();

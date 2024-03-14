@@ -38,7 +38,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="CameraTabContents" class="tab-contents">
                 <ui:VisualElement name="CameraSaveContent" class="tab-content">
-                    <ui:Label text="現在のカメラ位置を保存します" display-tooltip-when-elided="true" class="menu-label" style="-unity-text-align: upper-center;" />
+                    <ui:Label text="現在のカメラ位置を保存します" display-tooltip-when-elided="true" class="menu-label" style="-unity-text-align: upper-center; font-size: 11px;" />
                     <ui:VisualElement name="CameraSaveSlotRow1" class="camera-slot-row">
                         <ui:Button text="スロット1(新規)" display-tooltip-when-elided="true" name="CameraSaveSlot1" class="menu-unity-button camera-button" />
                         <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot1" class="menu-unity-button camera-button-rename" />
@@ -53,7 +53,7 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="CameraRestoreContent" class="tab-content">
-                    <ui:Label text="カメラ位置を復元します" display-tooltip-when-elided="true" class="menu-label" style="-unity-text-align: upper-center;" />
+                    <ui:Label text="カメラ位置を復元します" display-tooltip-when-elided="true" class="menu-label" style="-unity-text-align: upper-center; font-size: 11px;" />
                     <ui:VisualElement name="CameraRestoreSlotRow1" class="camera-slot-row">
                         <ui:Button text="スロット1" display-tooltip-when-elided="true" name="CameraRestoreSlot1" class="menu-unity-button camera-button" />
                         <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot1" class="menu-unity-button camera-button-rename" />
@@ -68,6 +68,9 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="align-items: flex-end;">
+            <ui:Button text="カメラ保存をリセット" display-tooltip-when-elided="true" name="ResetCameraSaveButton" class="menu-unity-button" style="font-size: 9px; width: 120px;" />
         </ui:VisualElement>
     </ui:ScrollView>
 </ui:UXML>
