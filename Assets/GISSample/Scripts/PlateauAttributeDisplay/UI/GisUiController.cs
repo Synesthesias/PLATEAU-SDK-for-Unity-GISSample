@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
+using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -20,6 +21,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
         [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
         private AttributeUi attrUi;
         private TimeUi timeUi;
+        private RenameCameraSlotUi renameCameraSlotUi;
 
         private SceneManager sceneManager;
         private ColorChangerByAttribute colorChangerByAttribute;
@@ -29,20 +31,21 @@ namespace GISSample.PlateauAttributeDisplay.UI
         [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] public Color[] floodingRankColorTable;
         
 
-        public void Init(SceneManager sceneManagerArg, ColorChangerByAttribute colorChangerByAttributeArg, FloodingTitleSet floodingTitlesBldgArg, FloodingTitleSet floodingTitlesFldArg)
+        public void Init(SceneManager sceneManagerArg, ColorChangerByAttribute colorChangerByAttributeArg, FloodingTitleSet floodingTitlesBldgArg, FloodingTitleSet floodingTitlesFldArg, CameraPositionMemory cameraPositionMemory)
         {
             sceneManager = sceneManagerArg;
             colorChangerByAttribute = colorChangerByAttributeArg;
             MenuUi = GetComponentInChildren<MenuUi>();
             attrUi = GetComponentInChildren<AttributeUi>();
             timeUi = FindObjectOfType<TimeUi>();
+            renameCameraSlotUi = GetComponentInChildren<RenameCameraSlotUi>();
 
             
             userGuideUi.gameObject.SetActive(true);
-            MenuUi.Init(sceneManagerArg, floodingTitlesBldgArg, floodingTitlesFldArg);
+            MenuUi.Init(sceneManagerArg, floodingTitlesBldgArg, floodingTitlesFldArg, renameCameraSlotUi, cameraPositionMemory);
+            renameCameraSlotUi.Init(cameraPositionMemory, MenuUi.CameraPositionMemoryUi);
             timeUi.Init();
             attrUi.Init(colorChangerByAttributeArg);
-        
         
         }
 
