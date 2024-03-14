@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.UI
@@ -17,12 +18,16 @@ namespace GISSample.PlateauAttributeDisplay.UI
         {
             this.camera = camera;
             this.data = new SlotData[SlotCount];
+            for (int i = 0; i < SlotCount; i++)
+            {
+                data[i] = new SlotData(false, "スロット" + (i + 1));
+            }
         }
         
         public void Save(int slotId)
         {
             var trans = camera.transform;
-            this.data[slotId] = new SlotData(trans.position, trans.rotation, true);
+            this.data[slotId] = new SlotData(trans.position, trans.rotation, true, GetName(slotId));
         }
         
         public void Restore(int slotId)
@@ -35,6 +40,21 @@ namespace GISSample.PlateauAttributeDisplay.UI
         {
             return data[slotId].IsSaved;
         }
+
+        public string GetName(int slotId)
+        {
+            return data[slotId].Name;
+        }
+
+        public void SetSlotData(int slotId, SlotData slotData)
+        {
+            data[slotId] = slotData;
+        }
+
+        public SlotData GetSlotData(int slotId)
+        {
+            return data[slotId];
+        }
     }
 
     public struct SlotData
@@ -42,12 +62,20 @@ namespace GISSample.PlateauAttributeDisplay.UI
         public Vector3 Position;
         public Quaternion Rotation;
         public bool IsSaved;
+        public string Name;
 
-        public SlotData(Vector3 position, Quaternion rotation, bool isSaved)
+        public SlotData(Vector3 position, Quaternion rotation, bool isSaved, string name)
         {
             Position = position;
             Rotation = rotation;
             IsSaved = isSaved;
+            Name = name;
+        }
+
+        public SlotData(bool isSaved, string name)
+            : this(Vector3.zero, Quaternion.identity, isSaved, name)
+        {
+
         }
     }
 }

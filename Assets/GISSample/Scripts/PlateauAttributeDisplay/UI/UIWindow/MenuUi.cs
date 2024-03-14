@@ -19,10 +19,10 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         public Slider cloudSlider;
         public Slider cloudIntensitySlider;
         private Button floatingTextSwitchButton;
-        private CameraPositionMemoryUi cameraPositionMemoryUi;
+        public CameraPositionMemoryUi CameraPositionMemoryUi { get; private set; }
 
 
-        public void Init(SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld)
+        public void Init(SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, RenameCameraSlotUi renameCameraSlotUi, CameraPositionMemory cameraPositionMemory)
         {
             
             
@@ -42,12 +42,12 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             cloudIntensitySlider = uiRoot.Q<Slider>("CloudIntensitySlider");
             floatingTextSwitchButton = uiRoot.Q<Button>("FloatingTextSwitch");
             floatingTextSwitchButton.clicked += sceneManager.FloatingTextList.SwitchIsActive;
-            cameraPositionMemoryUi = new CameraPositionMemoryUi(sceneManager.CameraPositionMemory, uiRoot);
+            CameraPositionMemoryUi = new CameraPositionMemoryUi(cameraPositionMemory, uiRoot, renameCameraSlotUi);
         }
 
         public void Update()
         {
-            cameraPositionMemoryUi.Update();
+            CameraPositionMemoryUi.Update();
         }
     
         /// <summary>
