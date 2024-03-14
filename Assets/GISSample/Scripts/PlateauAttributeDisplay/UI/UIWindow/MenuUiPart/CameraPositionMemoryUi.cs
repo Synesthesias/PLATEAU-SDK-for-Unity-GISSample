@@ -14,28 +14,34 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         private readonly ButtonWithClickMessage[] restoreButtons; // 添字はスロットID
         private float timeToResetSaveButton;
         private float timeToResetRestoreButton;
+        private readonly RenameCameraSlotUi renameCameraSlotUi;
+
+        private const string UiNameCameraRoot = "CameraPosition";
+        private const string UiNameCameraSaveButton = "CameraSaveSlot";
+        private const string UiNameCameraRestoreButton = "CameraRestoreSlot";
+        private const string UiNameSlotRenameButton = "CameraRenameSlot";
         
-        
-        public CameraPositionMemoryUi(CameraPositionMemory cameraPositionMemory, VisualElement menuUiRoot)
+        public CameraPositionMemoryUi(CameraPositionMemory cameraPositionMemory, VisualElement menuUiRoot, RenameCameraSlotUi renameCameraSlotUi)
         {
             this.cameraPositionMemory = cameraPositionMemory;
+            this.renameCameraSlotUi = renameCameraSlotUi;
 
             int slotCount = CameraPositionMemory.SlotCount;
             saveButtons = new ButtonWithClickMessage[slotCount];
             restoreButtons = new ButtonWithClickMessage[slotCount];
-            var cameraUiRoot = menuUiRoot.Q("CameraPosition");
+            var cameraUiRoot = menuUiRoot.Q(UiNameCameraRoot);
             var cameraTab = new TabUi(cameraUiRoot);
 
             // 保存ボタンの機能を構築
             for (int i = 0; i < slotCount; i++)
             {
-                string saveButtonName = "CameraSaveSlot" + (i+1);
+                string saveButtonName = UiNameCameraSaveButton + (i+1);
                 int slotIndex = i;
                 var buttonUi = cameraUiRoot.Q<Button>(saveButtonName);
                 saveButtons[i] = new ButtonWithClickMessage(
                     buttonUi,
                     "保存しました！",
-                    () => SaveButtonPushed(slotIndex)
+                    () => OnClickedSaveButton(slotIndex) // ここに i を渡してはいけないことに注意
                 );
                 
             }
@@ -43,14 +49,26 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             // 復元ボタンの機能を構築
             for (int i = 0; i < slotCount; i++)
             {
-                string restoreButtonName = "CameraRestoreSlot" + (i+1);
+                string restoreButtonName = UiNameCameraRestoreButton + (i+1);
                 int slotIndex = i;
                 var buttonUi = cameraUiRoot.Q<Button>(restoreButtonName);
                 restoreButtons[i] = new ButtonWithClickMessage(
                     buttonUi,
                     "復元しました！",
-                    () => RestoreButtonPushed(slotIndex)
+                    () => OnClickedRestoreButton(slotIndex)
                 );
+            }
+            
+            // 名前変更ボタンの機能を構築
+            for (int i = 0; i < slotCount; i++)
+            {
+                string renameButtonName = UiNameSlotRenameButton + (i + 1);
+                int slotIndex = i;
+                var buttonUis = cameraUiRoot.Query<Button>(renameButtonName);
+                buttonUis.ForEach(button =>
+                {
+                    button.clicked += () => OnClickedRenameButton(slotIndex);
+                });
             }
             
             UpdateButtonState();
@@ -72,7 +90,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         /// <summary>
         /// 「カメラ位置を記憶」ボタンが押された時、記憶してボタンのテキストを変える
         /// </summary>
-        private void SaveButtonPushed(int slotId)
+        private void OnClickedSaveButton(int slotId)
         {
             cameraPositionMemory.Save(slotId);
             UpdateButtonState();
@@ -81,23 +99,28 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         /// <summary>
         /// 「カメラ位置を復元」ボタンが押された時、復元してボタンのテキストを変える
         /// </summary>
-        private void RestoreButtonPushed(int slotId)
+        private void OnClickedRestoreButton(int slotId)
         {
             cameraPositionMemory.Restore(slotId);
             UpdateButtonState();
         }
 
+        private void OnClickedRenameButton(int slotId)
+        {
+            renameCameraSlotUi.Open(slotId, cameraPositionMemory.GetName(slotId));
+        }
+
         /// <summary>
         /// 保存データがあるかどうかによってボタンのテキストとスタイルを切り替えます
         /// </summary>
-        private void UpdateButtonState()
+        public void UpdateButtonState()
         {
             int slotCount = CameraPositionMemory.SlotCount;
             
             // 保存ボタンのテキスト変更
             for (int i = 0; i < slotCount; i++)
             {
-                string text = "スロット" + (i+1);
+                string text = cameraPositionMemory.GetName(i);
                 if (cameraPositionMemory.IsSaved(i))
                 {
                     text += "(上書き)";
@@ -113,7 +136,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             // 復元ボタンのテキスト変更
             for (int i = 0; i < slotCount; i++)
             {
-                string text = "スロット" + (i + 1);
+                string text = cameraPositionMemory.GetName(i);
                 var button = restoreButtons[i];
                 var buttonUi = button.Button;
                 if (cameraPositionMemory.IsSaved(i))

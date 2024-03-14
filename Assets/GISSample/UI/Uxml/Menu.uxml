@@ -38,16 +38,34 @@
             </ui:VisualElement>
             <ui:VisualElement name="CameraTabContents" class="tab-contents">
                 <ui:VisualElement name="CameraSaveContent" class="tab-content">
-                    <ui:Label text="現在のカメラ位置を保存します" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
-                    <ui:Button text="スロット1" display-tooltip-when-elided="true" name="CameraSaveSlot1" class="menu-unity-button" />
-                    <ui:Button text="スロット2" display-tooltip-when-elided="true" name="CameraSaveSlot2" class="menu-unity-button" />
-                    <ui:Button text="スロット3" display-tooltip-when-elided="true" name="CameraSaveSlot3" class="menu-unity-button" />
+                    <ui:Label text="現在のカメラ位置を保存します" display-tooltip-when-elided="true" class="menu-label" style="-unity-text-align: upper-center;" />
+                    <ui:VisualElement name="CameraSaveSlotRow1" class="camera-slot-row">
+                        <ui:Button text="スロット1(新規)" display-tooltip-when-elided="true" name="CameraSaveSlot1" class="menu-unity-button camera-button" />
+                        <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot1" class="menu-unity-button camera-button-rename" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="CameraSaveSlotRow2" class="camera-slot-row">
+                        <ui:Button text="aaa" display-tooltip-when-elided="true" name="CameraSaveSlot2" class="menu-unity-button camera-button" />
+                        <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot2" class="menu-unity-button camera-button-rename" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="CameraSaveSlotRow3" class="camera-slot-row">
+                        <ui:Button text="bbbbbbbbbbbbbbbbbbbbbbbbb" display-tooltip-when-elided="true" name="CameraSaveSlot3" class="menu-unity-button camera-button" />
+                        <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot3" class="menu-unity-button camera-button-rename" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="CameraRestoreContent" class="tab-content">
-                    <ui:Label text="カメラ位置を復元します" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
-                    <ui:Button text="スロット1" display-tooltip-when-elided="true" name="CameraRestoreSlot1" class="menu-unity-button" />
-                    <ui:Button text="スロット2" display-tooltip-when-elided="true" name="CameraRestoreSlot2" class="menu-unity-button" />
-                    <ui:Button text="スロット3" display-tooltip-when-elided="true" name="CameraRestoreSlot3" class="menu-unity-button" />
+                    <ui:Label text="カメラ位置を復元します" display-tooltip-when-elided="true" class="menu-label" style="-unity-text-align: upper-center;" />
+                    <ui:VisualElement name="CameraRestoreSlotRow1" class="camera-slot-row">
+                        <ui:Button text="スロット1" display-tooltip-when-elided="true" name="CameraRestoreSlot1" class="menu-unity-button camera-button" />
+                        <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot1" class="menu-unity-button camera-button-rename" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="CameraRestoreSlotRow2" class="camera-slot-row">
+                        <ui:Button text="スロット2" display-tooltip-when-elided="true" name="CameraRestoreSlot2" class="menu-unity-button camera-button" />
+                        <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot2" class="menu-unity-button camera-button-rename" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="CameraRestoreSlotRow3" class="camera-slot-row">
+                        <ui:Button text="スロット3" display-tooltip-when-elided="true" name="CameraRestoreSlot3" class="menu-unity-button camera-button" />
+                        <ui:Button text="名前変更" display-tooltip-when-elided="true" name="CameraRenameSlot3" class="menu-unity-button camera-button-rename" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
