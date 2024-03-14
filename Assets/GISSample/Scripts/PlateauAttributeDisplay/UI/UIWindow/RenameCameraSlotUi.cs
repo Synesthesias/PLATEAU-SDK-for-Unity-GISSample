@@ -85,11 +85,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private void ShowWindow()
         {
             uiDoc.rootVisualElement.style.display = DisplayStyle.Flex;
+            // 名前入力でカメラが動いてしまうのを防ぐ
+            GISCameraMove.IsKeyboardActive = false;
         }
 
         private void HideWindow()
         {
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
+            GISCameraMove.IsKeyboardActive = true;
         }
     }
     
