@@ -36,6 +36,27 @@
     border-bottom-width: 2px;
 }
 
+.menu-unity-button {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: rgb(110, 135, 117);
+    border-left-color: rgb(156, 156, 156);
+    border-right-color: rgb(156, 156, 156);
+    border-top-color: rgb(156, 156, 156);
+    border-bottom-color: rgb(156, 156, 156);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    white-space: normal;
+}
+
 .weather-slider #unity-dragger {
     -unity-slice-left: 24;
     -unity-slice-right: 24;
@@ -159,14 +180,14 @@ Scroller #unity-drag-container {
 .tab {
     flex-grow: 1;
     -unity-text-align: middle-center;
-    background-color: rgba(80, 115, 105, 255);
+    background-color: rgb(80, 115, 105);
     margin-right: 1px;
     margin-left: 1px;
     min-height: 30px;
 }
 
 .tab:hover {
-    background-color: rgba(95, 135, 123, 255);
+    background-color: rgb(95, 135, 123);
 }
 
 .tab-leftmost {
@@ -186,13 +207,17 @@ Scroller #unity-drag-container {
 }
 
 .tab-selected {
-    background-color: rgba(23, 96, 58, 255);
+    background-color: rgb(23, 96, 58);
 }
 
 .tab-selected:hover {
-    background-color: rgba(23, 96, 58, 255);
+    background-color: rgb(23, 96, 58);
 }
 
 .tab-content-unselected {
     display: none;
+}
+
+.menu-label {
+    white-space: normal;
 }
