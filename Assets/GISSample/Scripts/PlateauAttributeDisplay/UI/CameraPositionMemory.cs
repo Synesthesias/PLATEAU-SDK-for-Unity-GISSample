@@ -18,7 +18,13 @@ namespace GISSample.PlateauAttributeDisplay.UI
         {
             this.camera = camera;
             this.data = new SlotData[SlotCount];
-            // カメラスロットに関して、永続化データがあればそれを利用、なければデフォルト値にする
+            LoadPersistenceDataOrDefault();
+        }
+
+        
+        /// カメラスロットに関して、永続化データがあればそれを利用、なければデフォルト値にする
+        public void LoadPersistenceDataOrDefault()
+        {
             for (int i = 0; i < SlotCount; i++)
             {
                 if (!SlotData.TryLoadPersistenceData(i, out var slotData))
