@@ -55,6 +55,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             var prevSlot = cameraPositionMemory.GetSlotData(slotId);
             string nextSlotName = nextSlotNameTextField.value;
             cameraPositionMemory.SetSlotData(slotId, new SlotData(prevSlot.Position, prevSlot.Rotation, prevSlot.IsSaved, nextSlotName));
+            
             cameraPositionMemoryUi.UpdateButtonState();
             HideWindow();
         }
