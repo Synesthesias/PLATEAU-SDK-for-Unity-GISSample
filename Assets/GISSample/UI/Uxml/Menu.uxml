@@ -26,7 +26,7 @@
             <ui:Label text="色分け(建築物)" display-tooltip-when-elided="true" name="ColorCodeBuildingHeaderLabel" class="header" />
             <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="色分けなし,高さ" name="ColorCodeGroupBuilding" class="content color-by-attr-group" />
         </ui:VisualElement>
-        <ui:Label text="浸水区域" display-tooltip-when-elided="true" name="FloodingHeader" class="header" />
+        <ui:Label text="洪水浸水想定区域" display-tooltip-when-elided="true" name="FloodingHeader" class="header" />
         <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="表示なし" name="GroupFlooding" class="content color-by-attr-group" />
         <ui:Label text="表示" display-tooltip-when-elided="true" name="DisplayHeader" class="header" />
         <ui:Button text="空中文字の表示切替" display-tooltip-when-elided="true" name="FloatingTextSwitch" class="menu-unity-button" />
