@@ -52,10 +52,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
-            foreach (var featureObj in LodToFeatureObj.Values)
-            {
-                yield return featureObj;
-            }
+            return LodToFeatureObj.Values;
         }
     }
 }

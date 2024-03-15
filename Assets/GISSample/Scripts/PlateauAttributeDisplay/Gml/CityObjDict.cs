@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PLATEAU.CityInfo;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -73,13 +74,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
-            foreach (var cityObj in dict.Values)
-            {
-                foreach (var obj in cityObj.FeatureGameObjs())
-                {
-                    yield return obj;
-                }
-            }
+            return dict.Values.SelectMany(cityObj => cityObj.FeatureGameObjs());
         }
 
         public IEnumerable<SemanticCityObject> SemanticCityObjs()
