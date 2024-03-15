@@ -94,13 +94,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
-            foreach (var gml in gmls.Values)
-            {
-                foreach (var obj in gml.FeatureGameObjs())
-                {
-                    yield return obj;
-                }
-            }
+            return gmls.Values.SelectMany(gml => gml.FeatureGameObjs());
         }
 
         public IEnumerable<SemanticCityObject> SemanticCityObjects()
