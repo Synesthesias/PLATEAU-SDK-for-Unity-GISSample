@@ -46,15 +46,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""VerticalMoveCameraByMouse"",
-                    ""type"": ""Value"",
-                    ""id"": ""38e32fc5-2dd3-4517-b41c-1cb8c30770d5"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""VerticalMoveCameraByKeyboard"",
                     ""type"": ""Value"",
                     ""id"": ""e84d8a2b-1a21-465e-8a81-28a8e2409c0b"",
@@ -177,83 +168,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
                     ""action"": ""ZoomCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""6822ddf7-199e-4223-87c2-7f87e480c657"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""2ee3bc37-3069-45f1-86e0-bbcd9676cb17"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""8718bf21-7d65-460a-800d-6cffc8404bbb"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": ""ScaleVector2"",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Two Modifiers"",
-                    ""id"": ""a0f19301-5f17-48fd-bc30-91d525215167"",
-                    ""path"": ""TwoModifiers"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier1"",
-                    ""id"": ""1a5a75af-48df-4452-9b18-ea89b8618c97"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""modifier2"",
-                    ""id"": ""b47dd027-48eb-43d6-bb51-efedec9666f7"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""41f83c6a-2252-4ae1-85f8-33d15b80fd86"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": ""ScaleVector2"",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""VerticalMoveCameraByMouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -408,7 +322,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
         m_GISSample = asset.FindActionMap("GISSample", throwIfNotFound: true);
         m_GISSample_HorizontalMoveCameraByMouse = m_GISSample.FindAction("HorizontalMoveCameraByMouse", throwIfNotFound: true);
         m_GISSample_HorizontalMoveCameraByKeyboard = m_GISSample.FindAction("HorizontalMoveCameraByKeyboard", throwIfNotFound: true);
-        m_GISSample_VerticalMoveCameraByMouse = m_GISSample.FindAction("VerticalMoveCameraByMouse", throwIfNotFound: true);
         m_GISSample_VerticalMoveCameraByKeyboard = m_GISSample.FindAction("VerticalMoveCameraByKeyboard", throwIfNotFound: true);
         m_GISSample_RotateCamera = m_GISSample.FindAction("RotateCamera", throwIfNotFound: true);
         m_GISSample_ZoomCamera = m_GISSample.FindAction("ZoomCamera", throwIfNotFound: true);
@@ -477,7 +390,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
     private List<IGISSampleActions> m_GISSampleActionsCallbackInterfaces = new List<IGISSampleActions>();
     private readonly InputAction m_GISSample_HorizontalMoveCameraByMouse;
     private readonly InputAction m_GISSample_HorizontalMoveCameraByKeyboard;
-    private readonly InputAction m_GISSample_VerticalMoveCameraByMouse;
     private readonly InputAction m_GISSample_VerticalMoveCameraByKeyboard;
     private readonly InputAction m_GISSample_RotateCamera;
     private readonly InputAction m_GISSample_ZoomCamera;
@@ -489,7 +401,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
         public GISSampleActions(@GISSampleInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @HorizontalMoveCameraByMouse => m_Wrapper.m_GISSample_HorizontalMoveCameraByMouse;
         public InputAction @HorizontalMoveCameraByKeyboard => m_Wrapper.m_GISSample_HorizontalMoveCameraByKeyboard;
-        public InputAction @VerticalMoveCameraByMouse => m_Wrapper.m_GISSample_VerticalMoveCameraByMouse;
         public InputAction @VerticalMoveCameraByKeyboard => m_Wrapper.m_GISSample_VerticalMoveCameraByKeyboard;
         public InputAction @RotateCamera => m_Wrapper.m_GISSample_RotateCamera;
         public InputAction @ZoomCamera => m_Wrapper.m_GISSample_ZoomCamera;
@@ -510,9 +421,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
             @HorizontalMoveCameraByKeyboard.started += instance.OnHorizontalMoveCameraByKeyboard;
             @HorizontalMoveCameraByKeyboard.performed += instance.OnHorizontalMoveCameraByKeyboard;
             @HorizontalMoveCameraByKeyboard.canceled += instance.OnHorizontalMoveCameraByKeyboard;
-            @VerticalMoveCameraByMouse.started += instance.OnVerticalMoveCameraByMouse;
-            @VerticalMoveCameraByMouse.performed += instance.OnVerticalMoveCameraByMouse;
-            @VerticalMoveCameraByMouse.canceled += instance.OnVerticalMoveCameraByMouse;
             @VerticalMoveCameraByKeyboard.started += instance.OnVerticalMoveCameraByKeyboard;
             @VerticalMoveCameraByKeyboard.performed += instance.OnVerticalMoveCameraByKeyboard;
             @VerticalMoveCameraByKeyboard.canceled += instance.OnVerticalMoveCameraByKeyboard;
@@ -538,9 +446,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
             @HorizontalMoveCameraByKeyboard.started -= instance.OnHorizontalMoveCameraByKeyboard;
             @HorizontalMoveCameraByKeyboard.performed -= instance.OnHorizontalMoveCameraByKeyboard;
             @HorizontalMoveCameraByKeyboard.canceled -= instance.OnHorizontalMoveCameraByKeyboard;
-            @VerticalMoveCameraByMouse.started -= instance.OnVerticalMoveCameraByMouse;
-            @VerticalMoveCameraByMouse.performed -= instance.OnVerticalMoveCameraByMouse;
-            @VerticalMoveCameraByMouse.canceled -= instance.OnVerticalMoveCameraByMouse;
             @VerticalMoveCameraByKeyboard.started -= instance.OnVerticalMoveCameraByKeyboard;
             @VerticalMoveCameraByKeyboard.performed -= instance.OnVerticalMoveCameraByKeyboard;
             @VerticalMoveCameraByKeyboard.canceled -= instance.OnVerticalMoveCameraByKeyboard;
@@ -586,7 +491,6 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
     {
         void OnHorizontalMoveCameraByMouse(InputAction.CallbackContext context);
         void OnHorizontalMoveCameraByKeyboard(InputAction.CallbackContext context);
-        void OnVerticalMoveCameraByMouse(InputAction.CallbackContext context);
         void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context);
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnZoomCamera(InputAction.CallbackContext context);

@@ -1,3 +1,8 @@
+# ライセンスについて
+本リポジトリのうち、国土数値情報、フォント、およびCesium Unityについては、  
+それぞれ別添の[ThirdPartyNotices.md](./ThirdPartyNotices.md)に記載のライセンスに従います。  
+それ以外の部分については、以下のMITライセンスに従います。
+
 MIT License
 
 Copyright (c) 2024 MLIT Japan.
