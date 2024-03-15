@@ -36,6 +36,7 @@ namespace GISSample.PlateauAttributeDisplay
         private GISCameraMove gisCameraMove;
         public FloatingTextList FloatingTextList { get; private set; }
         private CameraPositionMemory cameraPositionMemory;
+        public TextureSwitcher TextureSwitcher { get; private set; }
 
 
 
@@ -92,6 +93,7 @@ namespace GISSample.PlateauAttributeDisplay
             cameraPositionMemory = new CameraPositionMemory(Camera.main);
             ColorChangerByAttribute = new ColorChangerByAttribute(this);
             FloatingTextList = new FloatingTextList();
+            TextureSwitcher = new TextureSwitcher(gmlDict);
             
             GisUiController = GetComponentInChildren<GisUiController>();
             // どのような洪水情報があるか検索します

@@ -10,17 +10,30 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// <summary> 対象となるゲームオブジェクトです。 </summary>
         public GameObject GameObj { get; }
 
-        /// <summary> アプリケーション開始時のマテリアルを、あとで戻せるように記憶します </summary>
-        private readonly Material[] initialMaterials;
+        /// <summary>
+        /// 通常状態のマテリアルです。
+        /// アプリケーション開始時のマテリアルが初期状態として記憶されます。
+        /// ただし、テクスチャをオフにするボタンが押下されたときは、これは<see cref="TextureSwitcher"/>によってテクスチャのないマテリアルに置き換わります。
+        /// </summary>
+        public Material[] NormalMaterials { get; set; }
+
+        /// <summary>
+        /// テクスチャのON/OFF機能で、OFFにしたものを元に戻せるようにテクスチャを記憶します。
+        /// 添字は renderer.materials の添字に対応します。
+        /// </summary>
+        public Texture[] InitialTextures { get; }
 
         /// <summary> 色分けによって色が塗られたときのマテリアルを用意しておきます。色分けのたびにマテリアルをnewするのは重いためです。 </summary>
         public Material[] ColoredMaterials { get; }
+        
 
         public Renderer Renderer { get; }
 
         /// <summary> 色分け時に使うマテリアル </summary>
         private static readonly Material MaterialForColor = Resources.Load<Material>("ColorByAttributesMaterial");
-        
+
+        private static readonly int ShaderPropIdBaseMap = Shader.PropertyToID("_BaseMap");
+
         /// <summary>
         /// 表示すべきかどうかを格納します。
         /// この結果は<see cref="ApplyFilter"/>で適用します。
@@ -35,17 +48,42 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             if (Renderer == null)
             {
                 Debug.LogWarning("renderer is not found.");
+                return;
             }
-            else
+            
+            // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
+            var srcMaterials = Renderer.materials;
+            int matCount = srcMaterials.Length;
+            var materials = new Material[matCount];
+            for (int i = 0; i < matCount; i++)
             {
-                initialMaterials = Renderer.materials;
-                
-                // 色分け用マテリアルの初期化
-                ColoredMaterials = new Material[initialMaterials.Length];
-                for (int i = 0; i < ColoredMaterials.Length; i++)
+                materials[i] = new Material(srcMaterials[i]);
+            }
+            NormalMaterials = materials;
+            
+            // 開始時のテクスチャを記録
+            InitialTextures = new Texture[matCount];
+            for (int i = 0; i < matCount; i++)
+            {
+                var mat = materials[i];
+                Texture tex;
+                if (mat.HasTexture(ShaderPropIdBaseMap)) // Toolkitシェーダーの場合
                 {
-                    ColoredMaterials[i] = new Material(MaterialForColor);
+                    tex = mat.GetTexture(ShaderPropIdBaseMap);
                 }
+                else
+                {
+                    tex = mat.mainTexture;
+                }
+
+                InitialTextures[i] = tex;
+            }
+                
+            // 色分け用マテリアルの初期化
+            ColoredMaterials = new Material[matCount];
+            for (int i = 0; i < matCount; i++)
+            {
+                ColoredMaterials[i] = new Material(MaterialForColor);
             }
         }
 
@@ -59,7 +97,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public void RestoreInitialMaterials()
         {
-            Renderer.materials = initialMaterials;
+            Renderer.materials = NormalMaterials;
         }
     }
 }
