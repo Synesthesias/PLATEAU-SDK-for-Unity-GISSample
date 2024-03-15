@@ -85,18 +85,6 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
         /// <summary>
-        /// マウスでのカメラ上下左右移動
-        /// </summary>
-        public void OnVerticalMoveCameraByMouse(InputAction.CallbackContext context)
-        {
-            if (context.performed && isMouseDraggingFromNonUi)
-            {
-                var delta = context.ReadValue<Vector2>();
-                MoveCameraVertical(delta * -1);
-            }
-        }
-
-        /// <summary>
         /// キーボードでのカメラ上下移動
         /// </summary>
         public void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context)
