@@ -19,6 +19,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         public Slider cloudSlider;
         public Slider cloudIntensitySlider;
         private Button floatingTextSwitchButton;
+        private Button textureSwitchButton;
         public CameraPositionMemoryUi CameraPositionMemoryUi { get; private set; }
 
 
@@ -33,15 +34,15 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             lodSlider = uiRoot.Q<MinMaxSlider>("LodSlider");
             heightValueLabel = uiRoot.Q<Label>("HeightValue");
             lodValueLabel = uiRoot.Q<Label>("LodValue");
-        
-            
 
             rainSlider = uiRoot.Q<Slider>("RainSlider");
             snowSlider = uiRoot.Q<Slider>("SnowSlider");
             cloudSlider = uiRoot.Q<Slider>("CloudySlider");
             cloudIntensitySlider = uiRoot.Q<Slider>("CloudIntensitySlider");
             floatingTextSwitchButton = uiRoot.Q<Button>("FloatingTextSwitch");
+            textureSwitchButton = uiRoot.Q<Button>("TextureSwitch");
             floatingTextSwitchButton.clicked += sceneManager.FloatingTextList.SwitchIsActive;
+            textureSwitchButton.clicked += sceneManager.TextureSwitcher.Switch;
             CameraPositionMemoryUi = new CameraPositionMemoryUi(cameraPositionMemory, uiRoot, renameCameraSlotUi);
         }
 

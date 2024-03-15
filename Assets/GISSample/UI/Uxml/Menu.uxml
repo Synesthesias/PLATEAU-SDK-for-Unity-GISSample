@@ -30,6 +30,7 @@
         <ui:RadioButtonGroup chices="0, 1, 2" value="-" choices="表示なし" name="GroupFlooding" class="content color-by-attr-group" />
         <ui:Label text="表示" display-tooltip-when-elided="true" name="DisplayHeader" class="header" />
         <ui:Button text="空中文字の表示切替" display-tooltip-when-elided="true" name="FloatingTextSwitch" class="menu-unity-button" />
+        <ui:Button text="テクスチャの表示切替" display-tooltip-when-elided="true" name="TextureSwitch" class="menu-unity-button" />
         <ui:Label text="カメラ" display-tooltip-when-elided="true" name="CameraHeader" class="header" />
         <ui:VisualElement name="CameraPosition" style="margin-top: 15px; margin-right: 5px; margin-bottom: 15px; margin-left: 5px;">
             <ui:VisualElement name="CameraTabs" class="tabs">
