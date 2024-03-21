@@ -169,7 +169,8 @@ namespace GISSample.PlateauAttributeDisplay
                     foreach (var feature in semantic.FeatureGameObjs())
                     {
                         var trans = feature.GameObj.transform;
-                        trans.position = Vector3.up * rank.Height * FloodingHeightMultiplier;
+                        // 注意: fldランクに応じて高さを変える機能は廃止か。廃止しない場合は下のコメントアウトを戻す
+                        // trans.position = Vector3.up * rank.Height * FloodingHeightMultiplier;
                     }
                 }
             }
