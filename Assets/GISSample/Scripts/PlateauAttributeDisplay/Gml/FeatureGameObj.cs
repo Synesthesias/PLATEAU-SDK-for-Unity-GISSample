@@ -30,7 +30,10 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public Renderer Renderer { get; }
 
         /// <summary> 色分け時に使うマテリアル </summary>
-        private static readonly Material MaterialForColor = Resources.Load<Material>("ColorByAttributesMaterial");
+        private static readonly Material MaterialForColorBldg = Resources.Load<Material>("ColorByAttributesOpaqueMaterial");
+
+        private static readonly Material MaterialForColorFld =
+            Resources.Load<Material>("ColorByAttributesTransparentMaterial");
 
         private static readonly int ShaderPropIdBaseMap = Shader.PropertyToID("_BaseMap");
 
@@ -81,9 +84,10 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 
             // 色分け用マテリアルの初期化
             ColoredMaterials = new Material[matCount];
+            var srcMat = isFlooding ? MaterialForColorFld : MaterialForColorBldg;
             for (int i = 0; i < matCount; i++)
             {
-                ColoredMaterials[i] = new Material(MaterialForColor);
+                ColoredMaterials[i] = new Material(srcMat);
             }
         }
 
