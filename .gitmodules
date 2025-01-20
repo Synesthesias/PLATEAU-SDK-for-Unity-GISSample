@@ -1,0 +1,3 @@
+[submodule "Packages/PLATEAU-SDK-for-Unity-v3"]
+	path = Packages/PLATEAU-SDK-for-Unity-v3
+	url = git@github.com:Synesthesias/PLATEAU-SDK-for-Unity.git
