@@ -63,6 +63,10 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             // 0: 色分けなし
             // 1: 高さ
             // 2～: 浸水ランク
+            if (e.newValue < 0)
+            {
+                return;
+            }
             if (e.newValue < 2)
             {
                 selectedBuildingColorType = (BuildingColorType)e.newValue;
