@@ -19,7 +19,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 
         private void OnTimeChanged(ChangeEvent<float> evt)
         {
-            environmentController.TimeOfDay = evt.newValue;
+            environmentController.m_TimeOfDay = evt.newValue;
         }
     }
 }

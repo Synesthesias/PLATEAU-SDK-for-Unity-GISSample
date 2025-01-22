@@ -30,6 +30,19 @@
         "com.unity.splines": "2.5.2"
       }
     },
+    "com.synesthesias.plateau-unity-toolkit": {
+      "version": "file:PLATEAU-SDK-Toolkits-for-Unity-v2",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.synesthesias.plateau-unity-sdk": "3.0.0",
+        "com.unity.splines": "2.2.0",
+        "com.unity.inputsystem": "1.5.1",
+        "com.unity.cloud.gltfast": "5.0.4",
+        "com.unity.visualeffectgraph": "12.1.10",
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      }
+    },
     "com.unity.ai.navigation": {
       "version": "1.1.5",
       "depth": 0,
@@ -133,18 +146,12 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.plateautoolkit": {
-      "version": "file:PLATEAU-SDK-Toolkits-for-Unity-v0.2.2.tgz",
+    "com.unity.plateautoolkit.maps": {
+      "version": "file:PLATEAU-SDK-Maps-Toolkit-for-Unity",
       "depth": 0,
-      "source": "local-tarball",
+      "source": "embedded",
       "dependencies": {
-        "com.synesthesias.plateau-unity-sdk": "1.0.0",
-        "com.unity.splines": "2.2.0",
-        "com.unity.inputsystem": "1.5.1",
-        "com.unity.cloud.gltfast": "5.0.4",
-        "com.unity.visualeffectgraph": "12.1.10",
-        "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.cesium.unity": "1.6.3"
+        "com.synesthesias.plateau-unity-sdk": "3.0.0"
       }
     },
     "com.unity.render-pipelines.core": {
