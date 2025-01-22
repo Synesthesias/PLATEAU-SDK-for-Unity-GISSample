@@ -34,7 +34,7 @@ namespace GISSample.PlateauAttributeDisplay
             // 都市モデルをCesiumGeoReferenceの子にします
             var cesiumGeoReference = FindObjectOfType<CesiumGeoreference>();
             target.transform.parent = cesiumGeoReference.transform;
-            target.AddComponent<CesiumGlobeAnchor>();
+            target.gameObject.AddComponent<CesiumGlobeAnchor>();
         
             // Cesiumとの位置合わせをします。
             // 内容はPlateauToolkitMapsWindowとほぼ同じです。

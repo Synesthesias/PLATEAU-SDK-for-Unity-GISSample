@@ -1,3 +1,9 @@
 [submodule "Packages/PLATEAU-SDK-for-Unity-v3"]
 	path = Packages/PLATEAU-SDK-for-Unity-v3
 	url = git@github.com:Synesthesias/PLATEAU-SDK-for-Unity.git
+[submodule "Packages/PLATEAU-SDK-Toolkits-for-Unity-v2"]
+	path = Packages/PLATEAU-SDK-Toolkits-for-Unity-v2
+	url = git@github.com:Synesthesias/PLATEAU-SDK-Toolkits-for-Unity.git
+[submodule "Packages/PLATEAU-SDK-Maps-Toolkit-for-Unity"]
+	path = Packages/PLATEAU-SDK-Maps-Toolkit-for-Unity
+	url = git@github.com:Synesthesias/PLATEAU-SDK-Maps-Toolkit-for-Unity.git
