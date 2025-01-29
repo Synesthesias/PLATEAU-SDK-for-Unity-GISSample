@@ -110,10 +110,10 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         private void GetFloodingAreaInfosInner(CityObjectList.Attributes attrs, List<FloodingAreaInfo> infos)
         {
-            // ケース1: fldデータのケースであり、属性情報のキー "gml:name" に "○○川想定浸水～" と書いてあり、 "uro:floodingRiskAttribute" に浸水ランクが書いてあるケース
+            // ケース1: fldデータのケースであり、属性情報のキー "gml:name" に "○○川流域～" と書いてあり、 "uro:floodingRiskAttribute" に浸水ランクが書いてあるケース
             if (attrs.TryGetValue("gml:name", out var floodingGmlNameVal))
             {
-                if (floodingGmlNameVal.StringValue.Contains("浸水"))
+                if (floodingGmlNameVal.StringValue.Contains("流域"))
                 {
                     if (attrs.TryGetValue("uro:floodingRiskAttribute", out var floodingRisk))
                     {
