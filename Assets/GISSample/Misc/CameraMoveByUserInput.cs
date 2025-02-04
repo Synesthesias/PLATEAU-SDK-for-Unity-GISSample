@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using UnityEngine.EventSystems;
 
 namespace GISSample.Misc
 {
@@ -100,6 +101,12 @@ namespace GISSample.Misc
         /// <param name="context"></param>
         public void OnParallelMoveCameraByMouse(InputAction.CallbackContext context)
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                // UI上での操作は無視
+                return;
+            }
+
             if (!IsMouseActive)
             {
                 isParallelMoveByMouse = false;
