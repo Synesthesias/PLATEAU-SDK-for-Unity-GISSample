@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using Cinemachine;
-using GISSample.Misc;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using PLATEAU.CityInfo;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace GISSample.PlateauAttributeDisplay
 {
@@ -31,7 +28,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         private PLATEAUInstancedCityModel[] instancedCityModels;
 
-        private readonly GmlDictionary gmlDict = new();
+        private readonly GmlDictionary gmlDict = new ();
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
@@ -40,6 +37,7 @@ namespace GISSample.PlateauAttributeDisplay
         public FloatingTextList FloatingTextList { get; private set; }
         private CameraPositionMemory cameraPositionMemory;
         public TextureSwitcher TextureSwitcher { get; private set; }
+
 
 
         private void Awake()
@@ -70,7 +68,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void Update()
         {
-            // gisCameraMove.Update();
+            gisCameraMove.Update();
             GisUiController.Update();
         }
 
@@ -82,31 +80,31 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         private void Initialize()
         {
-
+            
             instancedCityModels = FindObjectsOfType<PLATEAUInstancedCityModel>();
             if (instancedCityModels == null || instancedCityModels.Length == 0)
             {
                 return;
             }
 
-
+            
             gmlDict.Init(instancedCityModels);
-
+            
             cameraPositionMemory = new CameraPositionMemory(Camera.main);
             ColorChangerByAttribute = new ColorChangerByAttribute(this);
             FloatingTextList = new FloatingTextList();
             TextureSwitcher = new TextureSwitcher(gmlDict);
-
+            
             GisUiController = GetComponentInChildren<GisUiController>();
             // どのような洪水情報があるか検索します
             var floodingAreaNamesBldg = gmlDict.FindAllFloodingTitlesOfBuildings();
             var floodingAreaNamesFld = gmlDict.FindAllFloodingTitlesOfFlds();
             GisUiController.Init(this, ColorChangerByAttribute, floodingAreaNamesBldg, floodingAreaNamesFld, cameraPositionMemory);
             ColorChangerByAttribute.ChangeToDefault();
-
-            // gisCameraMove = new GISCameraMove(GisUiController);
-            // inputActions.GISSample.SetCallbacks(gisCameraMove);
-
+            
+            gisCameraMove = new GISCameraMove(GisUiController);
+            inputActions.GISSample.SetCallbacks(gisCameraMove);
+            
             filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict);
             weatherController = new WeatherController(GisUiController.MenuUi);
         }

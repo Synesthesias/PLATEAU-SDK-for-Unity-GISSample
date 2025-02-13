@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
+    <Style src="project://database/Assets/GISSample/UI/Uxml/ActionButtons.uss?fileID=7433441132597879392&amp;guid=5f378bc92d3bde64cbcb6c689104c347&amp;type=3#ActionButtons" />
+    <ui:VisualElement name="Buttons" style="flex-grow: 1;">
+        <ui:VisualElement name="CameraButtons" class="gis-background-window">
+            <ui:Toggle name="WalkCameraToggle" value="false" class="camera-toggle" />
+            <ui:Toggle name="VehicleCameraToggle" class="camera-toggle" />
+        </ui:VisualElement>
+        <ui:Button text="操作方法" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpButton" />
+        <ui:Button text="アプリ終了" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" />
+    </ui:VisualElement>
+</ui:UXML>
