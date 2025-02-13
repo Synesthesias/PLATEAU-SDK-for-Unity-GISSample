@@ -11,7 +11,7 @@ public class FloatingTextList
 {
     private readonly GameObject[] floatingParents;
     private bool isActive = true;
-    
+
     public FloatingTextList()
     {
         // 宙に浮かぶテキストの親には GISAttrDisplayFactoryBase がアタッチされていることが前提
@@ -27,7 +27,7 @@ public class FloatingTextList
         SetActive(!isActive);
     }
 
-    private void SetActive(bool isActiveArg)
+    public void SetActive(bool isActiveArg)
     {
         isActive = isActiveArg;
         foreach (var f in floatingParents)
@@ -35,5 +35,5 @@ public class FloatingTextList
             f.SetActive(isActiveArg);
         }
     }
-     
+
 }

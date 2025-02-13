@@ -10,7 +10,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private UIDocument uiDoc;
         private Button closeButton;
         private ColorChangerByAttribute colorChangerByAttribute;
-        
+
         /// <summary>
         /// 選択中のCityObject
         /// </summary>
@@ -24,14 +24,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             closeButton.clicked += Close;
             Close();
         }
-        
+
         public void Close()
         {
             selectedSemanticCityObject = null;
             colorChangerByAttribute.Redraw();
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
-        
+
 
         public void Open()
         {
@@ -59,12 +59,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
                     valueLabel.AddToClassList("value");
                     elem.Add(valueLabel);
 
-                    // 属性情報テーブルの背景色ストライプ
-                    var bgColor = elem.style.backgroundColor.value;
-                    elem.style.backgroundColor = (i % 2 == 0) 
-                        ? bgColor:
-                        bgColor + new Color(0.2f, 0.2f, 0.2f);
-
                     return elem;
                 });
 
@@ -86,8 +80,8 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         {
             selectedSemanticCityObject = semanticCityObj;
             selectedSemanticCityObject.SetMaterialColor(selectedColor);
-            
+
         }
-        
+
     }
 }

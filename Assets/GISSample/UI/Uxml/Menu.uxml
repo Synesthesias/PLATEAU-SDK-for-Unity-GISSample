@@ -35,10 +35,8 @@
         <ui:VisualElement name="DisplayElement" style="flex-grow: 1;">
             <ui:Label text="表示" display-tooltip-when-elided="true" name="DisplayHeader" class="header" />
             <ui:VisualElement name="DisplayContent" class="content" style="flex-grow: 1;">
-                <ui:Button text="空中文字の表示切替" display-tooltip-when-elided="true" name="FloatingTextSwitch" class="menu-unity-button" />
-                <ui:Button text="テクスチャの表示切替" display-tooltip-when-elided="true" name="TextureSwitch" class="menu-unity-button" />
-                <ui:Toggle name="FloatingTextSwitchToggle" text="空中文字の表示切替" value="false" />
-                <ui:Toggle name="TextureSwitchToggle" text="テクスチャの表示切替" />
+                <ui:Toggle name="FloatingTextSwitchToggle" text="空中文字の表示切替" value="true" />
+                <ui:Toggle name="TextureSwitchToggle" text="テクスチャの表示切替" value="true" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="CameraElement" style="flex-grow: 1;">
