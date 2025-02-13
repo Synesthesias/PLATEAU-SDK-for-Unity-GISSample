@@ -1,31 +1,47 @@
 .unity-text-element {
     color: rgb(255, 255, 255);
-    -unity-font-definition: url('project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&guid=16ebc954c776e604e8d8693a34969fdb&type=2#MPLUSRounded1c-Regular SDF');
+    -unity-font-definition: url("project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&guid=16ebc954c776e604e8d8693a34969fdb&type=2#MPLUSRounded1c-Regular SDF");
 }
 
 .header {
     font-size: 20px;
     -unity-font-style: bold;
     color: rgb(255, 255, 255);
-    background-color: rgb(0, 113, 113);
+    background-color: rgba(255, 255, 255, 0);
     margin: 0;
     padding: 4px 12px 6px 11px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-image: resource('img/Title_bg');
+    -unity-slice-left: 10;
+    -unity-slice-top: 10;
+    -unity-slice-bottom: 10;
+    -unity-font: initial;
+    -unity-font-definition: url("project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF-FallbackDynamic.asset?fileID=11400000&guid=19b57f8fcf45cf94a87fb589aca3154e&type=2#MPLUSRounded1c-Regular SDF-FallbackDynamic");
+    margin-bottom: 6px;
+    height: 36px;
 }
 
 .gis-background-window {
-    background-color: rgba(0, 0, 0, 0.93);
+    background-color: rgba(14, 21, 20, 0.7);
     margin-left: 1%;
     margin-right: 1%;
     margin-top: 1%;
     margin-bottom: 1%;
-    padding-left: 0;
+    padding-left: 16px;
     padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: 24px;
+    padding-bottom: 24px;
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
     border-top-right-radius: 7px;
@@ -37,87 +53,188 @@
 }
 
 .menu-unity-button {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    background-color: rgb(110, 135, 117);
-    border-left-color: rgb(156, 156, 156);
-    border-right-color: rgb(156, 156, 156);
-    border-top-color: rgb(156, 156, 156);
-    border-bottom-color: rgb(156, 156, 156);
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    background-color: rgb(128, 213, 212);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     white-space: normal;
+    height: 40px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    color: rgb(0, 55, 55);
 }
 
-.weather-slider #unity-dragger {
+.slider #unity-tracker {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    height: 5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 2.5px;
+    border-top-right-radius: 2.5px;
+    border-bottom-right-radius: 2.5px;
+    border-bottom-left-radius: 2.5px;
+    background-color: rgb(217, 217, 217);
+}
+
+.slider #unity-dragger {
     -unity-slice-left: 24;
     -unity-slice-right: 24;
-    background-color: rgb(0, 190, 190);
-    height: 20px;
+    background-color: rgb(235, 235, 235);
+    height: 24px;
     margin-top: -10px;
     border-radius: 4px;
     min-width: 20px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    width: 24px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.unity-radio-button__checkmark {
+    background-color: rgb(128, 213, 212);
+    width: 10px;
+    height: 10px;
+}
+
+.unity-radio-button__checkmark-background {
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(128, 213, 212);
+    border-right-color: rgb(128, 213, 212);
+    border-top-color: rgb(128, 213, 212);
+    border-bottom-color: rgb(128, 213, 212);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    padding-top: 3px;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
     border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    width: 18px;
+    border-bottom-left-radius: 10px;
+    margin-top: 14px;
+    margin-right: 14px;
+    margin-bottom: 14px;
+    margin-left: 14px;
+}
+
+.unity-base-slider__label {
+    font-size: 20px;
+}
+
+.unity-min-max-slider__tracker {
+    height: 5px;
+    background-color: rgb(217, 217, 217);
+    border-top-left-radius: 2.5px;
+    border-top-right-radius: 2.5px;
+    border-bottom-right-radius: 2.5px;
+    border-bottom-left-radius: 2.5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .unity-min-max-slider__dragger {
     -unity-slice-left: 24;
     -unity-slice-right: 24;
-    background-color: rgb(0, 190, 190);
-    height: 12px;
-    margin-top: -6px;
+    background-color: rgb(0, 106, 106);
+    height: 5px;
     border-radius: 4px;
     min-width: 20px;
+    border-top-left-radius: 2.5px;
+    border-top-right-radius: 2.5px;
+    border-bottom-right-radius: 2.5px;
+    border-bottom-left-radius: 2.5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    padding-top: 0;
 }
 
 .unity-min-max-slider__min-thumb {
     border-radius: 4px;
-    margin-top: -6px;
-    background-color: rgb(0, 190, 190);
-    width: 20px;
-    height: 20px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    margin-left: -4px;
+    margin-top: -10px;
+    background-color: rgb(235, 235, 235);
+    width: 24px;
+    height: 24px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-left: -12px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
 }
 
 .unity-min-max-slider__max-thumb {
     border-radius: 4px;
-    margin-top: -6px;
-    background-color: rgb(0, 190, 190);
-    width: 20px;
-    height: 20px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    margin-left: 4px;
+    margin-top: -10px;
+    background-color: rgb(235, 235, 235);
+    width: 24px;
+    height: 24px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-left: 12px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
 }
 
 Scroller #unity-dragger {
-    background-color: rgb(0, 190, 190);
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    background-color: rgb(0, 106, 106);
+    display: flex;
+    width: 5px;
+    left: 10px;
 }
 
 Scroller #unity-tracker {
-    background-color: rgb(96, 96, 96);
+    background-color: rgba(0, 0, 0, 0);
+    width: 1px;
+    left: 12px;
+    display: flex;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 1.5px;
+}
+
+Scroller #unity-drag-container {
+    display: flex;
+}
+
+Scroller #unity-dragger-border {
 }
 
 #unity-low-button {
@@ -127,6 +244,7 @@ Scroller #unity-tracker {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     -unity-background-image-tint-color: rgb(185, 185, 185);
+    display: none;
 }
 
 #unity-high-button {
@@ -136,31 +254,41 @@ Scroller #unity-tracker {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     -unity-background-image-tint-color: rgb(185, 185, 185);
-}
-
-Scroller #unity-drag-container {
+    display: none;
 }
 
 .open-close-button {
-    background-color: rgb(110, 135, 117);
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
     font-size: 11px;
-    height: 10px;
-    position: absolute;
-    right: 5px;
-    top: 3px;
-    width: 50px;
+    height: 32px;
+    right: 0;
+    width: 32px;
+    background-image: resource('img/Icon close');
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    top: 0;
 }
 
 .header-inner-text {
-    width: 100px;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 20px;
 }
 
 .unity-button:hover {
@@ -175,15 +303,25 @@ Scroller #unity-drag-container {
     flex-direction: row;
     -unity-font-style: bold;
     font-size: 14px;
+    margin-top: 4px;
+    margin-right: 0;
+    margin-bottom: 8px;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
 .tab {
     flex-grow: 1;
     -unity-text-align: middle-center;
     background-color: rgb(80, 115, 105);
-    margin-right: 1px;
-    margin-left: 1px;
-    min-height: 30px;
+    min-height: 40px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .tab:hover {
@@ -199,11 +337,15 @@ Scroller #unity-drag-container {
 }
 
 .tab-contents {
-    margin-right: 0;
-    margin-left: 0;
-    background-color: rgba(59, 75, 72, 0.56);
-    padding-left: 3px;
-    padding-top: 3px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgb(111, 121, 121);
+    border-right-color: rgba(111, 121, 121, 0);
+    border-top-color: rgba(111, 121, 121, 0);
+    border-bottom-color: rgba(111, 121, 121, 0);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
 }
 
 .tab-selected {
@@ -220,4 +362,91 @@ Scroller #unity-drag-container {
 
 .menu-label {
     white-space: normal;
+    font-size: 16px;
+}
+
+.unity-toggle .unity-toggle__checkmark {
+    background-image: resource('img/Switch_off');
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    width: 60px;
+    height: 48px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-right: 12px;
+}
+
+.unity-toggle:checked .unity-toggle__checkmark {
+    background-image: resource('img/Switch_on');
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.tab .unity-radio-button__checkmark-background {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+}
+
+.tab .unity-radio-button__checkmark {
+    background-image: resource('img/Icon_selected');
+    width: 14px;
+    height: 14px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.tab .unity-base-field__input {
+    align-items: stretch;
+    align-self: auto;
+    justify-content: center;
+}
+
+.tab.left {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(136, 147, 146);
+    border-right-color: rgb(136, 147, 146);
+    border-top-color: rgb(136, 147, 146);
+    border-bottom-color: rgb(136, 147, 146);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.tab.right {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(136, 147, 146);
+    border-right-color: rgb(136, 147, 146);
+    border-top-color: rgb(136, 147, 146);
+    border-bottom-color: rgb(136, 147, 146);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.tab:checked {
+    background-color: rgb(50, 75, 75);
+}
+
+.unity-scroller__slider {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.unity-scroll-view__content-container--vertical {
+    margin-right: 5px;
 }

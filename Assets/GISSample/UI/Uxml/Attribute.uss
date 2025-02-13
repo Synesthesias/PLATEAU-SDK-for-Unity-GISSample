@@ -35,3 +35,11 @@
     margin-bottom: 0;
     padding-left: 10px;
 }
+
+.attribute-header {
+    flex-direction: row;
+    align-self: auto;
+}
+
+.attribute-header .header {
+}
