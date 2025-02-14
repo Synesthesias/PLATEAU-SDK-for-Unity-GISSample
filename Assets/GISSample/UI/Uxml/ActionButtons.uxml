@@ -4,7 +4,7 @@
     <ui:VisualElement name="Buttons" style="flex-grow: 1;">
         <ui:VisualElement name="CameraButtons" class="gis-background-window">
             <ui:Toggle name="WalkCameraToggle" value="false" class="camera-toggle" />
-            <ui:Toggle name="VehicleCameraToggle" class="camera-toggle" />
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="VehicleCameraButton" class="camera-toggle" />
         </ui:VisualElement>
         <ui:Button text="操作方法" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpButton" />
         <ui:Button text="アプリ終了" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" />
