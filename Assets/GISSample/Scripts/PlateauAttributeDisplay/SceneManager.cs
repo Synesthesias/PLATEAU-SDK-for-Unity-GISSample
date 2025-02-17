@@ -203,7 +203,7 @@ namespace GISSample.PlateauAttributeDisplay
             walkerCamVC.m_Lens.FarClipPlane = 1000;
             walkerCamVC.Priority = 9;
             walkerCamVC.m_StandbyUpdate = CinemachineVirtualCameraBase.StandbyUpdateMode.Never;
-            walkerCamVC.AddCinemachineComponent<CinemachineTransposer>();
+            walkerCamVC.AddCinemachineComponent<CinemachineHardLockToTarget>();
             walkerCamVC.AddCinemachineComponent<CinemachinePOV>();
             CustomCinemachineInputProvider walkerCamInput = walkerCam.AddComponent<CustomCinemachineInputProvider>();
             walkerCamInput.XYAxis = InputActionReference.Create(new DefaultInputActions().Player.Look);
