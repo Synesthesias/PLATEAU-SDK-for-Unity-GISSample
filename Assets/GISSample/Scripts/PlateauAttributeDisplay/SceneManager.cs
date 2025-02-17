@@ -235,10 +235,13 @@ namespace GISSample.PlateauAttributeDisplay
                             walker.transform.position = respawn.transform.position;
                             cc.enabled = true;
 
-                            walkerCamVC.enabled = false;
                             Camera.main.transform.rotation = respawn.transform.rotation;
-                            walkerCamVC.enabled = true;
-                            // StartCoroutine(SetWalkerCameraRotation());
+                            var pov = walkerCamVC.GetCinemachineComponent<CinemachinePOV>();
+                            var euler = respawn.transform.rotation.eulerAngles;
+                            float normalizedYaw = euler.y > 180 ? euler.y - 360 : euler.y;
+                            float normalizedPitch = euler.x > 180 ? euler.x - 360 : euler.x;
+                            pov.m_HorizontalAxis.Value = normalizedYaw;
+                            pov.m_VerticalAxis.Value = normalizedPitch;
                         }
 
                         WalkerMoveByUserInput.IsActive = true;
@@ -255,26 +258,10 @@ namespace GISSample.PlateauAttributeDisplay
                             brain.enabled = false;
                         }
 
-                        Camera.main.transform.position = lastMainCameraPosition;
-                        Camera.main.transform.rotation = lastMainCameraRotation;
+                        Camera.main.transform.SetPositionAndRotation(lastMainCameraPosition, lastMainCameraRotation);
                     }
                 };
             }
-        }
-
-        private IEnumerator SetWalkerCameraRotation()
-        {
-            var brain = Camera.main.GetComponent<CinemachineBrain>();
-            brain.enabled = false;
-            yield return null;
-            GameObject respawn = GameObject.FindGameObjectWithTag("Respawn");
-            if (respawn != null)
-            {
-                Camera.main.transform.rotation = respawn.transform.rotation;
-            }
-
-            yield return null;
-            brain.enabled = true;
         }
     }
 }
