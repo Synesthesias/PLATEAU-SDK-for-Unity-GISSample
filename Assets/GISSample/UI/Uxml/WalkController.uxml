@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
     <Style src="project://database/Assets/GISSample/UI/Uxml/WalkController.uss?fileID=7433441132597879392&amp;guid=1bb559a333f4dfd48892e101c2ce7ee3&amp;type=3#WalkController" />
-    <ui:VisualElement name="WalkPanel" class="gis-background-window" style="justify-content: space-between;">
+    <ui:VisualElement name="WalkPanel" class="gis-background-window" style="justify-content: space-between; bottom: 118px;">
         <ui:VisualElement name="HeightContainer" class="container">
             <ui:Label tabindex="-1" text="高さ" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeightTitle" class="title" />
             <ui:VisualElement name="Height" style="flex-direction: row; align-items: center; justify-content: flex-start; width: 120px; margin-right: 10px;">
