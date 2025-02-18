@@ -58,7 +58,6 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (IsActive)
             {
-                Debug.Log($"deltaWASD: {deltaWASD}, deltaUpDown: {deltaUpDown}");
                 var transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
                 walker.GetComponent<CharacterController>().Move(9.8f * deltaTime * Vector3.down);
                 MoveUpDown(cameraMoveSpeedData.walkerOffsetYSpeed * deltaUpDown * deltaTime, transposer);
