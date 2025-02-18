@@ -44,6 +44,8 @@ namespace GISSample.PlateauAttributeDisplay
         private WalkerMoveByUserInput walkerMoveByUserInput;
         private Vector3 lastMainCameraPosition;
         private Quaternion lastMainCameraRotation;
+        private float lastMainCameraNearClipPlane;
+        private float lastMainCameraFarClipPlane;
         private ActionButtonsUi actionButtonsUi;
         private PlateauSandboxCameraManager plateauSandboxCameraManager;
         private WalkControllUI walkControlUI;
@@ -242,6 +244,8 @@ namespace GISSample.PlateauAttributeDisplay
                 }
 
                 Camera.main.transform.SetPositionAndRotation(lastMainCameraPosition, lastMainCameraRotation);
+                Camera.main.nearClipPlane = lastMainCameraNearClipPlane;
+                Camera.main.farClipPlane = lastMainCameraFarClipPlane;
                 walkControlUI.CloseWindowBody();
                 actionButtonsUi.SetWalkerToggleOff();
             };
@@ -295,6 +299,8 @@ namespace GISSample.PlateauAttributeDisplay
                     {
                         lastMainCameraPosition = Camera.main.transform.position;
                         lastMainCameraRotation = Camera.main.transform.rotation;
+                        lastMainCameraFarClipPlane = Camera.main.farClipPlane;
+                        lastMainCameraNearClipPlane = Camera.main.nearClipPlane;
 
                         // Respawnタグのオブジェクトを探して、その位置に歩行者を配置
                         GameObject respawn = GameObject.FindGameObjectWithTag("Respawn");
@@ -331,7 +337,8 @@ namespace GISSample.PlateauAttributeDisplay
                         }
 
                         Camera.main.transform.SetPositionAndRotation(lastMainCameraPosition, lastMainCameraRotation);
-
+                        Camera.main.nearClipPlane = lastMainCameraNearClipPlane;
+                        Camera.main.farClipPlane = lastMainCameraFarClipPlane;
                         walkControlUI.CloseWindowBody();
                     }
                 };
