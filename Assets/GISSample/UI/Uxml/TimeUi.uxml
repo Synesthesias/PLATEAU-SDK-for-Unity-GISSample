@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
     <Style src="project://database/Assets/GISSample/UI/Uxml/TimeUi.uss?fileID=7433441132597879392&amp;guid=f4a5940f91404e34eb01a5d353424db1&amp;type=3#TimeUi" />
-    <ui:VisualElement style="position: absolute; bottom: 10px; width: 30%; left: 40%;">
+    <ui:VisualElement style="position: absolute; bottom: 10px; width: 30%; align-self: center;">
         <ui:VisualElement name="time-window" class="time-window">
             <ui:Slider picking-mode="Ignore" label="昼夜切り替え" value="0.3" high-value="1" name="time-slider" class="weather-slider time-slider" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
         </ui:VisualElement>
