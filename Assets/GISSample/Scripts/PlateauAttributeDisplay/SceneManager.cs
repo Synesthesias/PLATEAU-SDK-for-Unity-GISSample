@@ -41,11 +41,12 @@ namespace GISSample.PlateauAttributeDisplay
         public FloatingTextList FloatingTextList { get; private set; }
         private CameraPositionMemory cameraPositionMemory;
         public TextureSwitcher TextureSwitcher { get; private set; }
-        private ActionButtonsUi actionButtonsUi;
-        private PlateauSandboxCameraManager plateauSandboxCameraManager;
         private WalkerMoveByUserInput walkerMoveByUserInput;
         private Vector3 lastMainCameraPosition;
         private Quaternion lastMainCameraRotation;
+        private ActionButtonsUi actionButtonsUi;
+        private PlateauSandboxCameraManager plateauSandboxCameraManager;
+        private WalkControllUI walkControlUI;
 
 
         private void Awake()
@@ -95,6 +96,11 @@ namespace GISSample.PlateauAttributeDisplay
                     actionButtonsUi.SetVehicleToggleEnabled(true);
                 }
             }
+
+            if (walkControlUI != null)
+            {
+                walkControlUI.WalkControllerHeightText = walkerMoveByUserInput.CameraOffsetY.ToString("F2");
+            }
         }
 
 
@@ -111,9 +117,6 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 return;
             }
-
-            actionButtonsUi = FindObjectOfType<ActionButtonsUi>();
-            plateauSandboxCameraManager = FindObjectOfType<PlateauSandboxCameraManager>();
 
             gmlDict.Init(instancedCityModels);
 
@@ -144,8 +147,8 @@ namespace GISSample.PlateauAttributeDisplay
                 brain.enabled = false;
             }
 
-            SetupWalkerCamera();
-
+            actionButtonsUi = FindObjectOfType<ActionButtonsUi>();
+            plateauSandboxCameraManager = FindObjectOfType<PlateauSandboxCameraManager>();
             if (actionButtonsUi != null)
             {
                 actionButtonsUi.OnVehicleButtonClicked += () =>
@@ -156,6 +159,9 @@ namespace GISSample.PlateauAttributeDisplay
                     }
                 };
             }
+
+            SetupWalkControlUI();
+            SetupWalkerCamera();
         }
 
         public SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
@@ -176,6 +182,66 @@ namespace GISSample.PlateauAttributeDisplay
         public IEnumerable<SampleGml> Gmls()
         {
             return gmlDict.Gmls();
+        }
+
+        private void SetupWalkControlUI()
+        {
+            walkControlUI = FindObjectOfType<WalkControllUI>();
+            if (walkControlUI == null)
+            {
+                return;
+            }
+
+            walkControlUI.OnWalkControlPressing += (controlName) =>
+            {
+                if (controlName == "W")
+                {
+                    walkerMoveByUserInput.DeltaWASD = new Vector2(0, 1);
+                }
+                else if (controlName == "A")
+                {
+                    walkerMoveByUserInput.DeltaWASD = new Vector2(-1, 0);
+                }
+                else if (controlName == "S")
+                {
+                    walkerMoveByUserInput.DeltaWASD = new Vector2(0, -1);
+                }
+                else if (controlName == "D")
+                {
+                    walkerMoveByUserInput.DeltaWASD = new Vector2(1, 0);
+                }
+                else if (controlName == "Q")
+                {
+                    walkerMoveByUserInput.DeltaUpDown = -1;
+                }
+                else if (controlName == "E")
+                {
+                    walkerMoveByUserInput.DeltaUpDown = 1;
+                }
+            };
+
+            walkControlUI.OnWalkControlUp += () =>
+            {
+                walkerMoveByUserInput.DeltaWASD = Vector2.zero;
+                walkerMoveByUserInput.DeltaUpDown = 0;
+            };
+
+            walkControlUI.OnWalkSpeedChanged += (speed) =>
+            {
+                walkerMoveByUserInput.WalkerMoveSpeedMultiplier = speed;
+            };
+
+            walkControlUI.OnWalkModeQuitClicked += () =>
+            {
+                var brain = Camera.main.GetComponent<CinemachineBrain>();
+                WalkerMoveByUserInput.IsActive = false;
+                if (brain != null)
+                {
+                    brain.enabled = false;
+                }
+
+                Camera.main.transform.SetPositionAndRotation(lastMainCameraPosition, lastMainCameraRotation);
+            };
         }
 
         private void SetupWalkerCamera()
@@ -203,7 +269,8 @@ namespace GISSample.PlateauAttributeDisplay
             walkerCamVC.m_Lens.FarClipPlane = 1000;
             walkerCamVC.Priority = 9;
             walkerCamVC.m_StandbyUpdate = CinemachineVirtualCameraBase.StandbyUpdateMode.Never;
-            walkerCamVC.AddCinemachineComponent<CinemachineHardLockToTarget>();
+            var trans = walkerCamVC.AddCinemachineComponent<CinemachineTransposer>();
+            trans.m_FollowOffset = Vector3.zero;
             walkerCamVC.AddCinemachineComponent<CinemachinePOV>();
             CustomCinemachineInputProvider walkerCamInput = walkerCam.AddComponent<CustomCinemachineInputProvider>();
             walkerCamInput.XYAxis = InputActionReference.Create(new DefaultInputActions().Player.Look);
@@ -248,6 +315,10 @@ namespace GISSample.PlateauAttributeDisplay
                         if (brain != null)
                         {
                             brain.enabled = true;
+                        }
+                        if (walkControlUI != null)
+                        {
+                            walkControlUI.OpenWindowBody();
                         }
                     }
                     else
