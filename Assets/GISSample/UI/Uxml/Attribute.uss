@@ -4,8 +4,8 @@
     position: absolute;
     margin-bottom: 1%;
     flex-grow: 1;
-    height: 90.5%;
-    bottom: 74px;
+    height: 88%;
+    bottom: 94px;
 }
 
 .key-value {
