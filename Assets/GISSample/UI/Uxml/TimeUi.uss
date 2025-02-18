@@ -1,7 +1,6 @@
 .time-window {
     align-items: center;
     flex-direction: row;
-    flex-grow: 1;
     background-color: rgba(0, 0, 0, 0.7);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
