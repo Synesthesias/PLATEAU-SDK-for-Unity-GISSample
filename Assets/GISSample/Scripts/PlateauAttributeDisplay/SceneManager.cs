@@ -94,6 +94,7 @@ namespace GISSample.PlateauAttributeDisplay
                 {
                     actionButtonsUi.SetWalkerToggleEnabled(false);
                     actionButtonsUi.SetVehicleToggleEnabled(true);
+                    walkControlUI.CloseWindowBody();
                 }
             }
 
@@ -241,6 +242,8 @@ namespace GISSample.PlateauAttributeDisplay
                 }
 
                 Camera.main.transform.SetPositionAndRotation(lastMainCameraPosition, lastMainCameraRotation);
+                walkControlUI.CloseWindowBody();
+                actionButtonsUi.SetWalkerToggleOff();
             };
         }
 
@@ -316,10 +319,8 @@ namespace GISSample.PlateauAttributeDisplay
                         {
                             brain.enabled = true;
                         }
-                        if (walkControlUI != null)
-                        {
-                            walkControlUI.OpenWindowBody();
-                        }
+
+                        walkControlUI.OpenWindowBody();
                     }
                     else
                     {
@@ -330,6 +331,8 @@ namespace GISSample.PlateauAttributeDisplay
                         }
 
                         Camera.main.transform.SetPositionAndRotation(lastMainCameraPosition, lastMainCameraRotation);
+
+                        walkControlUI.CloseWindowBody();
                     }
                 };
             }
