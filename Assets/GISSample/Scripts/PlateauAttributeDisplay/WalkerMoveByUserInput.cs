@@ -16,6 +16,18 @@ namespace GISSample.PlateauAttributeDisplay
         private readonly CustomCinemachineInputProvider inputProviderComponent;
         private CameraMoveData cameraMoveSpeedData;
 
+        public Vector2 DeltaWASD { get => deltaWASD; set => deltaWASD = value; }
+        public float DeltaUpDown { get => deltaUpDown; set => deltaUpDown = value; }
+        public float WalkerMoveSpeedMultiplier { get; set; } = 1.0f;
+        public float CameraOffsetY
+        {
+            get
+            {
+                var transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
+                return transposer.m_FollowOffset.y;
+            }
+        }
+
         public WalkerMoveByUserInput(CinemachineVirtualCamera camera, GameObject walker)
         {
             this.camera = camera;
@@ -44,12 +56,13 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void Update(float deltaTime)
         {
-            var transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
-            walker.GetComponent<CharacterController>().Move(9.8f * cameraMoveSpeedData.walkerMoveSpeed * deltaTime * Vector3.down);
             if (IsActive)
             {
+                Debug.Log($"deltaWASD: {deltaWASD}, deltaUpDown: {deltaUpDown}");
+                var transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
+                walker.GetComponent<CharacterController>().Move(9.8f * deltaTime * Vector3.down);
                 MoveUpDown(cameraMoveSpeedData.walkerOffsetYSpeed * deltaUpDown * deltaTime, transposer);
-                MoveWASD(cameraMoveSpeedData.walkerMoveSpeed * deltaTime * deltaWASD);
+                MoveWASD(WalkerMoveSpeedMultiplier * cameraMoveSpeedData.walkerMoveSpeed * deltaTime * deltaWASD);
             }
         }
 

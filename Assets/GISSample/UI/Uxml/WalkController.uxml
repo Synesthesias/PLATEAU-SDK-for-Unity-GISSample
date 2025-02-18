@@ -1,0 +1,60 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
+    <Style src="project://database/Assets/GISSample/UI/Uxml/WalkController.uss?fileID=7433441132597879392&amp;guid=1bb559a333f4dfd48892e101c2ce7ee3&amp;type=3#WalkController" />
+    <ui:VisualElement name="WalkPanel" class="gis-background-window" style="justify-content: space-between;">
+        <ui:VisualElement name="HeightContainer" class="container">
+            <ui:Label tabindex="-1" text="高さ" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeightTitle" class="title" />
+            <ui:VisualElement name="Height" style="flex-direction: row; align-items: center; justify-content: flex-start; width: 120px; margin-right: 10px;">
+                <ui:Label tabindex="-1" text="1.7" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeightText" style="margin-top: 0; margin-right: 8px; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 24px; -unity-text-align: middle-center; -unity-font-style: bold; width: 60px;" />
+                <ui:Label tabindex="-1" text="m" parse-escape-sequences="true" display-tooltip-when-elided="true" name="m" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Exit" style="width: 153px; align-items: center;">
+                <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ExitButton" class="menu-unity-button" style="width: 95px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 40px; flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
+                    <ui:VisualElement name="ExitIcon" style="background-image: resource(&apos;img/Icon_exit&apos;); width: 18px; height: 18px; margin-right: 8px;" />
+                    <ui:Label tabindex="-1" text="終了" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ExitLabel" style="color: rgb(0, 55, 55); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="WalkContainer" class="container">
+            <ui:Label tabindex="-1" text="操作パネル" parse-escape-sequences="true" display-tooltip-when-elided="true" name="WalkTitle" class="title" />
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:VisualElement style="flex-direction: row; margin-bottom: 10px;">
+                    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="QButton" class="walk-button">
+                        <ui:VisualElement style="background-image: resource(&apos;img/arrow-bar-down&apos;); width: 24px; height: 24px;" />
+                        <ui:Label tabindex="-1" text="Q" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-grow: 1;" />
+                    </ui:Button>
+                    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="WButton" class="walk-button">
+                        <ui:VisualElement style="background-image: resource(&apos;img/arrow-up&apos;); width: 24px; height: 24px;" />
+                        <ui:Label tabindex="-1" text="W" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-grow: 1;" />
+                    </ui:Button>
+                    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="EButton" class="walk-button">
+                        <ui:VisualElement style="background-image: resource(&apos;img/arrow-bar-up&apos;); width: 24px; height: 24px;" />
+                        <ui:Label tabindex="-1" text="E" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-grow: 1;" />
+                    </ui:Button>
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-direction: row;">
+                    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="AButton" class="walk-button">
+                        <ui:VisualElement style="background-image: resource(&apos;img/arrow-left&apos;); width: 24px; height: 24px;" />
+                        <ui:Label tabindex="-1" text="A" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-grow: 1;" />
+                    </ui:Button>
+                    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="SButton" class="walk-button">
+                        <ui:VisualElement style="background-image: resource(&apos;img/arrow-back&apos;); width: 24px; height: 24px;" />
+                        <ui:Label tabindex="-1" text="S" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-grow: 1;" />
+                    </ui:Button>
+                    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="DButton" class="walk-button">
+                        <ui:VisualElement style="background-image: resource(&apos;img/arrow-right&apos;); width: 24px; height: 24px;" />
+                        <ui:Label tabindex="-1" text="D" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-grow: 1;" />
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="SpeedContainer" class="container" style="margin-bottom: 0;">
+            <ui:Label tabindex="-1" text="速度" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SpeedTitle" class="title" />
+            <ui:GroupBox name="SpeedGroupBox" style="flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                <ui:RadioButton name="Speedx1" value="true" text="x1" class="speed-button" style="border-top-left-radius: 20px; border-bottom-left-radius: 24px;" />
+                <ui:RadioButton name="Speedx2" text="x2" value="false" class="speed-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                <ui:RadioButton name="Speedx3" text="x3" value="false" class="speed-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" />
+            </ui:GroupBox>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
