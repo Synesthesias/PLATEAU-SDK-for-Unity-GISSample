@@ -26,6 +26,11 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 			vehicleButton.SetEnabled(enabled);
 		}
 
+		public void SetWalkerToggleOff()
+		{
+			walkerToggle.SetValueWithoutNotify(false);
+		}
+
 		// Start is called before the first frame update
 		private void Start()
 		{
