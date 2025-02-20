@@ -21,7 +21,7 @@
 #### ビルド済みのアプリを利用する場合
 - [リリースページ](https://github.com/Project-PLATEAU/PLATEAU-SDK-for-Unity-GISSample/releases)からアプリケーションをダウンロードできます。
 #### プロジェクトファイルを利用する場合
-- 本GitHubからUnityプロジェクトをダウンロードし、Unity 2021.3.35f1 で開きます。
+- 本GitHubからUnityプロジェクトをダウンロードし、Unity 2022.3.25f1 で開きます。
 - シーンファイル `Assets/GISSample/GISSampleScene`を開き、再生することでサンプルを実行できます。
 
 ### 操作方法と画面の説明
