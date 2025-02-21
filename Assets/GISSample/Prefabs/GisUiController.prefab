@@ -134,6 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8888060378605969892}
   - component: {fileID: 7328982412730064108}
+  - component: {fileID: 5742142818468892704}
   m_Layer: 0
   m_Name: GisUiController
   m_TagString: Untagged
@@ -192,6 +193,18 @@ MonoBehaviour:
   - {r: 0.9622642, g: 0.49806476, b: 0.49474904, a: 1}
   - {r: 0.9056604, g: 0.23495908, b: 0.23495908, a: 1}
   - {r: 0.9150943, g: 0, b: 0.46984702, a: 1}
+--- !u!114 &5742142818468892704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6362980509278895834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cfdc717fe70ef048b476d11b363d59e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7586384918805283575
 GameObject:
   m_ObjectHideFlags: 0

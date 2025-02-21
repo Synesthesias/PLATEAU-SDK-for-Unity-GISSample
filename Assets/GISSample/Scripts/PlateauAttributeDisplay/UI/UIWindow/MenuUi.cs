@@ -22,8 +22,9 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private Toggle textureSwitchToggle;
         public CameraPositionMemoryUi CameraPositionMemoryUi { get; private set; }
 
+		private ResolutionMonitor resolutionMonitor;
 
-        public void Init(SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, RenameCameraSlotUi renameCameraSlotUi, CameraPositionMemory cameraPositionMemory)
+		public void Init(SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, RenameCameraSlotUi renameCameraSlotUi, CameraPositionMemory cameraPositionMemory)
         {
 
 
@@ -57,7 +58,13 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
                 }
             });
             CameraPositionMemoryUi = new CameraPositionMemoryUi(cameraPositionMemory, uiRoot, renameCameraSlotUi);
-        }
+			resolutionMonitor = transform.parent.GetComponent<ResolutionMonitor>();
+			if (resolutionMonitor != null)
+			{
+				ResolutionChanged(Screen.width, Screen.height);
+				resolutionMonitor.OnResolutionChanged += ResolutionChanged;
+			}
+		}
 
         public void Update()
         {
@@ -83,5 +90,35 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         {
             lodSlider.RegisterValueChangedCallback(callback);
         }
-    }
+
+		private void ResolutionChanged(int width, int height)
+		{
+			if (uiDoc == null)
+			{
+				uiDoc = GetComponent<UIDocument>();
+			}
+			VisualElement window = uiDoc.rootVisualElement.Q<VisualElement>("ScrollView");
+			if (window != null)
+			{
+				float bottom = 15f;
+				float marginBottom = (10f + bottom) / height * 100f;
+				if (marginBottom < (10f + bottom) / 1080f * 100f)
+				{
+					marginBottom = (10f + bottom) / 1080f * 100f;
+				}
+
+				float windowHeight = 98f - marginBottom;
+				if (windowHeight > 98f)
+				{
+					windowHeight = 98f;
+				}
+				else if (windowHeight < 0)
+				{
+					windowHeight = 0;
+				}
+                Debug.Log("windowHeight: " + windowHeight);
+				window.style.height = new StyleLength(Length.Percent(windowHeight));
+			}
+		}
+	}
 }
