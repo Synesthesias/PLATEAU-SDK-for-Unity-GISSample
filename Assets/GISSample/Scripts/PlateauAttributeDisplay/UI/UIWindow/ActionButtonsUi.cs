@@ -16,6 +16,8 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 		public event Action<bool> OnWalkerToggle;
 		public event Action OnVehicleButtonClicked;
 
+		private ResolutionMonitor resolutionMonitor;
+
 		public void SetWalkerToggleEnabled(bool enabled)
 		{
 			walkerToggle.SetEnabled(enabled);
@@ -63,6 +65,31 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 				OnVehicleButtonClicked?.Invoke();
 			};
 			vehicleButton.SetEnabled(false);
+
+			resolutionMonitor = transform.parent.GetComponent<ResolutionMonitor>();
+			if (resolutionMonitor != null)
+			{
+				ResolutionChanged(Screen.width, Screen.height);
+				resolutionMonitor.OnResolutionChanged += ResolutionChanged;
+			}
+		}
+
+		private void ResolutionChanged(int width, int height)
+		{
+			if (uiDoc == null)
+			{
+				uiDoc = GetComponent<UIDocument>();
+			}
+			VisualElement buttons = uiDoc.rootVisualElement.Q<VisualElement>("Buttons");
+			if (buttons != null)
+			{
+				float marginBottom = 10f / height * 100f;
+				if(marginBottom < 1000f / 1080f)
+				{
+					marginBottom = 1000f / 1080f;
+				}
+				buttons.style.bottom = new StyleLength(Length.Percent(marginBottom));
+			}
 		}
 	}
 }

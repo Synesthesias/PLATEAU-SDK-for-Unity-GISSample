@@ -14,7 +14,9 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private Dictionary<string, bool> walkControlStates;
         private Label walkControllerHeightLabe;
 
-        public string WalkControllerHeightText
+		private ResolutionMonitor resolutionMonitor;
+
+		public string WalkControllerHeightText
         {
             get => walkControllerHeightLabe.text;
             set => walkControllerHeightLabe.text = value;
@@ -116,7 +118,13 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             walkControllerHeightLabe = windowBody.Q<Label>("HeightText");
 
             CloseWindowBody();
-        }
+
+			if (resolutionMonitor != null)
+			{
+				ResolutionChanged(Screen.width, Screen.height);
+				resolutionMonitor.OnResolutionChanged += ResolutionChanged;
+			}
+		}
 
         public void OpenWindowBody()
         {
@@ -138,5 +146,24 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
                 }
             }
         }
-    }
+
+		private void ResolutionChanged(int width, int height)
+		{
+            if (uiDoc == null)
+            {
+                uiDoc = GetComponent<UIDocument>();
+            }
+			VisualElement window = uiDoc.rootVisualElement.Q<VisualElement>("WalkPanel");
+			if (window != null)
+			{
+				float marginBottom = 118f / height * 100f;
+				if (marginBottom < 11800f / 1080f)
+				{
+					marginBottom = 11800f / 1080f;
+				}
+				window.style.bottom = new StyleLength(Length.Percent(marginBottom));
+			}
+		}
+
+	}
 }
