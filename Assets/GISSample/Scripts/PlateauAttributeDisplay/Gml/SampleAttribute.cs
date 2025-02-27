@@ -160,9 +160,15 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     
                     if (attrs.TryGetValue("uro:description", out var floodingDescription))
                     {
-                        var floodingInfo = new FloodingAreaInfo(new FloodingTitle(floodingDescription.StringValue, adminName, scaleName),
-                            FloodingRank.FromString(floodingBuildingRank.StringValue));
-                        infos.Add(floodingInfo);
+                        // 神田川bldgデータが少なすぎてあまり見られないのでスキップ
+                        bool shouldSkip = floodingDescription.StringValue.Contains("神田川");
+                        if (!shouldSkip)
+                        {
+                            var floodingInfo = new FloodingAreaInfo(new FloodingTitle(floodingDescription.StringValue, adminName, scaleName),
+                                FloodingRank.FromString(floodingBuildingRank.StringValue));
+                            infos.Add(floodingInfo);
+                        }
+                        
                     }
                 }
                 
