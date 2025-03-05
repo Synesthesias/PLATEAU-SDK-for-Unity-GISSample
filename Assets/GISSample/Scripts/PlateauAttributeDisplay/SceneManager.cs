@@ -172,16 +172,16 @@ namespace GISSample.PlateauAttributeDisplay
             plateauSandboxCameraManager = FindObjectOfType<PlateauSandboxCameraManager>();
             if (actionButtonsUi != null)
             {
-                actionButtonsUi.OnVehicleToggle += (value) =>
+                actionButtonsUi.OnVehicleToggle += (isActive) =>
                 {
-                    if (value)
+                    if (isActive)
                     {
                         // ランダムで車を選んで１人称視点に
-                        var traffic = GetRandomTraffic();
-                        if (traffic != null)
+                        var vehicle = GetRandomVehicle();
+                        if (vehicle != null)
                         {
-                            var trafficColliders = traffic.GetComponentsInChildren<Collider>(true);
-                            if (trafficColliders.Length > 0)
+                            var trafficColliders = vehicle.GetComponentsInChildren<Collider>(true);
+                            if (trafficColliders?.Length > 0)
                             {
                                 plateauSandboxCameraManager.SetCameraTarget(trafficColliders[0]);
                             }
@@ -384,7 +384,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// ランダムで取得した車両のオブジェクト
         /// </summary>
         /// <returns></returns>
-        public GameObject GetRandomTraffic()
+        private GameObject GetRandomVehicle()
         {
             var traffics = GameObject.FindObjectsOfType<PlateauSandboxTrafficMovement>();
             if (traffics == null || traffics.Length == 0)
