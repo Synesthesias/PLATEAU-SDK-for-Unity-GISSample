@@ -89,13 +89,31 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 if (plateauSandboxCameraManager.CurrentCameraMode == PlateauSandboxCameraMode.None)
                 {
+                    if (actionButtonsUi.IsWalkerActive)
+                    {
+                        // 歩行時
+                        actionButtonsUi.SetVehicleToggleEnabled(false);
+                        return;
+                    }
+                    
+                    // 俯瞰視点
+                    if (actionButtonsUi.IsVehicleActive)
+                    {
+                        actionButtonsUi.SetVehicleToggleOff();
+                    }
                     actionButtonsUi.SetWalkerToggleEnabled(true);
-                    actionButtonsUi.SetVehicleToggleEnabled(false);
+                    actionButtonsUi.SetVehicleToggleEnabled(true);
                 }
                 else
                 {
+                    // 車両視点時
+                    if (!actionButtonsUi.IsVehicleActive)
+                    {
+                        // 車両を直接指定時。車両ボタンをアクティブにする
+                        actionButtonsUi.SetVehicleToggleOn();
+                    }
+                    
                     actionButtonsUi.SetWalkerToggleEnabled(false);
-                    actionButtonsUi.SetVehicleToggleEnabled(true);
                     walkControlUI.CloseWindowBody();
                 }
             }
@@ -154,9 +172,26 @@ namespace GISSample.PlateauAttributeDisplay
             plateauSandboxCameraManager = FindObjectOfType<PlateauSandboxCameraManager>();
             if (actionButtonsUi != null)
             {
-                actionButtonsUi.OnVehicleButtonClicked += () =>
+                actionButtonsUi.OnVehicleToggle += (value) =>
                 {
-                    if (plateauSandboxCameraManager != null)
+                    if (value)
+                    {
+                        // ランダムで車を選んで１人称視点に
+                        var traffic = GetRandomTraffic();
+                        if (traffic != null)
+                        {
+                            var trafficColliders = traffic.GetComponentsInChildren<Collider>(true);
+                            if (trafficColliders.Length > 0)
+                            {
+                                plateauSandboxCameraManager.SetCameraTarget(trafficColliders[0]);
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogWarning("車両が見つかりませんでした");
+                        }
+                    }
+                    else
                     {
                         plateauSandboxCameraManager.SwitchCamera(PlateauSandboxCameraMode.None);
                     }
@@ -343,6 +378,28 @@ namespace GISSample.PlateauAttributeDisplay
                     }
                 };
             }
+        }
+        
+        /// <summary>
+        /// ランダムで取得した車両のオブジェクト
+        /// </summary>
+        /// <returns></returns>
+        public GameObject GetRandomTraffic()
+        {
+            var traffics = GameObject.FindObjectsOfType<PlateauSandboxTrafficMovement>();
+            if (traffics == null || traffics.Length == 0)
+            {
+                return null;
+            }
+            
+            // 1台ランダムで取得
+            var traffic = traffics[Random.Range(0, traffics.Length)];
+            if (traffic == null)
+            {
+                return null;
+            }
+
+            return traffic.gameObject;
         }
     }
 }
