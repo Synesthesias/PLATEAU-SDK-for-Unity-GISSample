@@ -11,10 +11,12 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 		private Button helpButton;
 		private Button quitButton;
 		private Toggle walkerToggle;
-		private Button vehicleButton;
+		public bool IsWalkerActive => walkerToggle.value;
+		private Toggle vehicleToggle;
+		public bool IsVehicleActive => vehicleToggle.value;
 
 		public event Action<bool> OnWalkerToggle;
-		public event Action OnVehicleButtonClicked;
+		public event Action<bool> OnVehicleToggle;
 
 		private ResolutionMonitor resolutionMonitor;
 
@@ -25,12 +27,22 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 
 		public void SetVehicleToggleEnabled(bool enabled)
 		{
-			vehicleButton.SetEnabled(enabled);
+			vehicleToggle.SetEnabled(enabled);
 		}
 
 		public void SetWalkerToggleOff()
 		{
 			walkerToggle.SetValueWithoutNotify(false);
+		}
+
+		public void SetVehicleToggleOn()
+		{
+			vehicleToggle.SetValueWithoutNotify(true);
+		}
+
+		public void SetVehicleToggleOff()
+		{
+			vehicleToggle.SetValueWithoutNotify(false);
 		}
 
 		// Start is called before the first frame update
@@ -59,12 +71,11 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 				OnWalkerToggle?.Invoke(evt.newValue);
 			});
 
-			vehicleButton = uiDoc.rootVisualElement.Q<Button>("VehicleCameraButton");
-			vehicleButton.clicked += () =>
+			vehicleToggle = uiDoc.rootVisualElement.Q<Toggle>("VehicleCameraToggle");
+			vehicleToggle.RegisterValueChangedCallback((evt) =>
 			{
-				OnVehicleButtonClicked?.Invoke();
-			};
-			vehicleButton.SetEnabled(false);
+				OnVehicleToggle?.Invoke(evt.newValue);
+			});
 
 			resolutionMonitor = transform.parent.GetComponent<ResolutionMonitor>();
 			if (resolutionMonitor != null)
