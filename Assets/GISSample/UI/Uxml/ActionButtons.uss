@@ -131,15 +131,30 @@
     -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
-#VehicleCameraButton {
+#VehicleCameraToggle #unity-checkmark {
+    background-image: resource('img/Icon_car_off');
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+#VehicleCameraToggle:checked #unity-checkmark {
     background-image: resource('img/Icon_car_on');
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
-#VehicleCameraButton:disabled {
-    background-image: resource('img/Icon_car_disable');
-}
-
-#VehicleCameraButton:hover {
+#VehicleCameraToggle:hover #unity-checkmark {
     background-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(229, 229, 229);
+}
+
+#VehicleCameraToggle:disabled #unity-checkmark {
+    background-image: resource('img/Icon_car_disable');
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
+using PlateauToolkit.Sandbox;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -107,7 +108,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             colorChangerByAttribute.Redraw();
 
             // 選択されたオブジェクトの色を変更
-            var nameKey = trans.parent.parent.name;
+            var nameKey = trans.parent?.parent?.name;
             var cityObj = sceneManager.GetCityObject(nameKey, trans.name);
             if (cityObj == null)
             {
@@ -122,7 +123,6 @@ namespace GISSample.PlateauAttributeDisplay.UI
             var data = GetAttribute(nameKey, trans.name);
             attrUi.SetAttributes(data);
         }
-
 
         /// <summary>
         /// マウスの位置がUI上にあるかどうか
