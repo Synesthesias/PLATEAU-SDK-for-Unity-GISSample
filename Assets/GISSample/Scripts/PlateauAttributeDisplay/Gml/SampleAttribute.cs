@@ -111,32 +111,33 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         private void GetFloodingAreaInfosInner(CityObjectList.Attributes attrs, List<FloodingAreaInfo> infos)
         {
             // ケース1: fldデータのケースであり、属性情報のキー "gml:name" に "○○川流域～" と書いてあり、 "uro:floodingRiskAttribute" に浸水ランクが書いてあるケース
-            if (attrs.TryGetValue("gml:name", out var floodingGmlNameVal))
+            if (attrs.TryGetValue("uro:WaterBodyRiverFloodingRiskAttribute", out var floodingRiskAttributeVal))
             {
-                if (floodingGmlNameVal.StringValue.Contains("流域"))
+                if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:description", out var description))
                 {
-                    if (attrs.TryGetValue("uro:floodingRiskAttribute", out var floodingRisk))
+                    if (!description.StringValue.Contains("流域"))
                     {
-                        string adminName = "";
-                        if (floodingRisk.AttributesMapValue.TryGetValue("uro:adminType", out var adminAttr))
-                        {
-                            adminName = adminAttr.StringValue;
-                        }
+                        return;
+                    }
 
-                        string scaleName = "";
-                        if (floodingRisk.AttributesMapValue.TryGetValue("uro:scale", out var scaleAttr))
-                        {
-                            scaleName = scaleAttr.StringValue;
-                        }
-                        
-                        if (floodingRisk.AttributesMapValue.TryGetValue("uro:rank", out var rankVal))
-                        {
-                            var rankStr = rankVal.StringValue;
-                            FloodingRank rank = FloodingRank.FromString(rankStr);
-                            var floodingInfo =  new FloodingAreaInfo(new FloodingTitle(floodingGmlNameVal.StringValue, adminName, scaleName), rank);
-                            infos.Add(floodingInfo);
-                        }
-                        
+                    string adminName = "";
+                    if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:adminType", out var adminAttr))
+                    {
+                        adminName = adminAttr.StringValue;
+                    }
+
+                    string scaleName = "";
+                    if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:scale", out var scaleAttr))
+                    {
+                        scaleName = scaleAttr.StringValue;
+                    }
+                
+                    if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:rank", out var rankVal))
+                    {
+                        var rankStr = rankVal.StringValue;
+                        FloodingRank rank = FloodingRank.FromString(rankStr);
+                        var floodingInfo =  new FloodingAreaInfo(new FloodingTitle(description.StringValue, adminName, scaleName), rank);
+                        infos.Add(floodingInfo);
                     }
                 }
             }
@@ -150,6 +151,12 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             if (attrs.TryGetValue("uro:BuildingRiverFloodingRiskAttribute", out var floodingAttribute))
             {
                 var flood = GetBuildingFloodingAttr(floodingAttribute.AttributesMapValue);
+                if(flood != null) infos.Add(flood);
+            }
+            // ケース4: ケース3の親キーの2のバージョン。
+            if (attrs.TryGetValue("uro:BuildingRiverFloodingRiskAttribute2", out var floodingAttribute2))
+            {
+                var flood = GetBuildingFloodingAttr(floodingAttribute2.AttributesMapValue);
                 if(flood != null) infos.Add(flood);
             }
         }
