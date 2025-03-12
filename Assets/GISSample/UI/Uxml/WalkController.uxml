@@ -3,8 +3,8 @@
     <Style src="project://database/Assets/GISSample/UI/Uxml/WalkController.uss?fileID=7433441132597879392&amp;guid=1bb559a333f4dfd48892e101c2ce7ee3&amp;type=3#WalkController" />
     <ui:VisualElement name="WalkPanel" class="gis-background-window" style="justify-content: space-between; bottom: 118px;">
         <ui:VisualElement name="HeightContainer" class="container">
-            <ui:Label tabindex="-1" text="高さ" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeightTitle" class="title" />
-            <ui:VisualElement name="Height" style="flex-direction: row; align-items: center; justify-content: flex-start; width: 120px; margin-right: 10px;">
+            <ui:Label tabindex="-1" text="高さ" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeightTitle" class="title" style="visibility: hidden;" />
+            <ui:VisualElement name="Height" style="flex-direction: row; align-items: center; justify-content: flex-start; width: 120px; margin-right: 10px; visibility: hidden;">
                 <ui:Label tabindex="-1" text="1.7" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeightText" style="margin-top: 0; margin-right: 8px; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 24px; -unity-text-align: middle-center; -unity-font-style: bold; width: 60px;" />
                 <ui:Label tabindex="-1" text="m" parse-escape-sequences="true" display-tooltip-when-elided="true" name="m" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
             </ui:VisualElement>
