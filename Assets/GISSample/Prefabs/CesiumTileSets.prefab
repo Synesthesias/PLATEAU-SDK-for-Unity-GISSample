@@ -295,7 +295,7 @@ MonoBehaviour:
   _ionAssetID: 770371
   _ionAccessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5N2UyMjcwOS00MDY1LTQxYjEtYjZjMy00YTU0ZTg5MmViYWQiLCJpZCI6ODAzMDYsImlhdCI6MTY0Mjc0ODI2MX0.dkwAL1CcljUV7NA7fDbhXXnmyZQU_c-G5zRx8PtEcxE
   _ionServer: {fileID: 11400000, guid: b1372a43e21803c4b8a3d5c7e9321008, type: 2}
-  _maximumScreenSpaceError: 100
+  _maximumScreenSpaceError: 80
   _preloadAncestors: 1
   _preloadSiblings: 1
   _forbidHoles: 0

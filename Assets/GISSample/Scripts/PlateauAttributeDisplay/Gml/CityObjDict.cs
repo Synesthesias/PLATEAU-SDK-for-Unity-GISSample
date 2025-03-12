@@ -38,7 +38,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                         {
                             dict[id] = new SemanticCityObject(cityObjComponent, this);
                         }
-                    
                     }
 
                     if (dict.TryGetValue(id, out var o))
