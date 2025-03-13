@@ -34,14 +34,14 @@ namespace GISSample.PlateauAttributeDisplay
             // 都市モデルをCesiumGeoReferenceの子にします
             var cesiumGeoReference = FindObjectOfType<CesiumGeoreference>();
             target.transform.parent = cesiumGeoReference.transform;
-            target.AddComponent<CesiumGlobeAnchor>();
+            target.gameObject.AddComponent<CesiumGlobeAnchor>();
         
             // Cesiumとの位置合わせをします。
             // 内容はPlateauToolkitMapsWindowとほぼ同じです。
             var geoRef = target.GeoReference;
             GeoCoordinate geoCoord = geoRef.Unproject(new PlateauVector3d(0, 0, 0));
             var cityModelPosition = new double2 { x = geoCoord.Latitude, y = geoCoord.Longitude };
-            string geoidRequestUri = "http://vldb.gsi.go.jp/sokuchi/surveycalc/geoid/calcgh/cgi/geoidcalc.pl?outputType=json" + "&latitude=" + cityModelPosition.x +
+            string geoidRequestUri = "https://vldb.gsi.go.jp/sokuchi/surveycalc/geoid/calcgh/cgi/geoidcalc.pl?outputType=json" + "&latitude=" + cityModelPosition.x +
                                      "&longitude=" + cityModelPosition.y;
             yield return StartCoroutine(RequestGeoidHeightToUri(geoidRequestUri, 
                 (height) => MoveCityModel(cityModelPosition, height, target)));

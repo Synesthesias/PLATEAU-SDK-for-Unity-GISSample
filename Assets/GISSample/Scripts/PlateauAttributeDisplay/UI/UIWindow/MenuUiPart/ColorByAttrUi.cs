@@ -21,7 +21,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
 
         /// <summary> 浸水色分けの選択肢（浸水区域） </summary>
         private readonly FloodingTitleSet floodingTitlesFld;
-        
+
         private readonly ColorChangerByAttribute colorChangerByAttribute;
 
         public ColorByAttrUi(VisualElement menuRoot, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, ColorChangerByAttribute colorChangerByAttribute)
@@ -33,7 +33,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             radioButtonFld = menuRoot.Q<RadioButtonGroup>("GroupFlooding");
             radioButtonBuilding.RegisterValueChangedCallback(OnRadioButtonBuildingChanged);
             radioButtonFld.RegisterValueChangedCallback(OnRadioButtonFldChanged);
-            
+
             if (this.floodingTitlesBldg.Count > 0)
             {
                 AddRadioButtonChoices(radioButtonBuilding, floodingTitlesBldg.TitleStrings);
@@ -63,6 +63,10 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             // 0: 色分けなし
             // 1: 高さ
             // 2～: 浸水ランク
+            if (e.newValue < 0)
+            {
+                return;
+            }
             if (e.newValue < 2)
             {
                 selectedBuildingColorType = (BuildingColorType)e.newValue;
@@ -94,6 +98,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             }
             colorChangerByAttribute.ChangeFlooding(selectedFloodingTitleFld);
         }
-        
+
     }
 }

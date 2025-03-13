@@ -1,20 +1,25 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
-    <ui:VisualElement class="gis-background-window" style="position: absolute; top: 50%; translate: -50% -50%; left: 50%;">
-        <ui:Label text="カメラのスロット名を変更" display-tooltip-when-elided="true" class="header" />
-        <ui:Label text="スロット名を入力してください" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
-        <ui:VisualElement style="flex-direction: row;">
-            <ui:Label text="変更前" display-tooltip-when-elided="true" />
-            <ui:Label text="スロット1" display-tooltip-when-elided="true" name="PrevSlotNameLabel" />
-        </ui:VisualElement>
-        <ui:VisualElement style="flex-direction: row;">
-            <ui:Label text="変更後" display-tooltip-when-elided="true" />
-            <ui:TextField picking-mode="Ignore" value="新スロット名" text="新スロット名" name="TextFieldSlotName" style="flex-grow: 1; -unity-font: url(&apos;project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular.ttf?fileID=12800000&amp;guid=ffd8cfdbf92f71544a9870f76c55a3a2&amp;type=3#MPLUSRounded1c-Regular&apos;); background-color: rgb(0, 0, 0); -unity-font-definition: url(&apos;project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&amp;guid=16ebc954c776e604e8d8693a34969fdb&amp;type=2#MPLUSRounded1c-Regular SDF&apos;);" />
-        </ui:VisualElement>
-        <ui:Label text="n文字以内で入力してください（現在m文字）" display-tooltip-when-elided="true" name="LabelWarningNameLength" style="-unity-text-align: upper-center; color: rgb(255, 153, 153);" />
-        <ui:VisualElement style="flex-direction: row; flex-grow: 0;">
-            <ui:Button text="キャンセル" display-tooltip-when-elided="true" name="CancelButton" class="menu-unity-button" style="font-size: 10px;" />
-            <ui:Button text="決定" display-tooltip-when-elided="true" name="OkButton" class="menu-unity-button" style="flex-grow: 1;" />
+    <Style src="project://database/Assets/GISSample/UI/Uxml/RenameCameraSlot.uss?fileID=7433441132597879392&amp;guid=b3b6e49c8e578984ba8f4cee50cc843b&amp;type=3#RenameCameraSlot" />
+    <ui:VisualElement name="RenameCameraWindow" class="gis-background-window" style="position: absolute; top: 50%; translate: -50% -50%; left: 50%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 13px; padding-bottom: 13px; padding-right: 11px; padding-left: 11px;">
+        <ui:VisualElement name="Content" style="flex-grow: 1;">
+            <ui:Label text="カメラのスロット名を変更" display-tooltip-when-elided="true" name="Title" />
+            <ui:Label text="カメラのスロット名を入力してください" display-tooltip-when-elided="true" name="Subtitle" style="-unity-text-align: upper-center;" />
+            <ui:VisualElement name="SlotElements" style="flex-grow: 1; margin-top: 24px; margin-bottom: 24px;">
+                <ui:VisualElement name="PrevSlot" class="slot-label-name" style="flex-direction: row;">
+                    <ui:Label text="変更前" display-tooltip-when-elided="true" name="PrevSlotNameLabel" class="slot-name-label" />
+                    <ui:Label text="スロット1" display-tooltip-when-elided="true" name="PrevSlotName" class="slot-name" />
+                </ui:VisualElement>
+                <ui:VisualElement name="PostSlot" class="slot-label-name" style="flex-direction: row; align-items: center;">
+                    <ui:Label text="変更後" display-tooltip-when-elided="true" name="SlotNameLabel" class="slot-name-label" />
+                    <ui:TextField picking-mode="Ignore" value="新スロット名" text="新スロット名" name="SlotNameTextField" style="flex-grow: 1; -unity-font: url(&quot;project://database/Packages/com.synesthesias.plateau-unity-sdk/Resources/Fonts/MPLUSRounded1c-Regular.ttf?fileID=12800000&amp;guid=ffd8cfdbf92f71544a9870f76c55a3a2&amp;type=3#MPLUSRounded1c-Regular&quot;); background-color: rgb(0, 0, 0); -unity-font-definition: url(&quot;project://database/Assets/GISSample/Fonts/MPLUSRounded1c-Regular%20SDF.asset?fileID=11400000&amp;guid=16ebc954c776e604e8d8693a34969fdb&amp;type=2#MPLUSRounded1c-Regular SDF&quot;);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Label text="n文字以内で入力してください（現在m文字）" display-tooltip-when-elided="true" name="LabelWarningNameLength" style="-unity-text-align: upper-center; color: rgb(255, 153, 153);" />
+            <ui:VisualElement name="Actions" style="flex-direction: row; justify-content: center;">
+                <ui:Button text="キャンセル" display-tooltip-when-elided="true" name="CancelButton" class="menu-unity-button action-button" style="color: rgb(128, 213, 212); background-color: rgba(255, 255, 255, 0); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(136, 147, 146); border-right-color: rgb(136, 147, 146); border-top-color: rgb(136, 147, 146); border-bottom-color: rgb(136, 147, 146);" />
+                <ui:Button text="決定" display-tooltip-when-elided="true" name="OkButton" class="menu-unity-button action-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,13 +1,16 @@
 .attribute {
     width: 20%;
-    height: 95%;
     right: 0;
     position: absolute;
+    margin-bottom: 1%;
+    flex-grow: 1;
+    height: 88%;
+    bottom: 94px;
 }
 
 .key-value {
     white-space: normal;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: nowrap;
     -unity-text-align: upper-left;
     justify-content: flex-start;
@@ -17,21 +20,61 @@
 }
 
 .key {
-    width: 50%;
+    width: 100%;
     white-space: normal;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
     padding-right: 5px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(111, 121, 121);
+    border-right-color: rgb(111, 121, 121);
+    border-top-color: rgb(111, 121, 121);
+    border-bottom-color: rgb(111, 121, 121);
 }
 
 .value {
-    width: 50%;
+    width: 100%;
     white-space: normal;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 10px;
+}
+
+.attribute-header {
+    flex-direction: row;
+    align-self: auto;
+}
+
+.attribute-header .header {
+    margin-bottom: 14px;
+}
+
+.gis-background-window.attribute {
+    padding-top: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+}
+
+#ScrollView {
+    height: 100%;
+}
+
+#ScrollView #unity-content-viewport {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(111, 121, 121);
+    border-right-color: rgb(111, 121, 121);
+    border-top-color: rgb(111, 121, 121);
+    border-bottom-color: rgb(111, 121, 121);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
 }

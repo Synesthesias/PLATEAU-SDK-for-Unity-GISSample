@@ -13,14 +13,16 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private void Start()
         {
             uiDoc = GetComponent<UIDocument>();
-            windowBody = uiDoc.rootVisualElement.Q("guide-body");
-            openCloseButton = uiDoc.rootVisualElement.Q<Button>("guide-open-close-button");
+            //windowBody = uiDoc.rootVisualElement.Q("guide-body");
+            windowBody = uiDoc.rootVisualElement.Query();
+			openCloseButton = uiDoc.rootVisualElement.Q<Button>("guide-open-close-button");
             CloseWindowBody();
-            openCloseButton.clicked += OnOpenCloseButtonClick;
+            //openCloseButton.clicked += OnOpenCloseButtonClick;
+            openCloseButton.clicked += CloseWindowBody;
             
         }
 
-        private void OnOpenCloseButtonClick()
+        public void OnOpenCloseButtonClick()
         {
             if (isWindowBodyOpen)
             {
@@ -36,14 +38,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         {
             isWindowBodyOpen = true;
             windowBody.style.display = DisplayStyle.Flex;
-            openCloseButton.text = "閉じる";
+            //openCloseButton.text = "閉じる";
         }
 
         private void CloseWindowBody()
         {
             isWindowBodyOpen = false;
             windowBody.style.display = DisplayStyle.None;
-            openCloseButton.text = "開く";
+            //openCloseButton.text = "開く";
         }
     }
 }

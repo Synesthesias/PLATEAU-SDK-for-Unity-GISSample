@@ -18,20 +18,20 @@ public class TabUi
     {
         this.tabRoot = tabRoot;
         var tabs = GetAllTabs().ToList();
-        
+
         // タブとコンテンツを紐付けます。
         // タブの順番と、".tab-contents"の子の".tab-content"の順番が一致するものと過程して紐付けます。
         var contentsRoot = tabRoot.Q(className: ClassNameContentRoot);
         var contents = contentsRoot.Children().Where(e => e.ClassListContains(ClassNameContent)).ToList();
         tabToContent = new();
-        for (int i = 0; i < tabs.Count; i++)
+        for (int i = 0; i < tabs.Count && i < contents.Count; i++)
         {
             tabToContent.Add(tabs[i], contents[i]);
         }
-        
+
         // タブクリック時のコールバックを追加
         tabs.ForEach(tab => tab.RegisterCallback<ClickEvent>(OnTabClicked));
-        
+
         ChangeSelectedTab(tabs.First());
     }
 
@@ -64,5 +64,5 @@ public class TabUi
             }
         }
     }
-    
+
 }

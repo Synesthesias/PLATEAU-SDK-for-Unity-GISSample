@@ -1,14 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/GISSample/UI/Uxml/Attribute.uss?fileID=7433441132597879392&amp;guid=50dd6a51c688f59488ddf4621b943098&amp;type=3#Attribute" />
     <Style src="project://database/Assets/GISSample/UI/Uxml/GisUiStyleCommon.uss?fileID=7433441132597879392&amp;guid=5003ef441f4ce7e4881f663b95f4df1d&amp;type=3#GisUiStyleCommon" />
-    <ui:ScrollView class="attribute gis-background-window" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; top: 2.5%; right: 1%;">
-        <ui:VisualElement name="Header" class="header">
-            <ui:Label text="属性情報" display-tooltip-when-elided="true" name="Header" class="header-inner-text" />
-            <ui:Button text="閉じる" display-tooltip-when-elided="true" name="attr-open-close-button" class="open-close-button" style="top: 9px;" />
+    <ui:VisualElement name="Window" class="attribute gis-background-window" style="flex-grow: 1; top: -10px; bottom: auto;">
+        <ui:VisualElement name="Header" class="attribute-header">
+            <ui:Label text="属性情報" display-tooltip-when-elided="true" name="Header" class="header" style="flex-grow: 1;" />
+            <ui:Button display-tooltip-when-elided="true" name="attr-open-close-button" class="open-close-button" style="top: 2px;" />
         </ui:VisualElement>
-        <ui:VisualElement class="key-value">
-            <ui:Label text="Label" display-tooltip-when-elided="true" class="key" />
-            <ui:Label text="Label" display-tooltip-when-elided="true" class="value" />
-        </ui:VisualElement>
-    </ui:ScrollView>
+        <ui:ScrollView name="ScrollView">
+            <ui:VisualElement class="key-value">
+                <ui:Label text="Label" display-tooltip-when-elided="true" class="key" />
+                <ui:Label text="Label" display-tooltip-when-elided="true" class="value" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
 </ui:UXML>

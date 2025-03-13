@@ -24,22 +24,22 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void OnRainSliderChanged(ChangeEvent<float> e)
         {
-            environmentController.Rain = e.newValue;
+            environmentController.m_Rain = e.newValue;
         }
 
         private void OnSnowSliderChanged(ChangeEvent<float> e)
         {
-            environmentController.Snow = e.newValue;
+            environmentController.m_Snow = e.newValue;
         }
 
         private void OnCloudySliderChanged(ChangeEvent<float> e)
         {
-            environmentController.Cloud = e.newValue;
+            environmentController.m_Cloud = e.newValue;
         }
 
         private void OnCloudIntensitySliderChanged(ChangeEvent<float> e)
         {
-            environmentController.CloudIntensity = e.newValue;
+            environmentController.m_Cloud = e.newValue;
         }
         
     }
