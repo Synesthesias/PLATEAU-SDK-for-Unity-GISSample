@@ -20,14 +20,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private CameraPositionMemoryUi cameraPositionMemoryUi;
 
         private const int MaxNameLength = 10;
-        
+
         public void Init(CameraPositionMemory cameraPositionMemoryArg, CameraPositionMemoryUi cameraPositionMemoryUiArg)
         {
             cameraPositionMemory = cameraPositionMemoryArg;
             uiDoc = GetComponent<UIDocument>();
             var uiRoot = uiDoc.rootVisualElement;
-            prevSlotNameLabel = uiRoot.Q<Label>("PrevSlotNameLabel");
-            nextSlotNameTextField = uiRoot.Q<TextField>("TextFieldSlotName");
+            prevSlotNameLabel = uiRoot.Q<Label>("PrevSlotName");
+            nextSlotNameTextField = uiRoot.Q<TextField>("SlotNameTextField");
             okButton = uiRoot.Q<Button>("OkButton");
             cancelButton = uiRoot.Q<Button>("CancelButton");
             labelWarningNameLength = uiRoot.Q<Label>("LabelWarningNameLength");
@@ -37,7 +37,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             nextSlotNameTextField.RegisterValueChangedCallback(OnChangedNameField);
 
             cameraPositionMemoryUi = cameraPositionMemoryUiArg;
-            
+
             HideWindow();
         }
 
@@ -55,7 +55,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             var prevSlot = cameraPositionMemory.GetSlotData(slotId);
             string nextSlotName = nextSlotNameTextField.value;
             cameraPositionMemory.SetSlotData(slotId, new SlotData(prevSlot.Position, prevSlot.Rotation, prevSlot.IsSaved, nextSlotName));
-            
+
             cameraPositionMemoryUi.UpdateButtonState();
             HideWindow();
         }
@@ -95,5 +95,5 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             GISCameraMove.IsKeyboardActive = true;
         }
     }
-    
+
 }

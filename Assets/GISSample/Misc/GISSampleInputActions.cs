@@ -302,6 +302,140 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""WalkerMove"",
+            ""id"": ""8367af48-57aa-42c0-a236-5d2f6753f6cf"",
+            ""actions"": [
+                {
+                    ""name"": ""UpDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""190850b3-c77c-4df1-8e43-3f43b172caa8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""type"": ""Value"",
+                    ""id"": ""6778d055-17b0-4792-aa52-45a6ef80328f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f02cd82-2b2c-4d5e-b346-f76e4707cec4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d098dca9-2272-4d39-bb70-9ee3ad4e0335"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""1256bded-1352-419c-a4c1-cb1bac5e20b5"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""b606625f-01f9-41d2-b0a3-c49f656a8d36"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""622aafd4-87ad-44f1-8c34-2cba5d6a70cc"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASD"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e1dd4446-2fb0-4eb7-9529-0d5733c013f2"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""0b034ecb-db1e-4dbd-bc28-316a44e862b7"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f47abd5f-a684-4eb5-bd26-a5a6d6a59637"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7a653eba-8d73-44c2-adcb-86909fd7aafd"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ac27e01-1147-4b5d-bad9-33774b69dc0a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -327,6 +461,11 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
         m_GISSample_ZoomCamera = m_GISSample.FindAction("ZoomCamera", throwIfNotFound: true);
         m_GISSample_SelectObject = m_GISSample.FindAction("SelectObject", throwIfNotFound: true);
         m_GISSample_Click = m_GISSample.FindAction("Click", throwIfNotFound: true);
+        // WalkerMove
+        m_WalkerMove = asset.FindActionMap("WalkerMove", throwIfNotFound: true);
+        m_WalkerMove_UpDown = m_WalkerMove.FindAction("UpDown", throwIfNotFound: true);
+        m_WalkerMove_WASD = m_WalkerMove.FindAction("WASD", throwIfNotFound: true);
+        m_WalkerMove_RightClick = m_WalkerMove.FindAction("RightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -478,6 +617,68 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
         }
     }
     public GISSampleActions @GISSample => new GISSampleActions(this);
+
+    // WalkerMove
+    private readonly InputActionMap m_WalkerMove;
+    private List<IWalkerMoveActions> m_WalkerMoveActionsCallbackInterfaces = new List<IWalkerMoveActions>();
+    private readonly InputAction m_WalkerMove_UpDown;
+    private readonly InputAction m_WalkerMove_WASD;
+    private readonly InputAction m_WalkerMove_RightClick;
+    public struct WalkerMoveActions
+    {
+        private @GISSampleInputActions m_Wrapper;
+        public WalkerMoveActions(@GISSampleInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UpDown => m_Wrapper.m_WalkerMove_UpDown;
+        public InputAction @WASD => m_Wrapper.m_WalkerMove_WASD;
+        public InputAction @RightClick => m_Wrapper.m_WalkerMove_RightClick;
+        public InputActionMap Get() { return m_Wrapper.m_WalkerMove; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WalkerMoveActions set) { return set.Get(); }
+        public void AddCallbacks(IWalkerMoveActions instance)
+        {
+            if (instance == null || m_Wrapper.m_WalkerMoveActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_WalkerMoveActionsCallbackInterfaces.Add(instance);
+            @UpDown.started += instance.OnUpDown;
+            @UpDown.performed += instance.OnUpDown;
+            @UpDown.canceled += instance.OnUpDown;
+            @WASD.started += instance.OnWASD;
+            @WASD.performed += instance.OnWASD;
+            @WASD.canceled += instance.OnWASD;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+        }
+
+        private void UnregisterCallbacks(IWalkerMoveActions instance)
+        {
+            @UpDown.started -= instance.OnUpDown;
+            @UpDown.performed -= instance.OnUpDown;
+            @UpDown.canceled -= instance.OnUpDown;
+            @WASD.started -= instance.OnWASD;
+            @WASD.performed -= instance.OnWASD;
+            @WASD.canceled -= instance.OnWASD;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+        }
+
+        public void RemoveCallbacks(IWalkerMoveActions instance)
+        {
+            if (m_Wrapper.m_WalkerMoveActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IWalkerMoveActions instance)
+        {
+            foreach (var item in m_Wrapper.m_WalkerMoveActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_WalkerMoveActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public WalkerMoveActions @WalkerMove => new WalkerMoveActions(this);
     private int m_KeyboardAndMouseSchemeIndex = -1;
     public InputControlScheme KeyboardAndMouseScheme
     {
@@ -496,5 +697,11 @@ public partial class @GISSampleInputActions: IInputActionCollection2, IDisposabl
         void OnZoomCamera(InputAction.CallbackContext context);
         void OnSelectObject(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+    }
+    public interface IWalkerMoveActions
+    {
+        void OnUpDown(InputAction.CallbackContext context);
+        void OnWASD(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }

@@ -1,9 +1,57 @@
 .time-window {
     align-items: center;
-    flex-direction: column;
-    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
 }
 
 .time-slider {
     min-width: 30%;
+    width: 100%;
+}
+
+#time-slider .unity-slider__label {
+    min-width: 120px;
+    margin-top: 0;
+    margin-right: 15px;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+#time-slider #unity-dragger {
+    width: 24px;
+    height: 24px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-color: rgb(235, 235, 235);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+#time-slider #unity-tracker {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgb(217, 217, 217);
+    height: 5px;
+    border-top-left-radius: 2.5px;
+    border-top-right-radius: 2.5px;
+    border-bottom-right-radius: 2.5px;
+    border-bottom-left-radius: 2.5px;
 }

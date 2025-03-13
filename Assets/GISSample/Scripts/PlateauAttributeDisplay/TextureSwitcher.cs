@@ -11,7 +11,7 @@ namespace GISSample.PlateauAttributeDisplay
         private readonly GmlDictionary gmlDict;
         private bool isTextureOn = true;
         private static readonly int ShaderPropIdBaseMap = Shader.PropertyToID("_BaseMap");
-        
+
         public TextureSwitcher(GmlDictionary gmlDict)
         {
             this.gmlDict = gmlDict;
@@ -28,6 +28,22 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 TurnOffTextures();
             }
+        }
+
+        public void SetTextureOn()
+        {
+            if (isTextureOn) return;
+
+            isTextureOn = true;
+            TurnOnTextures();
+        }
+
+        public void SetTextureOff()
+        {
+            if (!isTextureOn) return;
+
+            isTextureOn = false;
+            TurnOffTextures();
         }
 
         private void TurnOffTextures()

@@ -10,28 +10,37 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         private UIDocument uiDoc;
         private Button closeButton;
         private ColorChangerByAttribute colorChangerByAttribute;
-        
+
         /// <summary>
         /// 選択中のCityObject
         /// </summary>
         private SemanticCityObject selectedSemanticCityObject;
 
-        public void Init(ColorChangerByAttribute colorChangerByAttributeArg)
+		private ResolutionMonitor resolutionMonitor;
+
+		public void Init(ColorChangerByAttribute colorChangerByAttributeArg)
         {
             colorChangerByAttribute = colorChangerByAttributeArg;
             uiDoc = GetComponent<UIDocument>();
             closeButton = uiDoc.rootVisualElement.Q<Button>("attr-open-close-button");
             closeButton.clicked += Close;
             Close();
-        }
-        
+
+			resolutionMonitor = transform.parent.GetComponent<ResolutionMonitor>();
+			if (resolutionMonitor != null)
+			{
+                ResolutionChanged(Screen.width, Screen.height);
+				resolutionMonitor.OnResolutionChanged += ResolutionChanged;
+			}
+		}
+
         public void Close()
         {
             selectedSemanticCityObject = null;
             colorChangerByAttribute.Redraw();
             uiDoc.rootVisualElement.style.display = DisplayStyle.None;
         }
-        
+
 
         public void Open()
         {
@@ -59,12 +68,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
                     valueLabel.AddToClassList("value");
                     elem.Add(valueLabel);
 
-                    // 属性情報テーブルの背景色ストライプ
-                    var bgColor = elem.style.backgroundColor.value;
-                    elem.style.backgroundColor = (i % 2 == 0) 
-                        ? bgColor:
-                        bgColor + new Color(0.2f, 0.2f, 0.2f);
-
                     return elem;
                 });
 
@@ -86,8 +89,36 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
         {
             selectedSemanticCityObject = semanticCityObj;
             selectedSemanticCityObject.SetMaterialColor(selectedColor);
-            
+
         }
-        
-    }
+		private void ResolutionChanged(int width, int height)
+		{
+			if (uiDoc == null)
+			{
+				uiDoc = GetComponent<UIDocument>();
+			}
+			VisualElement window = uiDoc.rootVisualElement.Q<VisualElement>("Window");
+            if (window != null)
+            {
+                float windowBottom = 74f;
+                float marginBottom = (10f + windowBottom) / height * 100f;
+                if (marginBottom < (10f + windowBottom) / 1080f * 100f)
+                {
+                    marginBottom = (10f + windowBottom) / 1080f * 100f;
+                }
+
+                float windowHeight = 100f - marginBottom;
+                if (windowHeight > 90.5f)
+                {
+                    windowHeight = 90.5f;
+                }
+                else if (windowHeight < 0)
+                {
+                    windowHeight = 0;
+                }
+
+                window.style.height = new StyleLength(Length.Percent(windowHeight));
+            }
+		}
+	}
 }

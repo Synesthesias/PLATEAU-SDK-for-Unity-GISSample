@@ -110,64 +110,88 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         private void GetFloodingAreaInfosInner(CityObjectList.Attributes attrs, List<FloodingAreaInfo> infos)
         {
-            // ケース1: fldデータのケースであり、属性情報のキー "gml:name" に "○○川想定浸水～" と書いてあり、 "uro:floodingRiskAttribute" に浸水ランクが書いてあるケース
-            if (attrs.TryGetValue("gml:name", out var floodingGmlNameVal))
+            // ケース1: fldデータのケースであり、属性情報のキー "gml:name" に "○○川流域～" と書いてあり、 "uro:floodingRiskAttribute" に浸水ランクが書いてあるケース
+            if (attrs.TryGetValue("uro:WaterBodyRiverFloodingRiskAttribute", out var floodingRiskAttributeVal))
             {
-                if (floodingGmlNameVal.StringValue.Contains("浸水"))
+                if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:description", out var description))
                 {
-                    if (attrs.TryGetValue("uro:floodingRiskAttribute", out var floodingRisk))
+                    if (!description.StringValue.Contains("流域"))
                     {
-                        string adminName = "";
-                        if (floodingRisk.AttributesMapValue.TryGetValue("uro:adminType", out var adminAttr))
-                        {
-                            adminName = adminAttr.StringValue;
-                        }
-
-                        string scaleName = "";
-                        if (floodingRisk.AttributesMapValue.TryGetValue("uro:scale", out var scaleAttr))
-                        {
-                            scaleName = scaleAttr.StringValue;
-                        }
-                        
-                        if (floodingRisk.AttributesMapValue.TryGetValue("uro:rank", out var rankVal))
-                        {
-                            var rankStr = rankVal.StringValue;
-                            FloodingRank rank = FloodingRank.FromString(rankStr);
-                            var floodingInfo =  new FloodingAreaInfo(new FloodingTitle(floodingGmlNameVal.StringValue, adminName, scaleName), rank);
-                            infos.Add(floodingInfo);
-                        }
-                        
+                        return;
                     }
-                }
-            }
-            // ケース2: bldgデータに洪水情報があるケースであり、キー "uro:buildingDisasterRiskAttribute/uro:rank" に浸水ランクが書いてあり、 "uro:description" に "○○川" と書いてあるケース
-            else if (attrs.TryGetValue("uro:buildingDisasterRiskAttribute", out var floodingRiskBuilding))
-            {
-                
-                if (floodingRiskBuilding.AttributesMapValue.TryGetValue("uro:rank", out var floodingBuildingRank))
-                {
+
                     string adminName = "";
-                    if (floodingRiskBuilding.AttributesMapValue.TryGetValue("uro:adminType", out var adminAttr))
+                    if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:adminType", out var adminAttr))
                     {
                         adminName = adminAttr.StringValue;
                     }
 
                     string scaleName = "";
-                    if (floodingRiskBuilding.AttributesMapValue.TryGetValue("uro:scale", out var scaleAttr))
+                    if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:scale", out var scaleAttr))
                     {
                         scaleName = scaleAttr.StringValue;
                     }
-                    
-                    if (attrs.TryGetValue("uro:description", out var floodingDescription))
+                
+                    if (floodingRiskAttributeVal.AttributesMapValue.TryGetValue("uro:rank", out var rankVal))
                     {
-                        var floodingInfo = new FloodingAreaInfo(new FloodingTitle(floodingDescription.StringValue, adminName, scaleName),
-                            FloodingRank.FromString(floodingBuildingRank.StringValue));
+                        var rankStr = rankVal.StringValue;
+                        FloodingRank rank = FloodingRank.FromString(rankStr);
+                        var floodingInfo =  new FloodingAreaInfo(new FloodingTitle(description.StringValue, adminName, scaleName), rank);
                         infos.Add(floodingInfo);
                     }
                 }
-                
-                
             }
+            // ケース2: bldgデータに洪水情報があるケースであり、キー "uro:rank" に浸水ランクが書いてあり、 "uro:description" に "○○川" と書いてあるケース
+            if (attrs.TryGetValue("uro:BuildingHighTideRiskAttribute", out var highTideAttribute))
+            {
+                var flood = GetBuildingFloodingAttr(highTideAttribute.AttributesMapValue);
+                if(flood != null) infos.Add(flood);
+            }
+            // ケース3: ケース2の親キーが違うバージョン。ケース2と3が両方実行されることもありうる。
+            if (attrs.TryGetValue("uro:BuildingRiverFloodingRiskAttribute", out var floodingAttribute))
+            {
+                var flood = GetBuildingFloodingAttr(floodingAttribute.AttributesMapValue);
+                if(flood != null) infos.Add(flood);
+            }
+            // ケース4: ケース3の親キーの2のバージョン。
+            if (attrs.TryGetValue("uro:BuildingRiverFloodingRiskAttribute2", out var floodingAttribute2))
+            {
+                var flood = GetBuildingFloodingAttr(floodingAttribute2.AttributesMapValue);
+                if(flood != null) infos.Add(flood);
+            }
+        }
+
+        private FloodingAreaInfo GetBuildingFloodingAttr(CityObjectList.Attributes parentAttrs)
+        {
+            if (parentAttrs.TryGetValue("uro:rank", out var floodingBuildingRank))
+            {
+                string adminName = "";
+                if (parentAttrs.TryGetValue("uro:adminType", out var adminAttr))
+                {
+                    adminName = adminAttr.StringValue;
+                }
+
+                string scaleName = "";
+                if (parentAttrs.TryGetValue("uro:scale", out var scaleAttr))
+                {
+                    scaleName = scaleAttr.StringValue;
+                }
+                    
+                if (parentAttrs.TryGetValue("uro:description", out var floodingDescription))
+                {
+                    // 神田川bldgデータが少なすぎてあまり見られないのでスキップ
+                    // bool shouldSkip = floodingDescription.StringValue.Contains("神田川");
+                    // if (!shouldSkip)
+                    // {
+                    var floodingInfo = new FloodingAreaInfo(new FloodingTitle(floodingDescription.StringValue, adminName, scaleName),
+                        FloodingRank.FromString(floodingBuildingRank.StringValue));
+                    return floodingInfo;
+                    // }
+                        
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
+using PlateauToolkit.Sandbox;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -25,11 +26,11 @@ namespace GISSample.PlateauAttributeDisplay.UI
 
         private SceneManager sceneManager;
         private ColorChangerByAttribute colorChangerByAttribute;
- 
+
         [SerializeField, Tooltip("選択中オブジェクトの色")] private Color selectedColor;
         [SerializeField, Tooltip("色分け（高さ）の色テーブル")] public Color[] heightColorTable;
         [SerializeField, Tooltip("色分け（浸水ランク）の色テーブル")] public Color[] floodingRankColorTable;
-        
+
 
         public void Init(SceneManager sceneManagerArg, ColorChangerByAttribute colorChangerByAttributeArg, FloodingTitleSet floodingTitlesBldgArg, FloodingTitleSet floodingTitlesFldArg, CameraPositionMemory cameraPositionMemory)
         {
@@ -40,20 +41,20 @@ namespace GISSample.PlateauAttributeDisplay.UI
             timeUi = FindObjectOfType<TimeUi>();
             renameCameraSlotUi = GetComponentInChildren<RenameCameraSlotUi>();
 
-            
+
             userGuideUi.gameObject.SetActive(true);
             MenuUi.Init(sceneManagerArg, floodingTitlesBldgArg, floodingTitlesFldArg, renameCameraSlotUi, cameraPositionMemory);
             renameCameraSlotUi.Init(cameraPositionMemory, MenuUi.CameraPositionMemoryUi);
             timeUi.Init();
             attrUi.Init(colorChangerByAttributeArg);
-        
+
         }
 
         public void Update()
         {
             MenuUi.Update();
         }
-    
+
         /// <summary>
         /// オブジェクトのピック
         /// マウスの位置からレイキャストしてヒットしたオブジェクトのTransformを返します。
@@ -64,7 +65,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             var cam = Camera.main;
             if (cam == null)
             {
-                Debug.LogError("main camera is not found.");
+                // 車両視点が有効な場合メインカメラがnullになります
                 return null;
             }
             var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -86,8 +87,8 @@ namespace GISSample.PlateauAttributeDisplay.UI
 
             return nearestTransform;
         }
-    
-    
+
+
         /// <summary>
         /// オブジェクト選択
         /// </summary>
@@ -107,7 +108,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             colorChangerByAttribute.Redraw();
 
             // 選択されたオブジェクトの色を変更
-            var nameKey = trans.parent.parent.name;
+            var nameKey = trans.parent?.parent?.name;
             var cityObj = sceneManager.GetCityObject(nameKey, trans.name);
             if (cityObj == null)
             {
@@ -122,8 +123,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
             var data = GetAttribute(nameKey, trans.name);
             attrUi.SetAttributes(data);
         }
-    
-    
+
         /// <summary>
         /// マウスの位置がUI上にあるかどうか
         /// </summary>
@@ -138,8 +138,8 @@ namespace GISSample.PlateauAttributeDisplay.UI
             EventSystem.current.RaycastAll(pointer, raycastResults);
             return raycastResults.Any(r => r.gameObject.name == "GISSamplePanelSettings");
         }
-    
-    
+
+
         /// <summary>
         /// 属性情報を取得
         /// </summary>

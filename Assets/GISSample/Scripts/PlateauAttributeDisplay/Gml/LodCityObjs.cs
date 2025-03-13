@@ -20,8 +20,23 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             int lod;
             if (!int.TryParse(lodName.Substring(3), out lod)) // "LODn"のnをintに変換
             {
-                Debug.LogError("Failed to parse lod name.");
-                return;
+                // テクスチャ張り替え後の _LOD0_ などの形式に対応
+                string[] parts = cityObjectTrans.name.Split('_');
+                bool parsed = false;
+                foreach (string part in parts)
+                {
+                    if (part.StartsWith("LOD") && int.TryParse(part.Substring(3), out lod))
+                    {
+                        parsed = true;
+                        break;
+                    }
+                }
+                
+                if (!parsed)
+                {
+                    Debug.LogError($"Failed to parse lod name: {lodName}");
+                    return;
+                }
             }
 
             var featureGameObj = new FeatureGameObj(cityObjectTrans.gameObject, isFlooding);
