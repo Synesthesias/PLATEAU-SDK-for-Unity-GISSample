@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1; align-self: flex-end; justify-content: flex-end; flex-direction: column; bottom: 100px; width: 20%;">
+        <ui:Label text="ロード中..." display-tooltip-when-elided="true" style="-unity-text-align: middle-left; width: auto; height: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 20px; -unity-text-generator: standard; flex-shrink: 0; bottom: auto; flex-grow: 0; flex-direction: column; align-content: auto; align-items: auto; justify-content: flex-start;"/>
+    </ui:VisualElement>
+</ui:UXML>

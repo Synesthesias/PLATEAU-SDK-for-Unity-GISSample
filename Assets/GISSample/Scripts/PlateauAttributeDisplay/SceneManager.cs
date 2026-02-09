@@ -1,11 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using AWSIM.TrafficSimulation;
 using Cinemachine;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using PLATEAU.CityInfo;
+using PLATEAU.DynamicTile;
+using PLATEAU.Util.Async;
 using PlateauToolkit.Sandbox;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,9 +35,17 @@ namespace GISSample.PlateauAttributeDisplay
         /// シーン中のPLATEAUInstancedCityModel
         /// 複数の都市データのインポートに対応するため、配列にしています。
         /// </summary>
+        [SerializeField]
         private PLATEAUInstancedCityModel[] instancedCityModels;
 
         private readonly GmlDictionary gmlDict = new();
+
+        [SerializeField]
+        private GISTileManager tiles;
+        public GISTileManager Tiles => tiles;
+
+        [SerializeField]
+        private TrafficManager trafficManager;
 
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
@@ -50,6 +63,14 @@ namespace GISSample.PlateauAttributeDisplay
         private PlateauSandboxCameraManager plateauSandboxCameraManager;
         private WalkControllUI walkControlUI;
 
+        public bool IsInitialized { get; private set; } = false;
+
+        public bool IsMouseDragging => gisCameraMove?.IsMouseDragging ?? false;
+        public bool IsKeyPressed => gisCameraMove?.IsKeyPressed ?? false;
+
+        public bool IsTileLoading => tiles?.IsTileLoading ?? false;
+
+        public Action OnInitialize = null;
 
         private void Awake()
         {
@@ -65,12 +86,22 @@ namespace GISSample.PlateauAttributeDisplay
         {
             inputActions.Enable();
             walkerMoveByUserInput?.OnEnable();
+
+            if(gisCameraMove != null){
+                gisCameraMove.OnMouseDrag += OnInteractionHandler;
+                gisCameraMove.OnKeyPress += OnInteractionHandler;
+            }
         }
 
         private void OnDisable()
         {
             inputActions.Disable();
             walkerMoveByUserInput?.OnDisable();
+            if (gisCameraMove != null)
+            {
+                gisCameraMove.OnMouseDrag -= OnInteractionHandler;
+                gisCameraMove.OnKeyPress -= OnInteractionHandler;
+            }
         }
 
         private void OnDestroy()
@@ -81,6 +112,22 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void Update()
         {
+            if (trafficManager != null)
+            {
+                // マウス・キーでの操作時はTrafficManagerを非活性化
+                if (IsMouseDragging || IsKeyPressed || tiles?.IsTileLoading == true || !IsInitialized)
+                {
+                    trafficManager.gameObject.SetActive(false);
+                }
+                else
+                {
+                    trafficManager.gameObject.SetActive(true);
+                }
+            }
+
+            if (!IsInitialized)
+                return;
+
             gisCameraMove.Update();
             GisUiController.Update();
             walkerMoveByUserInput.Update(Time.deltaTime);
@@ -122,6 +169,8 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 walkControlUI.WalkControllerHeightText = walkerMoveByUserInput.CameraOffsetY.ToString("F2");
             }
+
+            ShowLoadingUI(IsTileLoading);//タイルロード中は一部UI非表示
         }
 
 
@@ -132,11 +181,19 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         private void Initialize()
         {
+            if (tiles == null)
+                tiles = FindFirstObjectByType<GISTileManager>();
 
-            instancedCityModels = FindObjectsOfType<PLATEAUInstancedCityModel>();
-            if (instancedCityModels == null || instancedCityModels.Length == 0)
+            if (trafficManager == null)
+                trafficManager = FindFirstObjectByType<TrafficManager>();
+
+            if (instancedCityModels == null || instancedCityModels.Length <= 0)
             {
-                return;
+                var instancedCityModelsList = FindObjectsByType<PLATEAUInstancedCityModel>(FindObjectsSortMode.None).ToList();
+                instancedCityModelsList.RemoveAll(x => x.GetComponentInParent<PLATEAUTileManager>() != null);
+                instancedCityModels = instancedCityModelsList.ToArray();
+
+                //Debug.LogWarning($"SceneManager Initialize: instancedCityModels Count={instancedCityModelsList.Count}");
             }
 
             gmlDict.Init(instancedCityModels);
@@ -144,19 +201,27 @@ namespace GISSample.PlateauAttributeDisplay
             cameraPositionMemory = new CameraPositionMemory(Camera.main);
             ColorChangerByAttribute = new ColorChangerByAttribute(this);
             FloatingTextList = new FloatingTextList();
-            TextureSwitcher = new TextureSwitcher(gmlDict);
+            TextureSwitcher = new TextureSwitcher(gmlDict, tiles);
 
             GisUiController = GetComponentInChildren<GisUiController>();
             // どのような洪水情報があるか検索します
             var floodingAreaNamesBldg = gmlDict.FindAllFloodingTitlesOfBuildings();
             var floodingAreaNamesFld = gmlDict.FindAllFloodingTitlesOfFlds();
+
+            var floodingAreaNamesBldgTiles = tiles?.FindAllFloodingTitlesOfBuildings();
+            if (floodingAreaNamesBldgTiles?.Count > 0)
+                floodingAreaNamesBldg?.UnionWith(floodingAreaNamesBldgTiles);
+
             GisUiController.Init(this, ColorChangerByAttribute, floodingAreaNamesBldg, floodingAreaNamesFld, cameraPositionMemory);
             ColorChangerByAttribute.ChangeToDefault();
 
             gisCameraMove = new GISCameraMove(GisUiController);
             inputActions.GISSample.SetCallbacks(gisCameraMove);
 
-            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict);
+            gisCameraMove.OnMouseDrag += OnInteractionHandler;
+            gisCameraMove.OnKeyPress += OnInteractionHandler;
+
+            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, tiles);
             weatherController = new WeatherController(GisUiController.MenuUi);
 
 
@@ -200,26 +265,130 @@ namespace GISSample.PlateauAttributeDisplay
 
             SetupWalkControlUI();
             SetupWalkerCamera();
+
+            IsInitialized = true;
+            OnInitialize?.Invoke();
         }
 
-        public SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
+        /// <summary>
+        /// マウス。キーボード操作開始、終了時のイベントハンドラ
+        /// </summary>
+        /// <param name="started"></param>
+        private void OnInteractionHandler(bool started)
         {
-            return gmlDict.GetAttribute(gmlFileName, cityObjectID);
+            if (!GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                return;
+
+            if (started)
+            {
+                tiles?.StopCoroutineProcess();
+            }
+            else
+            {
+                tiles?.StartCoroutineProcess();
+            }
         }
+
+        /// <summary>
+        /// ロード中のメニュー有効：無効
+        /// </summary>
+        /// <param name="enabled"></param>
+        public void ShowLoadingUI(bool isLoading)
+        {
+            GisUiController.ShowLoading(isLoading);
+            actionButtonsUi.SetWalkerToggleEnabled(!isLoading);
+            actionButtonsUi.SetVehicleToggleEnabled(!isLoading);
+        }
+
+        // TileManagerからSampleGmlが追加されたときに呼ばれるハンドラ
+        public void SampleGmlAddedHandler(SampleGml gml)
+        {
+            CoroutineUtil.RunToEnd(SampleGmlAddedHandlerCoroutine(gml));
+        }
+
+        // TileManagerからSampleGmlが追加されたときに呼ばれるハンドラのコルーチン実行
+        public IEnumerator SampleGmlAddedHandlerCoroutine(SampleGml gml)
+        {
+
+            if (gml.Tile.LoadedObject == null) 
+                yield break;
+
+            var floodingTitles = new FloodingTitleSet();
+            if (!gml.IsFlooding)
+                floodingTitles.UnionWith(gml.FloodingTitles);
+            GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
+
+            if(GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+                yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);
+            else
+                TextureSwitcher.SetCurrentTexture(gml);
+
+            yield return null;
+
+            if (ColorChangerByAttribute.BuildingColorType != BuildingColorType.None)
+            {
+                if (GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+                    yield return ColorChangerByAttribute.RedrawBuildingsCoroutine(new List<SampleGml>() { gml });
+                else
+                    ColorChangerByAttribute.RedrawBuildings(new List<SampleGml>() { gml });
+            }
+                
+            yield return null;
+
+            if (!filterByLodAndHeight.IsDefaultFilterParameter)
+            {
+                if (GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+                    yield return filterByLodAndHeight.FilterCoroutine(gml);
+                else
+                    filterByLodAndHeight.Filter(gml);
+            }
+                
+
+            yield return null;
+            
+        }
+
+        public SampleAttribute GetAttribute(string gmlName, string cityObjName)
+        {
+            var result = tiles?.GetAttribute(gmlName, cityObjName);
+            if (result != null)
+                return result;
+
+            return gmlDict.GetAttribute(gmlName, cityObjName);
+        }
+
 
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
+            var result = tiles?.GetCityObject(gmlName, cityObjName);
+            if (result != null)
+                return result;
+
+            if(gmlName == null)
+                return null;
             return gmlDict.GetCityObject(gmlName, cityObjName);
         }
 
         public IEnumerable<FeatureGameObj> FeatureGameObjs()
         {
-            return gmlDict.FeatureGameObjs();
+            var result = gmlDict.FeatureGameObjs();
+
+            var tileResult = tiles?.FeatureGameObjs();
+            if (tileResult != null)
+                result = result.Concat(tileResult);
+
+            return result;
         }
 
         public IEnumerable<SampleGml> Gmls()
         {
-            return gmlDict.Gmls();
+            var gmls = gmlDict.Gmls();
+
+            var result = tiles?.Gmls();
+            if (result != null)
+                gmls = gmls.Concat(result);
+
+            return gmls;
         }
 
         private void SetupWalkControlUI()
@@ -393,7 +562,7 @@ namespace GISSample.PlateauAttributeDisplay
             }
             
             // 1台ランダムで取得
-            var traffic = traffics[Random.Range(0, traffics.Length)];
+            var traffic = traffics[UnityEngine.Random.Range(0, traffics.Length)];
             if (traffic == null)
             {
                 return null;
@@ -402,4 +571,19 @@ namespace GISSample.PlateauAttributeDisplay
             return traffic.gameObject;
         }
     }
+
+    //[Serializable]
+    //public class ControllerParameters
+    //{
+    //    public float WalkSpeed = 5f;
+    //    public float RunSpeed = 10f;
+    //    public float SprintSpeed = 15f;
+    //    public float Acceleration = 10f;
+    //    public float Deceleration = 10f;
+    //    public float MouseSensitivityX = 1f;
+    //    public float MouseSensitivityY = 1f;
+    //    public float MinPitch = -89f;
+    //    public float MaxPitch = 89f;
+    //    public float CameraOffsetY = 1.6f;
+    //}
 }

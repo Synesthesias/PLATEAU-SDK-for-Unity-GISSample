@@ -1,4 +1,6 @@
 ﻿using GISSample.PlateauAttributeDisplay.UI;
+using PLATEAU.DynamicTile;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,6 +31,12 @@ namespace GISSample.PlateauAttributeDisplay
 
         private readonly GisUiController gisUiController;
 
+        public bool IsMouseDragging { get; private set; }
+        public bool IsKeyPressed { get; private set; }
+
+        public Action<bool> OnMouseDrag;
+        public Action<bool> OnKeyPress;
+
         public GISCameraMove(GisUiController gisUiController)
         {
             var mainCam = Camera.main;
@@ -46,7 +54,18 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void OnHorizontalMoveCameraByMouse(InputAction.CallbackContext context)
         {
-            
+            if (context.started)
+            {
+                IsMouseDragging = true;
+                OnMouseDrag?.Invoke(IsMouseDragging);
+            }
+            if (context.canceled)
+            {
+                IsMouseDragging = false;
+                OnMouseDrag?.Invoke(IsMouseDragging);
+            }
+                
+
             if (context.performed && isMouseDraggingFromNonUi)
             {
                 // 左右同時押下時は上下移動を優先
@@ -63,6 +82,19 @@ namespace GISSample.PlateauAttributeDisplay
         public void OnHorizontalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
             if (!IsKeyboardActive) return;
+
+            if (context.started)
+            {
+                IsKeyPressed = true;
+                OnKeyPress?.Invoke(IsKeyPressed);
+            }
+            if (context.canceled)
+            {
+                IsKeyPressed = false;
+                OnKeyPress?.Invoke(IsKeyPressed);
+            }
+
+
             if (context.performed)
             {
                 var delta = context.ReadValue<Vector2>();

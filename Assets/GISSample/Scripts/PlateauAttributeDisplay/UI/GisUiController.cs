@@ -2,12 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
-using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
-using PlateauToolkit.Sandbox;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using PLATEAU.Util;
 
 namespace GISSample.PlateauAttributeDisplay.UI
 {
@@ -20,6 +19,7 @@ namespace GISSample.PlateauAttributeDisplay.UI
         public MenuUi MenuUi { get; private set; }
 
         [SerializeField, Tooltip("操作説明")] private UIDocument userGuideUi;
+        [SerializeField, Tooltip("ロード中")] private UIDocument loadingUi;
         private AttributeUi attrUi;
         private TimeUi timeUi;
         private RenameCameraSlotUi renameCameraSlotUi;
@@ -52,7 +52,17 @@ namespace GISSample.PlateauAttributeDisplay.UI
 
         public void Update()
         {
-            MenuUi.Update();
+            MenuUi?.Update();
+        }
+
+        /// <summary>
+        /// ロード中を表示し、一部UIを非活性化
+        /// </summary>
+        /// <param name="showLoading"></param>
+        public void ShowLoading(bool showLoading)
+        {
+            MenuUi?.SetDisabledWhileLoading(showLoading);
+            loadingUi.gameObject.SetActive(showLoading);
         }
 
         /// <summary>
@@ -110,17 +120,21 @@ namespace GISSample.PlateauAttributeDisplay.UI
             // 選択されたオブジェクトの色を変更
             var nameKey = trans.parent?.parent?.name;
             var cityObj = sceneManager.GetCityObject(nameKey, trans.name);
+
             if (cityObj == null)
-            {
+            { 
+                Debug.LogWarning($"選択されたオブジェクトは地物ではありません。nameKey:{nameKey} {trans.name}");
+
                 // 地物でないものがクリックされたら属性情報UIを閉じる
                 attrUi.Close();
-                return;
+                return;  
             }
             attrUi.SelectCityObj(cityObj, selectedColor);
 
             attrUi.Open();
 
-            var data = GetAttribute(nameKey, trans.name);
+            var data = sceneManager.GetAttribute(nameKey, trans.name);
+
             attrUi.SetAttributes(data);
         }
 
@@ -146,10 +160,10 @@ namespace GISSample.PlateauAttributeDisplay.UI
         /// <param name="gmlFileName">GMLファイル名</param>
         /// <param name="cityObjectID">CityObjectID</param>
         /// <returns>属性情報</returns>
-        private SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
-        {
-            return sceneManager.GetAttribute(gmlFileName, cityObjectID);
-        }
+        //private SampleAttribute GetAttribute(string gmlFileName, string cityObjectID)
+        //{
+        //    return sceneManager.GetAttribute(gmlFileName, cityObjectID);
+        //}
 
     }
 }

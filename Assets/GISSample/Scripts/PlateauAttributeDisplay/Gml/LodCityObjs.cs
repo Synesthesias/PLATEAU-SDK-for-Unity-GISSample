@@ -14,7 +14,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// <summary>
         /// LODとゲームオブジェクトの対応関係を1つ記憶します。
         /// </summary>
-        public void Add(Transform lodTrans, Transform cityObjectTrans, bool isFlooding)
+        public void Add(Transform lodTrans, Transform cityObjectTrans, bool isFlooding, SampleGml parent)
         {
             string lodName = lodTrans.name; // "LOD0" "LOD1" "LOD2" "LOD3" のいずれか
             int lod;
@@ -39,7 +39,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 }
             }
 
-            var featureGameObj = new FeatureGameObj(cityObjectTrans.gameObject, isFlooding);
+            var featureGameObj = new FeatureGameObj(cityObjectTrans.gameObject, isFlooding, parent);
             if (!LodToFeatureObj.TryAdd(lod, featureGameObj))
             {
                 Debug.LogError($"Failed to add {cityObjectTrans.name} for lod {lod}");
@@ -47,7 +47,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         }
 
         public int MaxLodExist => LodToFeatureObj.Keys.Max();
-        
 
         public void SetMaterialColor(Color color)
         {

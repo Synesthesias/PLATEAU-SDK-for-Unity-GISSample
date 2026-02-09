@@ -1,7 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using UnityEngine;
 using UnityEngine.Assertions;
+using PLATEAU.Util;
+using PLATEAU.DynamicTile;
+using System.Collections;
+
 
 namespace GISSample.PlateauAttributeDisplay
 {
@@ -21,7 +27,9 @@ namespace GISSample.PlateauAttributeDisplay
 
         /// <summary> 選択中の浸水タイトル（浸水区域） 「表示なし」が選択されている時はnull</summary>
         private FloodingTitle selectedFloodingTitleFld;
-        
+
+        public BuildingColorType BuildingColorType => selectedBuildingColorType;
+
         public ColorChangerByAttribute(SceneManager sceneManager)
         {
             this.sceneManager = sceneManager;
@@ -41,7 +49,16 @@ namespace GISSample.PlateauAttributeDisplay
             ChangeFlooding(selectedFloodingTitleFld);
         }
 
-        
+        public void RedrawBuildings(IEnumerable<SampleGml> gmls)
+        {
+            ChangeBuildings(gmls, selectedBuildingColorType, selectedFloodingTitleBldg);
+        }
+
+        public IEnumerator RedrawBuildingsCoroutine(IEnumerable<SampleGml> gmls)
+        {
+            yield return ChangeBuildingsCoroutine(gmls, selectedBuildingColorType, selectedFloodingTitleBldg);
+        }
+
         public void ChangeFlooding(FloodingTitle floodingTitleFld)
         {
             selectedFloodingTitleFld = floodingTitleFld;
@@ -66,22 +83,41 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void ChangeBuildings(BuildingColorType type, FloodingTitle floodingTitleBldg)
         {
+            ChangeBuildings(sceneManager.Gmls(), type, floodingTitleBldg);
+            if(sceneManager.Tiles != null)
+            {
+                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                    sceneManager.Tiles.ProcessAllLoadedTiles();
+                else
+                    ChangeBuildings(sceneManager.Tiles.Gmls(), type, floodingTitleBldg);
+            }    
+        }
+
+        void ChangeBuildings(IEnumerable<SampleGml> gmls, BuildingColorType type, FloodingTitle floodingTitleBldg)
+        {
+            CoroutineUtil.RunToEnd(ChangeBuildingsCoroutine(gmls, type, floodingTitleBldg));
+        }
+
+        IEnumerator ChangeBuildingsCoroutine(IEnumerable<SampleGml> gmls, BuildingColorType type, FloodingTitle floodingTitleBldg)
+        {
             selectedFloodingTitleBldg = floodingTitleBldg;
             selectedBuildingColorType = type;
             var heightColorTable = sceneManager.GisUiController.heightColorTable;
             var floodingRankColorTable = sceneManager.GisUiController.floodingRankColorTable;
 
-            foreach (var gml in sceneManager.Gmls())
+            Color[] colorTable = type switch
+            {
+                BuildingColorType.Height => heightColorTable,
+                BuildingColorType.FloodingRank => floodingRankColorTable,
+                BuildingColorType.None => null,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            foreach (var gml in gmls)
             {
                 if (gml.IsFlooding) continue;
-                Color[] colorTable = type switch
-                {
-                    BuildingColorType.Height => heightColorTable,
-                    BuildingColorType.FloodingRank => floodingRankColorTable,
-                    BuildingColorType.None => null,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
 
+                int count = 0;
                 foreach (var semantic in gml.SemanticCityObjs())
                 {
                     switch (type)
@@ -98,13 +134,19 @@ namespace GISSample.PlateauAttributeDisplay
                         default:
                             throw new ArgumentException();
                     }
-                }
-                
 
+                    count++;
+                    if (count > CoroutineUtil.YIELD_STEP)
+                    {
+                        count = 0;
+                        yield return null;
+                    }
+                }
             }
+            
         }
-        
-        
+
+
         private void ColorByHeight(Color[] colorTable, SemanticCityObject semantic)
         {
             Assert.AreEqual(6, colorTable.Length, "高さの色分けは6色");
@@ -143,7 +185,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             Assert.AreEqual(5, colorTable.Length, "ランクの色分けは5色");
 
-            var info = semantic.Attribute.GetFloodingAreaInfoByTitle(floodingTitle);
+            var info = semantic.Attribute.GetFloodingAreaInfoByTitle(floodingTitle, semantic.IsFlooding);
             if(info == null)
             {
                 semantic.ChangeToDefaultState();
@@ -162,12 +204,13 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 // 色つけ
                 semantic.SetMaterialColor(colorTable[colorTableIndex]);
-                
+
                 // fldをランクに応じて高さを変える
                 if (semantic.IsFlooding)
                 {
                     foreach (var feature in semantic.FeatureGameObjs())
                     {
+                        if (feature.GameObj == null) continue;
                         var trans = feature.GameObj.transform;
                         // 注意: fldランクに応じて高さを変える機能は廃止か。廃止しない場合は下のコメントアウトを戻す
                         // trans.position = Vector3.up * rank.Height * FloodingHeightMultiplier;
@@ -178,7 +221,7 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 semantic.ChangeToDefaultState();
             }
-            
+
         }
         
     }

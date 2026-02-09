@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using PLATEAU.DynamicTile;
+using System.Collections.Generic;
 using UnityEngine;
+using PLATEAU.Util;
+using System.Collections;
+using System;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
 {
@@ -50,27 +54,58 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         FloodingRank,
     }
-    
+
+    public class TileInfo
+    {
+        public PLATEAUDynamicTile Tile { get; }
+
+        public string ChildName { get; }
+        public TileInfo(PLATEAUDynamicTile tile, GameObject go)
+        {
+            Tile = tile;
+            ChildName = go.name;
+        }
+    }
+
 
     /// <summary>
     /// GMLファイル1つに対応するゲームオブジェクトをサンプル上で扱いやすくしたラッパーです。
     /// </summary>
     public class SampleGml
     {
-        private readonly CityObjDict cityObjDict;
-        public FloodingTitleSet FloodingTitles { get; }
+        public CityObjDict cityObjDict;
+        public FloodingTitleSet FloodingTitles { get; private set; }
         public bool IsFlooding { get; private set; }
 
-        public SampleGml(GameObject gmlGameObjArg)
+
+        public PLATEAUDynamicTile Tile => tileInfo != null ? tileInfo.Tile : null;
+
+        public string ChildName => tileInfo != null ? tileInfo.ChildName : string.Empty;
+        private TileInfo tileInfo;
+
+        public SampleGml()
+        {
+        }
+
+        public void Initialize(GameObject gmlGameObjArg)
         {
             FloodingTitles = new FloodingTitleSet();
             IsFlooding = gmlGameObjArg.name.Contains("fld");
-            cityObjDict = new CityObjDict(gmlGameObjArg, this);
+            cityObjDict = new CityObjDict();
+            cityObjDict.Initialize(gmlGameObjArg, this);
             FloodingTitles = cityObjDict.FindAllFloodingTitles();
         }
 
-        
-        
+        public void InitializeTile(PLATEAUDynamicTile tile)
+        {
+            tileInfo = new TileInfo(tile, tile.LoadedObject);
+            Initialize(tile.LoadedObject);
+        }
+
+        public IEnumerable<SemanticCityObject> GetCityObjects()
+        {
+            return cityObjDict.SemanticCityObjs();
+        }
 
         public SemanticCityObject GetCityObject(string cityObjId)
         {

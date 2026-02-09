@@ -1,7 +1,8 @@
+using PLATEAU.CityInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PLATEAU.CityInfo;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -17,7 +18,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         private readonly Dictionary<string, SampleGml> gmls = new ();
 
-
         public void Init(PLATEAUInstancedCityModel[] instancedCityModels)
         {
             foreach (var instancedCityModel in instancedCityModels)
@@ -31,17 +31,18 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
                     // サンプルではdemを除外します。
                     if (go.name.Contains("dem")) continue;
-                    
+
 
                     // ロードしたデータをアプリ用に扱いやすくしたクラスに変換します。
-                    var gml = new SampleGml(go);
+                    //var gml = new SampleGml(go);
+                    var gml = new SampleGml();
+                    gml.Initialize(go);
                     if (!gmls.TryAdd(go.name, gml))
                     {
                         Debug.LogWarning("Duplicate GML name detected.");
                     }
                 }
             }
-        
         }
 
         public FloodingTitleSet FindAllFloodingTitlesOfBuildings()
