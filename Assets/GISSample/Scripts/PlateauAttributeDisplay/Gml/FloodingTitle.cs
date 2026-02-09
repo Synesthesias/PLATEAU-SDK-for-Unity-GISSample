@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
 {
@@ -6,7 +7,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     /// 洪水情報の分類の名前です。
     /// 例： "神田川流域（都道府県管理区間）L2（想定最大規模）浸水ランク"
     /// </summary>
-    public class FloodingTitle
+    public class FloodingTitle: IEquatable<FloodingTitle>
+
     {
         private readonly string riverName; // 例: "神田川流域"
         private readonly string adminName; // 例: "都道府県"
@@ -76,12 +78,17 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             if (obj == null || GetType() != obj.GetType()) return false;
             var other = (FloodingTitle)obj;
-            return riverName == other.riverName && adminName == other.adminName && scaleName == other.scaleName;
+            return Equals(other);
         }
 
         public override int GetHashCode()
         {
             return riverName.GetHashCode() + adminName.GetHashCode() + scaleName.GetHashCode();
+        }
+
+        public bool Equals(FloodingTitle other)
+        {
+            return riverName == other.riverName && adminName == other.adminName && scaleName == other.scaleName;
         }
     }
 }

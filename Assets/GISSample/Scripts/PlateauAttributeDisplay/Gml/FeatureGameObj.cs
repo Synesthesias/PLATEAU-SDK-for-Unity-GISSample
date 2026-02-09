@@ -1,3 +1,4 @@
+using PLATEAU.Util;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
@@ -8,7 +9,71 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     public class FeatureGameObj
     {
         /// <summary> 対象となるゲームオブジェクトです。 </summary>
-        public GameObject GameObj { get; }
+        public GameObject GameObj {
+            get
+            {
+                if(gameObj == null)
+                {
+                    if (parentGml.Tile != null)
+                    {
+                        if (parentGml.Tile.LoadedObject == null)
+                        {
+                            //Debug.LogError($"parentGml.Tile.LoadedObject is null {gameObjPath}");
+                            return null;
+                        }
+
+                        gameObj = parentGml.Tile?.LoadedObject?.transform?.GetTransformFromPath(gameObjPath)?.gameObject; // Tileの場合はPathからGameObjectを取得し直す
+                    }
+                }
+                    
+                return gameObj;
+            }
+        }
+        private GameObject gameObj;
+
+        private string gameObjPath;
+        private SampleGml parentGml;
+
+        public Renderer Renderer
+        {
+            get
+            {
+                if (renderer == null && GameObj != null)
+                {
+                    renderer = GameObj.GetComponent<Renderer>();
+
+                    // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
+                    var srcMaterials = Renderer.materials;
+                    int matCount = srcMaterials.Length;
+                    var materials = new Material[matCount];
+                    for (int i = 0; i < matCount; i++)
+                    {
+                        materials[i] = new Material(srcMaterials[i]);
+                    }
+                    NormalMaterials = materials;
+
+                    // 開始時のテクスチャを記録
+                    InitialTextures = new Texture[matCount];
+                    for (int i = 0; i < matCount; i++)
+                    {
+                        var mat = materials[i];
+                        Texture tex;
+                        if (mat.HasTexture(ShaderPropIdBaseMap)) // Toolkitシェーダーの場合
+                        {
+                            tex = mat.GetTexture(ShaderPropIdBaseMap);
+                        }
+                        else
+                        {
+                            tex = mat.mainTexture;
+                        }
+
+                        InitialTextures[i] = tex;
+                    }
+                }
+                return renderer;
+            }
+        }
+        private Renderer renderer;
 
         /// <summary>
         /// 通常状態のマテリアルです。
@@ -21,13 +86,11 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// テクスチャのON/OFF機能で、OFFにしたものを元に戻せるようにテクスチャを記憶します。
         /// 添字は renderer.materials の添字に対応します。
         /// </summary>
-        public Texture[] InitialTextures { get; }
+        public Texture[] InitialTextures { get; set; }
 
         /// <summary> 色分けによって色が塗られたときのマテリアルを用意しておきます。色分けのたびにマテリアルをnewするのは重いためです。 </summary>
         public Material[] ColoredMaterials { get; }
         
-
-        public Renderer Renderer { get; }
 
         /// <summary> 色分け時に使うマテリアル </summary>
         private static readonly Material MaterialForColorBldg = Resources.Load<Material>("ColorByAttributesOpaqueMaterial");
@@ -43,17 +106,22 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         public FeatureObjFilter Filter { get; set; }
 
-        public FeatureGameObj(GameObject gameObj, bool isFlooding)
+        public FeatureGameObj(GameObject gameObj, bool isFlooding, SampleGml parent)
         {
-            this.GameObj = gameObj;
+            this.gameObj = gameObj;
+            this.parentGml = parent;
+
+            if(parent.Tile != null)
+                this.gameObjPath = gameObj?.transform?.GetPathToParent(parent?.Tile?.Address);
+
             Filter = new FeatureObjFilter(isFlooding);
-            Renderer = gameObj.GetComponent<Renderer>();
-            if (Renderer == null)
+            renderer = gameObj.GetComponent<Renderer>();
+            if (renderer == null)
             {
                 Debug.LogWarning("renderer is not found.");
                 return;
             }
-            
+
             // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
             var srcMaterials = Renderer.materials;
             int matCount = srcMaterials.Length;
@@ -96,11 +164,13 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         public void ApplyFilter()
         {
-            GameObj.SetActive(Filter.ShouldActive());
+            if(GameObj == null) return;
+            GameObj?.SetActive(Filter.ShouldActive());
         }
 
         public void RestoreInitialMaterials()
         {
+            if (Renderer == null) return;
             Renderer.materials = NormalMaterials;
         }
     }

@@ -2,6 +2,7 @@ using GISSample.PlateauAttributeDisplay.Gml;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart;
 using UnityEngine;
 using UnityEngine.UIElements;
+using FilterParameter = GISSample.PlateauAttributeDisplay.Gml.FilterParameter;
 
 namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 {
@@ -27,7 +28,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 		public void Init(SceneManager sceneManager, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, RenameCameraSlotUi renameCameraSlotUi, CameraPositionMemory cameraPositionMemory)
         {
 
-
             uiDoc = GetComponent<UIDocument>();
             var uiRoot = uiDoc.rootVisualElement;
             ColorByAttrUi = new ColorByAttrUi(uiRoot, floodingTitlesBldg, floodingTitlesFld, sceneManager.ColorChangerByAttribute);
@@ -35,6 +35,11 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             lodSlider = uiRoot.Q<MinMaxSlider>("LodSlider");
             heightValueLabel = uiRoot.Q<Label>("HeightValue");
             lodValueLabel = uiRoot.Q<Label>("LodValue");
+
+            heightSlider.minValue = heightSlider.lowLimit;
+            heightSlider.maxValue = heightSlider.highLimit;
+            lodSlider.minValue = lodSlider.lowLimit;
+            lodSlider.maxValue = lodSlider.highLimit;
 
             rainSlider = uiRoot.Q<Slider>("RainSlider");
             snowSlider = uiRoot.Q<Slider>("SnowSlider");
@@ -66,9 +71,22 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 			}
 		}
 
+        /// <summary>
+        /// ロード中に非活性化するUI
+        /// </summary>
+        /// <param name="enabled"></param>
+        public void SetDisabledWhileLoading(bool disabled)
+        {
+            //uiDoc.rootVisualElement.SetEnabled(!disabled);
+            heightSlider.SetEnabled(!disabled);
+            lodSlider.SetEnabled(!disabled);
+            ColorByAttrUi.SetEnabled(!disabled);
+            textureSwitchToggle.SetEnabled(!disabled);
+        }
+
         public void Update()
         {
-            CameraPositionMemoryUi.Update();
+            CameraPositionMemoryUi?.Update();
         }
 
         /// <summary>

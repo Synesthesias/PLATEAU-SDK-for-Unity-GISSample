@@ -37,7 +37,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             }
         }
 
-
         public void SetHeightFilter(bool shouldActive) => filters[FilterIndexHeight] = shouldActive;
         public void SetLodFilter(bool shouldActive) => filters[FilterIndexLod] = shouldActive;
         public void SetFloodingFilter(bool shouldActive) => filters[FilterIndexIsSelectedFlooding] = shouldActive;

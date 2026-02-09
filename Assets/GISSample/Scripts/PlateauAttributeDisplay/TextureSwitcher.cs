@@ -1,4 +1,7 @@
 ﻿using GISSample.PlateauAttributeDisplay.Gml;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay
@@ -9,12 +12,16 @@ namespace GISSample.PlateauAttributeDisplay
     public class TextureSwitcher
     {
         private readonly GmlDictionary gmlDict;
+        private readonly GISTileManager tiles;
         private bool isTextureOn = true;
         private static readonly int ShaderPropIdBaseMap = Shader.PropertyToID("_BaseMap");
 
-        public TextureSwitcher(GmlDictionary gmlDict)
+        public bool IsTextureOn => isTextureOn;
+
+        public TextureSwitcher(GmlDictionary gmlDict, GISTileManager tiles)
         {
             this.gmlDict = gmlDict;
+            this.tiles = tiles;
         }
 
         public void Switch()
@@ -22,11 +29,28 @@ namespace GISSample.PlateauAttributeDisplay
             isTextureOn = !isTextureOn;
             if (isTextureOn)
             {
-                TurnOnTextures();
+                TurnOnOffTextures(true);
             }
             else
             {
-                TurnOffTextures();
+                TurnOnOffTextures(false);
+            }
+        }
+
+        public void SetCurrentTexture(SampleGml gml)
+        {
+            CoroutineUtil.RunToEnd(SetCurrentTextureCoroutine(gml));
+        }
+
+        public IEnumerator SetCurrentTextureCoroutine(SampleGml gml)
+        {
+            if (!isTextureOn)
+            {
+                yield return TurnOnOffTexturesCoroutine(gml, false);
+            }
+            else
+            {
+                yield return TurnOnOffTexturesCoroutine(gml, true);
             }
         }
 
@@ -35,7 +59,7 @@ namespace GISSample.PlateauAttributeDisplay
             if (isTextureOn) return;
 
             isTextureOn = true;
-            TurnOnTextures();
+            TurnOnOffTextures(true);
         }
 
         public void SetTextureOff()
@@ -43,34 +67,63 @@ namespace GISSample.PlateauAttributeDisplay
             if (!isTextureOn) return;
 
             isTextureOn = false;
-            TurnOffTextures();
+            TurnOnOffTextures(false); 
         }
 
-        private void TurnOffTextures()
+        private void TurnOnOffTextures(bool on)
         {
-            foreach (var feat in gmlDict.FeatureGameObjs())
+            foreach (var gml in gmlDict.Gmls())
+                CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
+
+            if (tiles != null)
             {
-                var materials = feat.NormalMaterials;
-                int matCount = materials.Length;
-                for (int i = 0; i < matCount; i++)
+                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                    tiles.ProcessAllLoadedTiles();
+                else
                 {
-                    var mat = materials[i];
-                    SetMainTexture(mat, null);
+                    foreach(var gml in tiles.Gmls())
+                    {
+                        if(gml.Tile.LoadedObject == null) continue;
+                        CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
+                    }
                 }
-                feat.NormalMaterials = materials;
+                   
             }
         }
 
-        private void TurnOnTextures()
+        public IEnumerator TurnOnOffTexturesCoroutine(SampleGml gml, bool on)
         {
-            foreach (var feat in gmlDict.FeatureGameObjs())
+
+            int count = 0;
+            var semantics = gml.SemanticCityObjs();
+            foreach (var semantic in semantics)
             {
-                var materials = feat.NormalMaterials;
-                int matCount = materials.Length;
-                for (int i = 0; i < matCount; i++)
+                var features = semantic.FeatureGameObjs();
+
+                foreach (var feat in features)
                 {
-                    var mat = materials[i];
-                    SetMainTexture(mat, feat.InitialTextures[i]);
+                    if(feat.Renderer == null) continue; //初期化も同時に行う
+                    
+                    if (semantic.CurrentColor == Color.white)　//初回実行時にテクスチャが差しか割らないので実装
+                        feat.RestoreInitialMaterials();
+
+                    var materials = feat.NormalMaterials;
+                    int matCount = materials.Length;
+                    for (int i = 0; i < matCount; i++)
+                    {
+                        var mat = materials[i];
+                        if (on)
+                            SetMainTexture(mat, feat.InitialTextures[i]);
+                        else
+                            SetMainTexture(mat, null);
+                    }
+                }
+
+                count++;
+                if (count > CoroutineUtil.YIELD_STEP_FAST)
+                {
+                    count = 0;
+                    yield return null;
                 }
             }
         }

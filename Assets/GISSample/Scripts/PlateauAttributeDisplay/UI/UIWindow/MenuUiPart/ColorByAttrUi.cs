@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
@@ -17,12 +18,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         private readonly RadioButtonGroup radioButtonFld;
 
         /// <summary> 浸水色分けの選択肢（建物） </summary>
-        private readonly FloodingTitleSet floodingTitlesBldg;
+        private FloodingTitleSet floodingTitlesBldg;
 
         /// <summary> 浸水色分けの選択肢（浸水区域） </summary>
         private readonly FloodingTitleSet floodingTitlesFld;
 
         private readonly ColorChangerByAttribute colorChangerByAttribute;
+
+        private List<string> radioButtonChoicesBuildingInitial = new() {"色分けなし","高さ"};
 
         public ColorByAttrUi(VisualElement menuRoot, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, ColorChangerByAttribute colorChangerByAttribute)
         {
@@ -42,6 +45,23 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
             if (floodingTitlesFld.Count > 0)
             {
                 AddRadioButtonChoices(radioButtonFld, floodingTitlesFld.TitleStrings);
+            }
+        }
+
+        public void SetEnabled(bool enabled)
+        {
+            radioButtonBuilding.SetEnabled(enabled);
+            radioButtonFld.SetEnabled(enabled);
+        }
+
+        public void AppendFloodingTitlesBuilding(FloodingTitleSet newSet)
+        {
+            floodingTitlesBldg.UnionWith(newSet);
+            if (this.floodingTitlesBldg.Count > 0)
+            {
+                var currentChoices = new List<string>(radioButtonChoicesBuildingInitial);
+                currentChoices.AddRange(floodingTitlesBldg.TitleStrings);
+                radioButtonBuilding.choices = currentChoices;
             }
         }
 
