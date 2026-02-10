@@ -81,7 +81,8 @@ namespace GISSample.PlateauAttributeDisplay
                     tiles.ProcessAllLoadedTiles();
                 else
                 {
-                    foreach(var gml in tiles.Gmls())
+                    //tiles.ClearCoroutineProcess();
+                    foreach (var gml in tiles.Gmls())
                     {
                         if(gml.Tile.LoadedObject == null) continue;
                         CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
@@ -104,7 +105,7 @@ namespace GISSample.PlateauAttributeDisplay
                 {
                     if(feat.Renderer == null) continue; //初期化も同時に行う
                     
-                    if (semantic.CurrentColor == Color.white)　//初回実行時にテクスチャが差しか割らないので実装
+                    if (semantic.CurrentColor == Color.white)　//初回実行時にテクスチャが差し変わらないので実装
                         feat.RestoreInitialMaterials();
 
                     var materials = feat.NormalMaterials;

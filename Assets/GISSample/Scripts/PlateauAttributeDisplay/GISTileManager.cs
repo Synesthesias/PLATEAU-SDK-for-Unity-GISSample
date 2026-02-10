@@ -6,18 +6,28 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GISSample.PlateauAttributeDisplay
 {
     public class GISTileManager : MonoBehaviour
     {
         public static readonly bool USE_COROUTINE_FOR_TILES = true; //タイル読込後の処理にコルーチン使用
-        public static readonly bool RUN_COROUTINE_EVERY_LOAD = false; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
+        public static readonly bool RUN_COROUTINE_ON_EVERY_LOAD = true; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
         public static readonly bool USE_COROUTINE_FOR_OPERATIONS = false; //タイル読込後のフィルター・色変更等処理にコルーチン使用
         public static readonly bool USE_COROUTINE_FOR_INTERACTION = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用     
         public static readonly bool ZOOMLEVEL11_ONLY = true; // Zoom Level 11 以外は無視
         public static readonly bool SHOW_DEBUG_LOGS = false;
+
+        /// <summary>
+        /// 各Zoomレベルごとのカメラからのロード距離定義をオーバーライドします。
+        /// {zoomLevel, (最小距離, 最大距離)}
+        /// </summary>
+        public Dictionary<int, (float, float)> loadDistances = new Dictionary<int, (float, float)>
+        {
+            { 11, (-10000f, 1000f) },
+            { 10, (1000f, 2000f) },
+            { 9, (2000f, 100000f) },
+        };
 
         [SerializeField]
         private PLATEAUTileManager tileManager;
@@ -38,7 +48,7 @@ namespace GISSample.PlateauAttributeDisplay
         public bool IsCoroutineRunning => isCoroutineRunning;
         private bool isCoroutineRunning = false;
 
-        public bool IsTileLoading => tileManager?.IsCoroutineRunning == true || tileManager.HasCurrentTask == true;
+        public bool IsTileLoading => tileManager?.IsCoroutineRunning == true || tileManager?.HasCurrentTask == true;
 
         void Start()
         {
@@ -57,25 +67,23 @@ namespace GISSample.PlateauAttributeDisplay
                 sceneManager = FindFirstObjectByType<SceneManager>();
             }
 
-            if(!sceneManager.IsInitialized)
-                tileManager.DisableUpdateByCameraPosition(true); // sceneManager initialize完了まで待機
+#if UNITY_EDITOR
+            PLATEAUSceneViewCameraTracker.Release(); //Editor/Runtime切替時のエラー軽減
+#endif
+
+            PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視
+
+            tileManager.loadDistances = loadDistances;
             tileManager.onTileInstantiatedAction += onTileInstanciated;
             tileManager.onTileUnloadBegin += onTileUnloaded;
             tileManager.onTileInstantiationComplete += onAllTileLoaded;
-            sceneManager.OnInitialize += onSceneInitialized;
         }
 
         private void OnDestroy()
         {
             tileManager.onTileInstantiatedAction -= onTileInstanciated;
             tileManager.onTileUnloadBegin -= onTileUnloaded;
-            sceneManager.OnInitialize -= onSceneInitialized;
-        }
-
-        private void onSceneInitialized()
-        {
-            tileManager?.UpdateAssetsByCameraPosition(Camera.main.transform.position);
-            tileManager?.DisableUpdateByCameraPosition(false);
+            tileManager.onTileInstantiationComplete -= onAllTileLoaded;
         }
 
         /// <summary>
@@ -87,15 +95,25 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
         /// <summary>
+        /// カメラ位置に応じてタイル読込実行
+        /// </summary>
+        /// <param name="position"></param>
+        public void UpdateCameraPosition(Vector3 position)
+        {
+            if (tileManager?.CheckIfCameraPositionHasChanged(position) == true)
+                tileManager?.UpdateAssetsByCameraPosition(position);
+        }
+
+        /// <summary>
         /// タイル読込時の処理
         /// </summary>
         /// <param name="tile"></param>
         private void onTileInstanciated(PLATEAUDynamicTile tile)
         {
+            Log($"<color=yellow>Tile instantiated: {tile.Address}</color>");
+
             if (ZOOMLEVEL11_ONLY && tile.ZoomLevel < 11) // ZoomLevel 11のみ
                 return;
-
-            Log($"<color=yellow>Tile instantiated: {tile.Address}</color>");
 
             // Check cache first
             if (tileGmlCache.TryGetValue(tile.Address, out var cachedGml))
@@ -113,10 +131,10 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="tile"></param>
         private void onTileUnloaded(PLATEAUDynamicTile tile)
         {
+            Log($"<color=red>Tile unload begin: {tile.Address}</color>");
+
             if (ZOOMLEVEL11_ONLY && tile.ZoomLevel < 11) // ZoomLevel 11のみ
                 return;
-
-            Log($"<color=red>Tile unload begin: {tile.Address}</color>");
 
             RemoveCoroutineByAddress(tile.Address);
         }
@@ -141,7 +159,7 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 if(coroutineQueue.TryAdd(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml)))
                 {
-                    if(RUN_COROUTINE_EVERY_LOAD)
+                    if(RUN_COROUTINE_ON_EVERY_LOAD)
                         StartCoroutineProcess();
                 }   
             }
@@ -156,33 +174,14 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void StartCoroutineProcess()
         {
-            if (IsTileLoading) // タイルロード完了を待ってスタート
-            {
-                Log($"<color=red>StartCoroutineProcess Failed (Tile Loading ) {coroutineQueue.Count}</color>");
-                return;
-            }
-
             if (!isCoroutineRunning)
             {
                 baseCoroutine = StartCoroutine(ProcessCoroutineQueue());
             }
             else
             {
-                Log($"<color=red>StartCoroutineProcess Failed (alredy running ) {coroutineQueue.Count}</color>");
+                //Log($"<color=red>StartCoroutineProcess Failed (alredy running ) {coroutineQueue.Count}</color>");
             }
-        }
-
-        /// <summary>
-        /// コルーチンの実行を停止
-        /// キューはそのまま
-        /// </summary>
-        public void StopCoroutineProcess()
-        {
-            if(baseCoroutine != null){
-                StopCoroutine(baseCoroutine);
-                Log($"<color=yellow>StopCoroutineProcess {coroutineQueue.Count}</color>");
-            }
-            isCoroutineRunning = false;
         }
 
         /// <summary>
@@ -230,14 +229,37 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
         /// <summary>
+        /// コルーチンの実行を停止
+        /// キューはそのまま
+        /// </summary>
+        public void StopCoroutineProcess()
+        {
+            if (baseCoroutine != null)
+            {
+                StopCoroutine(baseCoroutine);
+                Log($"<color=yellow>StopCoroutineProcess {coroutineQueue.Count}</color>");
+            }
+            isCoroutineRunning = false;
+        }
+
+        /// <summary>
+        /// コルーチンの実行を停止
+        /// キューを全て削除
+        /// </summary>
+        public void ClearCoroutineProcess()
+        {
+            StopCoroutineProcess();
+            coroutineQueue.Clear();
+        }
+
+        /// <summary>
         /// 実行中のコルーチンを廃棄して読込タイル全てについて処理を行う
         /// </summary>
         public void ProcessAllLoadedTiles()
         {
             if (USE_COROUTINE_FOR_TILES)
             {
-                StopCoroutineProcess();
-                coroutineQueue.Clear();
+                ClearCoroutineProcess();
 
                 int coroutineCount = 0;
                 foreach (var gml in GmlsList)

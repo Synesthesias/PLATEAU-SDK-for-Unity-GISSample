@@ -5,7 +5,6 @@ using GISSample.PlateauAttributeDisplay.UI;
 using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using PLATEAU.CityInfo;
 using PLATEAU.DynamicTile;
-using PLATEAU.Util.Async;
 using PlateauToolkit.Sandbox;
 using System;
 using System.Collections;
@@ -69,6 +68,7 @@ namespace GISSample.PlateauAttributeDisplay
         public bool IsKeyPressed => gisCameraMove?.IsKeyPressed ?? false;
 
         public bool IsTileLoading => tiles?.IsTileLoading ?? false;
+        public bool IsTileCoroutineRunning => tiles?.IsCoroutineRunning ?? false;
 
         public Action OnInitialize = null;
 
@@ -115,7 +115,7 @@ namespace GISSample.PlateauAttributeDisplay
             if (trafficManager != null)
             {
                 // マウス・キーでの操作時はTrafficManagerを非活性化
-                if (IsMouseDragging || IsKeyPressed || tiles?.IsTileLoading == true || !IsInitialized)
+                if (IsMouseDragging || IsKeyPressed || IsTileLoading || !IsInitialized)
                 {
                     trafficManager.gameObject.SetActive(false);
                 }
@@ -129,50 +129,54 @@ namespace GISSample.PlateauAttributeDisplay
                 return;
 
             gisCameraMove.Update();
-            GisUiController.Update();
-            walkerMoveByUserInput.Update(Time.deltaTime);
 
-            if (plateauSandboxCameraManager != null && actionButtonsUi != null)
+            //if(!IsTileLoading)
             {
-                if (plateauSandboxCameraManager.CurrentCameraMode == PlateauSandboxCameraMode.None)
+                GisUiController.Update();
+                walkerMoveByUserInput.Update(Time.deltaTime);
+
+                if (plateauSandboxCameraManager != null && actionButtonsUi != null)
                 {
-                    if (actionButtonsUi.IsWalkerActive)
+                    if (plateauSandboxCameraManager.CurrentCameraMode == PlateauSandboxCameraMode.None)
                     {
-                        // 歩行時
-                        actionButtonsUi.SetVehicleToggleEnabled(false);
-                        return;
+                        if (actionButtonsUi.IsWalkerActive)
+                        {
+                            // 歩行時
+                            actionButtonsUi.SetVehicleToggleEnabled(false);
+                            return;
+                        }
+
+                        // 俯瞰視点
+                        if (actionButtonsUi.IsVehicleActive)
+                        {
+                            actionButtonsUi.SetVehicleToggleOff();
+                        }
+                        actionButtonsUi.SetWalkerToggleEnabled(true);
+                        actionButtonsUi.SetVehicleToggleEnabled(true);
                     }
-                    
-                    // 俯瞰視点
-                    if (actionButtonsUi.IsVehicleActive)
+                    else
                     {
-                        actionButtonsUi.SetVehicleToggleOff();
+                        // 車両視点時
+                        if (!actionButtonsUi.IsVehicleActive)
+                        {
+                            // 車両を直接指定時。車両ボタンをアクティブにする
+                            actionButtonsUi.SetVehicleToggleOn();
+                        }
+
+                        actionButtonsUi.SetWalkerToggleEnabled(false);
+                        walkControlUI.CloseWindowBody();
                     }
-                    actionButtonsUi.SetWalkerToggleEnabled(true);
-                    actionButtonsUi.SetVehicleToggleEnabled(true);
                 }
-                else
+
+                if (walkControlUI != null)
                 {
-                    // 車両視点時
-                    if (!actionButtonsUi.IsVehicleActive)
-                    {
-                        // 車両を直接指定時。車両ボタンをアクティブにする
-                        actionButtonsUi.SetVehicleToggleOn();
-                    }
-                    
-                    actionButtonsUi.SetWalkerToggleEnabled(false);
-                    walkControlUI.CloseWindowBody();
+                    walkControlUI.WalkControllerHeightText = walkerMoveByUserInput.CameraOffsetY.ToString("F2");
                 }
             }
 
-            if (walkControlUI != null)
-            {
-                walkControlUI.WalkControllerHeightText = walkerMoveByUserInput.CameraOffsetY.ToString("F2");
-            }
-
+            //FloatingTextList.SetActive(!IsTileLoading);
             ShowLoadingUI(IsTileLoading);//タイルロード中は一部UI非表示
         }
-
 
         /// <summary>
         /// 初期化処理
@@ -266,6 +270,13 @@ namespace GISSample.PlateauAttributeDisplay
             SetupWalkControlUI();
             SetupWalkerCamera();
 
+
+            if (tiles != null)
+            {
+                var mainCam = Camera.main;
+                tiles.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
+            }
+
             IsInitialized = true;
             OnInitialize?.Invoke();
         }
@@ -276,16 +287,21 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="started"></param>
         private void OnInteractionHandler(bool started)
         {
-            if (!GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                return;
-
             if (started)
             {
-                tiles?.StopCoroutineProcess();
+                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                    tiles?.StopCoroutineProcess();
             }
-            else
+            else // インタラクション終了時
             {
-                tiles?.StartCoroutineProcess();
+                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                    tiles?.StartCoroutineProcess();
+
+                if (tiles != null)
+                {
+                    var mainCam = Camera.main;
+                    tiles.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
+                }
             }
         }
 
@@ -310,7 +326,7 @@ namespace GISSample.PlateauAttributeDisplay
         public IEnumerator SampleGmlAddedHandlerCoroutine(SampleGml gml)
         {
 
-            if (gml.Tile.LoadedObject == null) 
+            if (gml.Tile.LoadedObject == null)
                 yield break;
 
             var floodingTitles = new FloodingTitleSet();
@@ -318,7 +334,7 @@ namespace GISSample.PlateauAttributeDisplay
                 floodingTitles.UnionWith(gml.FloodingTitles);
             GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
 
-            if(GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+            if (GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
                 yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);
             else
                 TextureSwitcher.SetCurrentTexture(gml);
@@ -332,7 +348,7 @@ namespace GISSample.PlateauAttributeDisplay
                 else
                     ColorChangerByAttribute.RedrawBuildings(new List<SampleGml>() { gml });
             }
-                
+
             yield return null;
 
             if (!filterByLodAndHeight.IsDefaultFilterParameter)
@@ -342,12 +358,16 @@ namespace GISSample.PlateauAttributeDisplay
                 else
                     filterByLodAndHeight.Filter(gml);
             }
-                
 
             yield return null;
-            
         }
 
+        /// <summary>
+        /// クリック時の属性表示用尾
+        /// </summary>
+        /// <param name="gmlName"></param>
+        /// <param name="cityObjName"></param>
+        /// <returns></returns>
         public SampleAttribute GetAttribute(string gmlName, string cityObjName)
         {
             var result = tiles?.GetAttribute(gmlName, cityObjName);
@@ -357,7 +377,12 @@ namespace GISSample.PlateauAttributeDisplay
             return gmlDict.GetAttribute(gmlName, cityObjName);
         }
 
-
+        /// <summary>
+        /// クリック時のGameObjecct取得用
+        /// </summary>
+        /// <param name="gmlName"></param>
+        /// <param name="cityObjName"></param>
+        /// <returns></returns>
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
             var result = tiles?.GetCityObject(gmlName, cityObjName);
@@ -380,13 +405,17 @@ namespace GISSample.PlateauAttributeDisplay
             return result;
         }
 
+        /// <summary>
+        /// CityGmlの色変更用
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<SampleGml> Gmls()
         {
             var gmls = gmlDict.Gmls();
 
-            var result = tiles?.Gmls();
-            if (result != null)
-                gmls = gmls.Concat(result);
+            //var result = tiles?.Gmls();
+            //if (result != null)
+            //    gmls = gmls.Concat(result);
 
             return gmls;
         }

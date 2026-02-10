@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/GISSample/GISSampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: bd58b77ede672214abcdd406bc829eeb,
+    com.unity.addressableassets: {fileID: 11400000, guid: 7f44984be3942c64f8075d1edd4554b4,
       type: 2}
   m_UseUCBPForAssetBundles: 0
