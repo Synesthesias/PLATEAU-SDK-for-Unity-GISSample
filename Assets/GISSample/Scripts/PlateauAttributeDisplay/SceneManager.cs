@@ -40,8 +40,8 @@ namespace GISSample.PlateauAttributeDisplay
         private readonly GmlDictionary gmlDict = new();
 
         [SerializeField]
-        private GISTileManager tiles;
-        public GISTileManager Tiles => tiles;
+        private GISTileManager gilTileManager;
+        public GISTileManager GisTileManager => gilTileManager;
 
         [SerializeField]
         private TrafficManager trafficManager;
@@ -67,8 +67,8 @@ namespace GISSample.PlateauAttributeDisplay
         public bool IsMouseDragging => gisCameraMove?.IsMouseDragging ?? false;
         public bool IsKeyPressed => gisCameraMove?.IsKeyPressed ?? false;
 
-        public bool IsTileLoading => tiles?.IsTileLoading ?? false;
-        public bool IsTileCoroutineRunning => tiles?.IsCoroutineRunning ?? false;
+        public bool IsTileLoading => gilTileManager?.IsTileLoading ?? false;
+        public bool IsTileCoroutineRunning => gilTileManager?.IsCoroutineRunning ?? false;
 
         public Action OnInitialize = null;
 
@@ -185,8 +185,8 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         private void Initialize()
         {
-            if (tiles == null)
-                tiles = FindFirstObjectByType<GISTileManager>();
+            if (gilTileManager == null)
+                gilTileManager = FindFirstObjectByType<GISTileManager>();
 
             if (trafficManager == null)
                 trafficManager = FindFirstObjectByType<TrafficManager>();
@@ -205,14 +205,14 @@ namespace GISSample.PlateauAttributeDisplay
             cameraPositionMemory = new CameraPositionMemory(Camera.main);
             ColorChangerByAttribute = new ColorChangerByAttribute(this);
             FloatingTextList = new FloatingTextList();
-            TextureSwitcher = new TextureSwitcher(gmlDict, tiles);
+            TextureSwitcher = new TextureSwitcher(gmlDict, gilTileManager);
 
             GisUiController = GetComponentInChildren<GisUiController>();
             // どのような洪水情報があるか検索します
             var floodingAreaNamesBldg = gmlDict.FindAllFloodingTitlesOfBuildings();
             var floodingAreaNamesFld = gmlDict.FindAllFloodingTitlesOfFlds();
 
-            var floodingAreaNamesBldgTiles = tiles?.FindAllFloodingTitlesOfBuildings();
+            var floodingAreaNamesBldgTiles = gilTileManager?.FindAllFloodingTitlesOfBuildings();
             if (floodingAreaNamesBldgTiles?.Count > 0)
                 floodingAreaNamesBldg?.UnionWith(floodingAreaNamesBldgTiles);
 
@@ -225,7 +225,7 @@ namespace GISSample.PlateauAttributeDisplay
             gisCameraMove.OnMouseDrag += OnInteractionHandler;
             gisCameraMove.OnKeyPress += OnInteractionHandler;
 
-            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, tiles);
+            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, gilTileManager);
             weatherController = new WeatherController(GisUiController.MenuUi);
 
 
@@ -271,10 +271,10 @@ namespace GISSample.PlateauAttributeDisplay
             SetupWalkerCamera();
 
 
-            if (tiles != null)
+            if (gilTileManager != null)
             {
                 var mainCam = Camera.main;
-                tiles.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
+                gilTileManager.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
             }
 
             IsInitialized = true;
@@ -289,18 +289,18 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (started)
             {
-                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                    tiles?.StopCoroutineProcess();
+                if (GisTileManager.UseCoroutineForInteraction)
+                    gilTileManager?.StopCoroutineProcess();
             }
             else // インタラクション終了時
             {
-                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                    tiles?.StartCoroutineProcess();
+                if (GisTileManager.UseCoroutineForInteraction)
+                    gilTileManager?.StartCoroutineProcess();
 
-                if (tiles != null)
+                if (gilTileManager != null)
                 {
                     var mainCam = Camera.main;
-                    tiles.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
+                    gilTileManager.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
                 }
             }
         }
@@ -334,7 +334,7 @@ namespace GISSample.PlateauAttributeDisplay
                 floodingTitles.UnionWith(gml.FloodingTitles);
             GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
 
-            if (GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+            if (GisTileManager.UseCoroutineForOperations)
                 yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);
             else
                 TextureSwitcher.SetCurrentTexture(gml);
@@ -343,7 +343,7 @@ namespace GISSample.PlateauAttributeDisplay
 
             if (ColorChangerByAttribute.BuildingColorType != BuildingColorType.None)
             {
-                if (GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+                if (GisTileManager.UseCoroutineForOperations)
                     yield return ColorChangerByAttribute.RedrawBuildingsCoroutine(new List<SampleGml>() { gml });
                 else
                     ColorChangerByAttribute.RedrawBuildings(new List<SampleGml>() { gml });
@@ -353,7 +353,7 @@ namespace GISSample.PlateauAttributeDisplay
 
             if (!filterByLodAndHeight.IsDefaultFilterParameter)
             {
-                if (GISTileManager.USE_COROUTINE_FOR_OPERATIONS)
+                if (GisTileManager.UseCoroutineForOperations)
                     yield return filterByLodAndHeight.FilterCoroutine(gml);
                 else
                     filterByLodAndHeight.Filter(gml);
@@ -370,7 +370,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         public SampleAttribute GetAttribute(string gmlName, string cityObjName)
         {
-            var result = tiles?.GetAttribute(gmlName, cityObjName);
+            var result = gilTileManager?.GetAttribute(gmlName, cityObjName);
             if (result != null)
                 return result;
 
@@ -385,7 +385,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
-            var result = tiles?.GetCityObject(gmlName, cityObjName);
+            var result = gilTileManager?.GetCityObject(gmlName, cityObjName);
             if (result != null)
                 return result;
 
@@ -398,7 +398,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             var result = gmlDict.FeatureGameObjs();
 
-            var tileResult = tiles?.FeatureGameObjs();
+            var tileResult = gilTileManager?.FeatureGameObjs();
             if (tileResult != null)
                 result = result.Concat(tileResult);
 

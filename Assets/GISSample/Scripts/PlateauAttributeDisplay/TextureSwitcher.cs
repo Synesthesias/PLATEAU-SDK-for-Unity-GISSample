@@ -1,6 +1,7 @@
 ﻿using GISSample.PlateauAttributeDisplay.Gml;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using UnityEngine;
 
@@ -77,18 +78,27 @@ namespace GISSample.PlateauAttributeDisplay
 
             if (tiles != null)
             {
-                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                    tiles.ProcessAllLoadedTiles();
-                else
-                {
-                    //tiles.ClearCoroutineProcess();
-                    foreach (var gml in tiles.Gmls())
-                    {
-                        if(gml.Tile.LoadedObject == null) continue;
-                        CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
-                    }
-                }
-                   
+                //if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                //    tiles.ProcessAllLoadedTiles();
+                //else
+                //{
+                //    //tiles.ClearCoroutineProcess();
+                //    foreach (var gml in tiles.Gmls())
+                //    {
+                //        if(gml.Tile.LoadedObject == null) continue;
+                //        CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
+                //    }
+                //}
+                tiles.ProccessInteraction(() => TurnOnOffTextures(tiles.Gmls(), on));
+            }
+        }
+
+        private void TurnOnOffTextures(IEnumerable<SampleGml> gmls, bool on)
+        {
+            foreach (var gml in gmls)
+            {
+                if (gml.Tile.LoadedObject == null) continue;
+                CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
             }
         }
 
