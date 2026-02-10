@@ -2,6 +2,7 @@
 
 using AWSIM.TrafficSimulation;
 using CesiumForUnity;
+using GISSample.Misc;
 using PLATEAU.CityInfo;
 using PLATEAU.DynamicTile;
 using PLATEAU.Editor.DynamicTile;
@@ -101,6 +102,11 @@ namespace GISSample.PlateauAttributeDisplay
 
                 yield return StartCoroutine(RequestGeoidHeightToUri(geoidRequestUri,
                      (height) => MoveCityModel(cityModelPosition, height, fldTarget)));
+
+                DeleteDuplicateGmls(fldTarget);
+
+                // AutoTextureRunnerを実行します。
+                AutoTextureRunner.Run(fldTarget.gameObject);
 
                 // 洪水情報はstaticをoffにします（高さを変えるため）
                 foreach (Transform gmlTrans in fldTarget.transform)

@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GISSample.PlateauAttributeDisplay.Gml;
 using UnityEngine;
 using UnityEngine.Assertions;
-using PLATEAU.Util;
-using PLATEAU.DynamicTile;
 using System.Collections;
 
 
@@ -89,7 +86,10 @@ namespace GISSample.PlateauAttributeDisplay
                 if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
                     sceneManager.Tiles.ProcessAllLoadedTiles();
                 else
+                {
+                    //sceneManager.Tiles.ClearCoroutineProcess();
                     ChangeBuildings(sceneManager.Tiles.Gmls(), type, floodingTitleBldg);
+                }  
             }    
         }
 

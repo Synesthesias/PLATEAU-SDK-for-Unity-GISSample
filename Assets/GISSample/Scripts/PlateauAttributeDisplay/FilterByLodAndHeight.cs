@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using FilterParameter = GISSample.PlateauAttributeDisplay.Gml.FilterParameter;
 
@@ -104,7 +105,10 @@ namespace GISSample.PlateauAttributeDisplay
                 if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
                     tiles.ProcessAllLoadedTiles();
                 else
+                {
+                    //tiles.ClearCoroutineProcess();
                     Filter(tiles.SemanticCityObjects(), parameter);
+                }  
             } 
         }
         private void Filter(IEnumerable<SemanticCityObject> semantics, FilterParameter parameter)
