@@ -81,15 +81,16 @@ namespace GISSample.PlateauAttributeDisplay
         public void ChangeBuildings(BuildingColorType type, FloodingTitle floodingTitleBldg)
         {
             ChangeBuildings(sceneManager.Gmls(), type, floodingTitleBldg);
-            if(sceneManager.Tiles != null)
+            if(sceneManager.GisTileManager != null)
             {
-                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                    sceneManager.Tiles.ProcessAllLoadedTiles();
-                else
-                {
-                    //sceneManager.Tiles.ClearCoroutineProcess();
-                    ChangeBuildings(sceneManager.Tiles.Gmls(), type, floodingTitleBldg);
-                }  
+                //if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                //    sceneManager.Tiles.ProcessAllLoadedTiles();
+                //else
+                //{
+                //    //sceneManager.Tiles.ClearCoroutineProcess();
+                //    ChangeBuildings(sceneManager.Tiles.Gmls(), type, floodingTitleBldg);
+                //}  
+                sceneManager.GisTileManager.ProccessInteraction(() => ChangeBuildings(sceneManager.GisTileManager.Gmls(), type, floodingTitleBldg));
             }    
         }
 

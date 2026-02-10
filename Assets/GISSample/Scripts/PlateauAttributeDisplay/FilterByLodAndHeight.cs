@@ -102,13 +102,14 @@ namespace GISSample.PlateauAttributeDisplay
             Filter(gmls.SemanticCityObjects(), parameter);
             if(tiles != null)
             {
-                if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                    tiles.ProcessAllLoadedTiles();
-                else
-                {
-                    //tiles.ClearCoroutineProcess();
-                    Filter(tiles.SemanticCityObjects(), parameter);
-                }  
+                //if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
+                //    tiles.ProcessAllLoadedTiles();
+                //else
+                //{
+                //    //tiles.ClearCoroutineProcess();
+                //    Filter(tiles.SemanticCityObjects(), parameter);
+                //}
+                tiles.ProccessInteraction(() => Filter(tiles.SemanticCityObjects(), parameter));
             } 
         }
         private void Filter(IEnumerable<SemanticCityObject> semantics, FilterParameter parameter)

@@ -11,12 +11,12 @@ namespace GISSample.PlateauAttributeDisplay
 {
     public class GISTileManager : MonoBehaviour
     {
-        public static readonly bool USE_COROUTINE_FOR_TILES = true; //タイル読込後の処理にコルーチン使用
-        public static readonly bool RUN_COROUTINE_ON_EVERY_LOAD = true; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
-        public static readonly bool USE_COROUTINE_FOR_OPERATIONS = false; //タイル読込後のフィルター・色変更等処理にコルーチン使用
-        public static readonly bool USE_COROUTINE_FOR_INTERACTION = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用     
-        public static readonly bool ZOOMLEVEL11_ONLY = true; // Zoom Level 11 以外は無視
-        public static readonly bool SHOW_DEBUG_LOGS = false;
+        [SerializeField] public bool UseCoroutineForTiles = true; //タイル読込後の処理にコルーチン使用
+        [SerializeField] public bool RunCoroutineOnEveryLoad = true; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
+        [SerializeField] public bool UseCoroutineForOperations = false; //タイル読込後のフィルター・色変更等処理にコルーチン使用
+        [SerializeField] public bool UseCoroutineForInteraction = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用     
+        [SerializeField] public bool ZoomLevel11Only = true; // Zoom Level 11 以外は無視
+        [SerializeField] public bool ShowDebugLogs = false;
 
         /// <summary>
         /// 各Zoomレベルごとのカメラからのロード距離定義をオーバーライドします。
@@ -112,7 +112,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             Log($"<color=yellow>Tile instantiated: {tile.Address}</color>");
 
-            if (ZOOMLEVEL11_ONLY && tile.ZoomLevel < 11) // ZoomLevel 11のみ
+            if (ZoomLevel11Only && tile.ZoomLevel < 11) // ZoomLevel 11のみ
                 return;
 
             // Check cache first
@@ -133,7 +133,7 @@ namespace GISSample.PlateauAttributeDisplay
         {
             Log($"<color=red>Tile unload begin: {tile.Address}</color>");
 
-            if (ZOOMLEVEL11_ONLY && tile.ZoomLevel < 11) // ZoomLevel 11のみ
+            if (ZoomLevel11Only && tile.ZoomLevel < 11) // ZoomLevel 11のみ
                 return;
 
             RemoveCoroutineByAddress(tile.Address);
@@ -155,11 +155,11 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="gml"></param>
         private void ProcessGml(SampleGml gml)
         {
-            if (USE_COROUTINE_FOR_TILES)
+            if (UseCoroutineForTiles)
             {
                 if(coroutineQueue.TryAdd(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml)))
                 {
-                    if(RUN_COROUTINE_ON_EVERY_LOAD)
+                    if(RunCoroutineOnEveryLoad)
                         StartCoroutineProcess();
                 }   
             }
@@ -257,7 +257,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void ProcessAllLoadedTiles()
         {
-            if (USE_COROUTINE_FOR_TILES)
+            if (UseCoroutineForTiles)
             {
                 ClearCoroutineProcess();
 
@@ -277,6 +277,17 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 foreach (var gml in GmlsList)
                     sceneManager.SampleGmlAddedHandler(gml);
+            }
+        }
+
+        public void ProccessInteraction(Action interactAction)
+        {
+            if (UseCoroutineForInteraction)
+                ProcessAllLoadedTiles(); //読込タイル全て処理
+            else
+            {
+                //ClearCoroutineProcess();
+                interactAction.Invoke();
             }
         }
 
@@ -352,7 +363,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void Log(object message)
         {
-            if(SHOW_DEBUG_LOGS) 
+            if(ShowDebugLogs) 
                 Debug.Log(message);
         }
 
@@ -365,6 +376,8 @@ namespace GISSample.PlateauAttributeDisplay
 
         public override void OnInspectorGUI()
         {
+            DrawDefaultInspector();
+
             var manager = (GISTileManager)target;
 
             GUILayout.Label("Coroutine Running : " + manager.IsCoroutineRunning.ToString());
