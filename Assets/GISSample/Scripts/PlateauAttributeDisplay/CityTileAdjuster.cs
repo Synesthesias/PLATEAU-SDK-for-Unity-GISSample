@@ -374,9 +374,13 @@ namespace GISSample.PlateauAttributeDisplay
                 {
                     ExecAutoTexturing(autoTexturingType, autoTexturing, "ProcessLOD1", go, r, meshFilter);
                 }
-                else 
+                else if (lod == "LOD2")
                 {
                     ExecAutoTexturing(autoTexturingType, autoTexturing, "ProcessLod2", go, r, meshFilter);
+                }
+                else
+                {
+                    Debug.LogWarning($"Ignore LOD : {lod}");
                 }
 
                 Undo.ClearAll();
