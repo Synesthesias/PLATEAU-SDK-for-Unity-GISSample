@@ -1,6 +1,15 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "Cesium",
+      "url": "https://unity.pkg.cesium.com",
+      "scopes": [
+        "com.cesium"
+      ]
+    }
+  ],
   "dependencies": {
-    "com.cesium.unity": "file:com.cesium.unity-1.7.1.tgz",
+    "com.cesium.unity": "1.7.1",
     "com.synesthesias.plateau-unity-sdk": "file:PLATEAU-SDK-for-Unity-v2.3.2.tgz",
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.cinemachine": "2.10.5",
