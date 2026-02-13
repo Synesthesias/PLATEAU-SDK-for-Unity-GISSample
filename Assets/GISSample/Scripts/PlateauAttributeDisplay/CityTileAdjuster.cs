@@ -33,6 +33,13 @@ using UnityEngine.Networking;
 
 namespace GISSample.PlateauAttributeDisplay
 {
+    // AutoTextureHandler用パラメータ
+    public class AutoTextureParams
+    {
+        public ObservableCollection<TileSelectionItem> SelectedItems;
+        public bool ConvertToPrimary;
+    }
+
     /// <summary>
     /// PLATEAUでインポートした都市モデルをGIS Sampleで利用可能なように調整します。
     /// 利用方法：
@@ -44,6 +51,10 @@ namespace GISSample.PlateauAttributeDisplay
         #if UNITY_EDITOR
         [SerializeField] private PLATEAUInstancedCityModel fldTarget;
         [SerializeField] internal PLATEAUTileManager tileManager;
+
+        internal TileListElementData tileData;
+        internal TileListElement tileListElement;
+        internal bool convPrimary = true; //主要地物に変換
 
         private bool isAutoTextureExecuting = false;
 
@@ -141,14 +152,10 @@ namespace GISSample.PlateauAttributeDisplay
                 return;
             }
 
-            AutoTextureAsync(tileManager, selection, convertToPrimary).ContinueWithErrorCatch();
-        }
+            if (selection.Count == 0)
+                return;
 
-        // AutoTextureHandler用パラメータ
-        class AutoTextureParams
-        {
-            public ObservableCollection<TileSelectionItem> SelectedItems;
-            public bool ConvertToPrimary;
+            AutoTextureAsync(tileManager, selection, convertToPrimary).ContinueWithErrorCatch();
         }
 
         private async Task AutoTextureAsync(PLATEAUTileManager tileManager, ObservableCollection<TileSelectionItem> selection, bool convertToPrimary)
@@ -157,7 +164,7 @@ namespace GISSample.PlateauAttributeDisplay
             PLATEAUSceneViewCameraTracker.Release();
             using (var cts = new CancellationTokenSource())
             {
-                var selectedBuildingTileAddresses = selection.Select(t => t.TileAddress).ToList();  //アドレスリスト
+                var selectedBuildingTileAddresses = selection.Where(t => t.TileAddress.Contains("bldg")).Select(t => t.TileAddress).ToList();  //アドレスリスト 建物地物に絞り込み
                 //var selectedBuildingTileAddresses = tileManager.DynamicTiles.Where(t => t.Package == PLATEAU.Dataset.PredefinedCityModelPackage.Building && zoomLevels.Contains(t.ZoomLevel)).Select(t => t.Address).ToList();  // 建物地物に絞り込み
                 var loadedTiles = await tileManager.ForceLoadTiles(selectedBuildingTileAddresses, cts.Token);
 
@@ -174,7 +181,7 @@ namespace GISSample.PlateauAttributeDisplay
                     AutoTextureParams autTexParam = new AutoTextureParams
                     {
                         SelectedItems = selectedBuildingTiles,
-                        ConvertToPrimary = convertToPrimary
+                        ConvertToPrimary = convertToPrimary,
                     };
 
                     await TileConvertCommon.EditAndSaveSelectedTilesAsync<AutoTextureParams>(selectedBuildingTiles, tileManager, tileRebuilder, ApplyAutoTextureHandler, autTexParam, ct);
@@ -233,7 +240,7 @@ namespace GISSample.PlateauAttributeDisplay
                     Debug.Log($"Auto texturing started for tile: {transform.name} {count}");
 
                     textureRunner.OnProcessingFinished += OnProcessingFinishedHandler;
-                    textureRunner.RunDelayed(transform.gameObject);
+                    textureRunner.RunDelayed(transform.gameObject, autoTexParam);
 
                     await tcs.Task; // 完了待ち
 
@@ -325,12 +332,12 @@ namespace GISSample.PlateauAttributeDisplay
 
         public event Action OnProcessingFinished;
 
-        public void RunDelayed(GameObject targetObj)
+        public void RunDelayed(GameObject targetObj, AutoTextureParams param)
         {
-            EditorApplication.delayCall += () => RunDelayedInner(targetObj);
+            EditorApplication.delayCall += () => RunDelayedInner(targetObj, param);
         }
 
-        public void RunDelayedInner(GameObject targetObj)
+        public void RunDelayedInner(GameObject targetObj, AutoTextureParams param)
         {
             // Rendering ToolkitsのAuto Texturingの機能を用意します。
             var renderers = targetObj.transform.GetComponentsInChildren<MeshRenderer>(true);
@@ -365,18 +372,26 @@ namespace GISSample.PlateauAttributeDisplay
 
                 var go = r.gameObject;
                 string lod = go.transform.parent.name;
+                bool isZoomLevel9 = go.transform.parent.parent.name.StartsWith("tile_zoom_9");
 
                 // Auto Texturingを適用します。
                 // 普通の処理と異なり、ゲームオブジェクトの階層構造はなるべく維持されるようにします。
                 var meshFilter = go.GetComponent<MeshFilter>();
 
-                if (lod == "LOD1")
+
+                if (isZoomLevel9 && lod == "LOD1")
+                {
+                    Debug.Log("ProcessZoomLevel9");
+                    ExecAutoTexturing(autoTexturingType, autoTexturing, "ProcessTileZl9Lod1", go, r, meshFilter);
+                }
+                else if (lod == "LOD2" || lod == "LOD3"  )
+                {
+
+                    ExecAutoTexturing(autoTexturingType, autoTexturing, "ProcessLod2", go, r, meshFilter);
+                }
+                else if (lod == "LOD1")
                 {
                     ExecAutoTexturing(autoTexturingType, autoTexturing, "ProcessLOD1", go, r, meshFilter);
-                }
-                else if (lod == "LOD2")
-                {
-                    ExecAutoTexturing(autoTexturingType, autoTexturing, "ProcessLod2", go, r, meshFilter);
                 }
                 else
                 {
@@ -411,46 +426,23 @@ namespace GISSample.PlateauAttributeDisplay
     [CustomEditor(typeof(CityTileAdjuster))]
     public class CityTileAdjusterEditor : Editor
     {
-        //private bool zl9 = true;
-        //private bool zl10 = true;
-        //private bool zl11 = true;
-        private bool convPrimary = true;
-
-        private TileListElementData tileData;
-        private TileListElement tileListElement;
-
         public override void OnInspectorGUI()
         {
             var cityAdjuster = (CityTileAdjuster)target;
 
-            if (tileData == null)
+            if (cityAdjuster.tileData == null)
             {
                 var windows = Resources.FindObjectsOfTypeAll(typeof(EditorWindow));
-                tileData = new TileListElementData(windows.FirstOrDefault() as EditorWindow);
-                tileData.TileManager = cityAdjuster.tileManager;
-                tileListElement = new TileListElement(tileData);
+                cityAdjuster.tileData = new TileListElementData(windows.FirstOrDefault() as EditorWindow);
+                cityAdjuster.tileData.TileManager = cityAdjuster.tileManager;
+                cityAdjuster.tileListElement = new TileListElement(cityAdjuster.tileData);
             }
-            tileListElement.DrawContent();
-
-            //GUILayout.Label("Zoom Levels");
-            //using (new GUILayout.HorizontalScope())
-            //{
-            //    zl9 = GUILayout.Toggle(zl9, "9");
-            //    zl10 = GUILayout.Toggle(zl10, "10");
-            //    zl11 = GUILayout.Toggle(zl11, "11");
-            //    GUILayout.FlexibleSpace();
-            //}
-            convPrimary = GUILayout.Toggle(convPrimary, "Convert To Primary Objects");
+            cityAdjuster.tileListElement.DrawContent();
+            cityAdjuster.convPrimary = GUILayout.Toggle(cityAdjuster.convPrimary, "主要地物に変換");
 
             if (GUILayout.Button("Convert Tiles"))
             {
-                //List<int> zoomLevels = new List<int>();
-                //if (zl9) zoomLevels.Add(9);
-                //if (zl10) zoomLevels.Add(10);
-                //if (zl11) zoomLevels.Add(11);
-                //cityAdjuster.RunAutoTextureTile(zoomLevels, convPrimary);
-
-                cityAdjuster.RunAutoTextureTile(tileData.ObservableSelectedTiles, convPrimary);
+                cityAdjuster.RunAutoTextureTile(cityAdjuster.tileData.ObservableSelectedTiles, cityAdjuster.convPrimary);
             }
 
             if (GUILayout.Button("Adjust Tile"))
