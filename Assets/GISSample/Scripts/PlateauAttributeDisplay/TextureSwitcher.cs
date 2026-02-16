@@ -113,7 +113,8 @@ namespace GISSample.PlateauAttributeDisplay
 
                 foreach (var feat in features)
                 {
-                    if(feat.Renderer == null) continue; //初期化も同時に行う
+                    var renderer = feat.Renderer; //初期化も同時に行う
+                    if (renderer == null) continue; 
                     
                     if (semantic.CurrentColor == Color.white)　//初回実行時にテクスチャが差し変わらないので実装
                         feat.RestoreInitialMaterials();

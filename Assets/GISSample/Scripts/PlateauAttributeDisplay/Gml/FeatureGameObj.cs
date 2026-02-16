@@ -22,7 +22,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                             return null;
                         }
 
-                        gameObj = parentGml.Tile?.LoadedObject?.transform?.GetTransformFromPath(gameObjPath)?.gameObject; // Tileの場合はPathからGameObjectを取得し直す
+                        gameObj = parentGml.Tile?.LoadedObject?.transform?.GetTransformFromPath(gameObjPath)?.gameObject; // タイル更新によって消えている場合はPathからGameObjectを取得し直す
                     }
                 }
                     
@@ -40,7 +40,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
             {
                 if (renderer == null && GameObj != null)
                 {
-                    renderer = GameObj.GetComponent<Renderer>();
+                    renderer = GameObj.GetComponent<Renderer>(); // タイル更新によって消えている場合は取得し直す
 
                     // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
                     var srcMaterials = Renderer.materials;
