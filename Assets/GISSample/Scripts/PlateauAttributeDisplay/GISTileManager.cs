@@ -14,7 +14,7 @@ namespace GISSample.PlateauAttributeDisplay
         [SerializeField] public bool UseCoroutineForTiles = true; //タイル読込後の色変更等の処理にコルーチン使用（タイル毎）
         [SerializeField] public bool RunCoroutineOnEveryLoad = true; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
         [SerializeField] public bool UseCoroutineForOperations = false; //タイル読込後のフィルター・色変更等処理に各GameObject毎にコルーチン使用 (CoroutineUtilのYIELD_STEP単位)
-        /*[SerializeField]*/ public bool UseCoroutineForInteraction = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用  （全体処理なので遅延が大きすぎるためOFF推奨）  
+        [HideInInspector][SerializeField] public bool UseCoroutineForInteraction = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用  （全体処理なので遅延が大きすぎるためOFF推奨）  
         [SerializeField] public bool ZoomLevel11Only = true; // Zoom Level 11 以外は無視
         [SerializeField] public bool ShowDebugLogs = false;
 
@@ -392,6 +392,9 @@ namespace GISSample.PlateauAttributeDisplay
         {
             foreach (var gml in GmlsList)
             {
+                if (gml.Tile?.LoadedObject == null)
+                    continue;
+
                 foreach (var obj in gml.SemanticCityObjs())
                 {
                     yield return obj;

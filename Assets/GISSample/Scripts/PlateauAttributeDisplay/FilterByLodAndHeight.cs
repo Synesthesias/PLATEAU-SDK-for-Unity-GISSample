@@ -50,7 +50,6 @@ namespace GISSample.PlateauAttributeDisplay
             menuUi.RegisterHeightSliderChangedCallback(OnHeightSliderValueChanged);
             menuUi.RegisterLodSliderChangedCallback(OnLodSliderValueChanged);
 
-
             var param = GetFilterParameterFromSliders();
             Filter(param);
             menuUi.UpdateFilterText(param);
@@ -58,7 +57,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         public IEnumerator FilterCoroutine(SampleGml gml)
         {
-            if (gml.Tile.LoadedObject == null)
+            if (gml.Tile != null && gml.Tile.LoadedObject == null)
                 yield break;
 
             filterParameter = GetFilterParameterFromSliders();
@@ -102,13 +101,6 @@ namespace GISSample.PlateauAttributeDisplay
             Filter(gmls.SemanticCityObjects(), parameter);
             if(tiles != null)
             {
-                //if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                //    tiles.ProcessAllLoadedTiles();
-                //else
-                //{
-                //    //tiles.ClearCoroutineProcess();
-                //    Filter(tiles.SemanticCityObjects(), parameter);
-                //}
                 tiles.ProccessInteraction(() => Filter(tiles.SemanticCityObjects(), parameter));
             } 
         }
