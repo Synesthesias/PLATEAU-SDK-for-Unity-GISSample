@@ -83,46 +83,44 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     if(renderer == null)
                         return null;
 
-                    if(renderer.materials.Length != NormalMaterials.Length) // Material数が異なる場合は再初期化
+                    ClearResources();
+
+                    // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
+                    var srcMaterials = renderer.materials;
+                    int matCount = srcMaterials.Length;
+                    var materials = new Material[matCount];
+                    for (int i = 0; i < matCount; i++)
                     {
-                        ClearResources();
-
-                        // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
-                        var srcMaterials = renderer.materials;
-                        int matCount = srcMaterials.Length;
-                        var materials = new Material[matCount];
-                        for (int i = 0; i < matCount; i++)
-                        {
-                            materials[i] = new Material(srcMaterials[i]);
-                        }
-                        NormalMaterials = materials;
-
-                        // 開始時のテクスチャを記録
-                        InitialTextures = new Texture[matCount];
-                        for (int i = 0; i < matCount; i++)
-                        {
-                            var mat = materials[i];
-                            Texture tex;
-                            if (mat.HasTexture(ShaderPropIdBaseMap)) // Toolkitシェーダーの場合
-                            {
-                                tex = mat.GetTexture(ShaderPropIdBaseMap);
-                            }
-                            else
-                            {
-                                tex = mat.mainTexture;
-                            }
-
-                            InitialTextures[i] = tex;
-                        }
-
-                        // 色分け用マテリアルの初期化
-                        ColoredMaterials = new Material[matCount];
-                        var srcMat = isFlooding ? MaterialForColorFld : MaterialForColorBldg;
-                        for (int i = 0; i < matCount; i++)
-                        {
-                            ColoredMaterials[i] = new Material(srcMat);
-                        }
+                        materials[i] = new Material(srcMaterials[i]);
                     }
+                    NormalMaterials = materials;
+
+                    // 開始時のテクスチャを記録
+                    InitialTextures = new Texture[matCount];
+                    for (int i = 0; i < matCount; i++)
+                    {
+                        var mat = materials[i];
+                        Texture tex;
+                        if (mat.HasTexture(ShaderPropIdBaseMap)) // Toolkitシェーダーの場合
+                        {
+                            tex = mat.GetTexture(ShaderPropIdBaseMap);
+                        }
+                        else
+                        {
+                            tex = mat.mainTexture;
+                        }
+
+                        InitialTextures[i] = tex;
+                    }
+
+                    // 色分け用マテリアルの初期化
+                    ColoredMaterials = new Material[matCount];
+                    var srcMat = isFlooding ? MaterialForColorFld : MaterialForColorBldg;
+                    for (int i = 0; i < matCount; i++)
+                    {
+                        ColoredMaterials[i] = new Material(srcMat);
+                    }
+                    
                 }
                 return renderer;
             }
