@@ -120,7 +120,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     {
                         ColoredMaterials[i] = new Material(srcMat);
                     }
-                    
+
+                    RestoreInitialMaterials();
                 }
                 return renderer;
             }
@@ -157,6 +158,53 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             if(GameObj == null) return;
             GameObj?.SetActive(Filter.ShouldActive());
+        }
+
+        /// <summary>
+        /// Texture ON/OFF
+        /// </summary>
+        /// <param name="on"></param>
+        public void TextureOnOff(bool on)
+        {
+            var materials = NormalMaterials;
+            int matCount = materials.Length;
+            for (int i = 0; i < matCount; i++)
+            {
+                var mat = materials[i];
+                if (on)
+                    SetMainTexture(mat, InitialTextures[i]);
+                else
+                    SetMainTexture(mat, null);
+            }
+        }
+        private void SetMainTexture(Material mat, Texture tex)
+        {
+            if (mat.HasTexture(ShaderPropIdBaseMap))
+            {
+                // Toolkitのシェーダーの場合
+                mat.SetTexture(ShaderPropIdBaseMap, tex);
+            }
+            else
+            {
+                mat.mainTexture = null;
+            }
+        }
+
+        /// <summary>
+        /// マテリアル色変更
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetMaterialColor(Color color)
+        {
+            var renderer = Renderer;
+            if (renderer == null) return;
+            var coloredMaterials = ColoredMaterials;
+            foreach (var mat in ColoredMaterials)
+            {
+                mat.color = color;
+            }
+
+            renderer.materials = coloredMaterials;
         }
 
         public void RestoreInitialMaterials()

@@ -130,7 +130,7 @@ namespace GISSample.PlateauAttributeDisplay
                     }
 
                     count++;
-                    if (count > CoroutineUtil.YIELD_STEP)
+                    if (count > GISTileManager.YIELD_STEP)
                     {
                         count = 0;
                         yield return null;

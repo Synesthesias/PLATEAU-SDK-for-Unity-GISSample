@@ -4,9 +4,6 @@ namespace GISSample.PlateauAttributeDisplay
 {
     public static class CoroutineUtil
     {
-        public static readonly int YIELD_STEP = 40; // Coroutine実行時に一度に処理するGameObject数
-        public static readonly int YIELD_STEP_FAST = 200;　// Coroutine実行時に一度に処理するGameObject数（高速）
-
         /// <summary>
         /// コルーチンを無視して実行
         /// </summary>

@@ -102,41 +102,15 @@ namespace GISSample.PlateauAttributeDisplay
                 {
                     var renderer = feat.Renderer; //初期化も同時に行う
                     if (renderer == null) continue; 
-                    
-                    if (semantic.CurrentColor == Color.white)　//初回実行時にテクスチャが差し変わらないので実装
-                        feat.RestoreInitialMaterials();
-
-                    var materials = feat.NormalMaterials;
-                    int matCount = materials.Length;
-                    for (int i = 0; i < matCount; i++)
-                    {
-                        var mat = materials[i];
-                        if (on)
-                            SetMainTexture(mat, feat.InitialTextures[i]);
-                        else
-                            SetMainTexture(mat, null);
-                    }
+                    feat.TextureOnOff(on);
                 }
 
                 count++;
-                if (count > CoroutineUtil.YIELD_STEP_FAST)
+                if (count > GISTileManager.YIELD_STEP)
                 {
                     count = 0;
                     yield return null;
                 }
-            }
-        }
-
-        private void SetMainTexture(Material mat, Texture tex)
-        {
-            if (mat.HasTexture(ShaderPropIdBaseMap))
-            {
-                // Toolkitのシェーダーの場合
-                mat.SetTexture(ShaderPropIdBaseMap, tex);
-            }
-            else
-            {
-                mat.mainTexture = null;
             }
         }
     }
