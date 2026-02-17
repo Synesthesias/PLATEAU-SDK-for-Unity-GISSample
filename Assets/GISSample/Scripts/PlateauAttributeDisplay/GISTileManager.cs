@@ -11,10 +11,10 @@ namespace GISSample.PlateauAttributeDisplay
 {
     public class GISTileManager : MonoBehaviour
     {
-        [SerializeField] public bool UseCoroutineForTiles = true; //タイル読込後の処理にコルーチン使用
+        [SerializeField] public bool UseCoroutineForTiles = true; //タイル読込後の色変更等の処理にコルーチン使用（タイル毎）
         [SerializeField] public bool RunCoroutineOnEveryLoad = true; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
-        [SerializeField] public bool UseCoroutineForOperations = false; //タイル読込後のフィルター・色変更等処理にコルーチン使用
-        [SerializeField] public bool UseCoroutineForInteraction = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用     
+        [SerializeField] public bool UseCoroutineForOperations = false; //タイル読込後のフィルター・色変更等処理に各GameObject毎にコルーチン使用 (CoroutineUtilのYIELD_STEP単位)
+        /*[SerializeField]*/ public bool UseCoroutineForInteraction = false; //ボタンクリック時のフィルター・色変更等処理にコルーチン使用  （全体処理なので遅延が大きすぎるためOFF推奨）  
         [SerializeField] public bool ZoomLevel11Only = true; // Zoom Level 11 以外は無視
         [SerializeField] public bool ShowDebugLogs = false;
 
@@ -24,9 +24,12 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public Dictionary<int, (float, float)> loadDistances = new Dictionary<int, (float, float)>
         {
-            { 11, (-10000f, 1000f) },
-            { 10, (1000f, 2000f) },
-            { 9, (2000f, 100000f) },
+            //{ 11, (-10000f, 500f) },
+            //{ 10, (500f, 1500f) },
+            //{ 9, (1500f, 10000f) },
+            { 11, (-10000f, 500f) },
+            { 10, (500f, 1500f) },
+            { 9, (1500f, 100000f) },
         };
 
         [SerializeField]
@@ -49,6 +52,8 @@ namespace GISSample.PlateauAttributeDisplay
         private bool isCoroutineRunning = false;
 
         public bool IsTileLoading => tileManager?.IsCoroutineRunning == true || tileManager?.HasCurrentTask == true;
+
+        public bool IsTileInitialized { get; private set; } = false; // 初回タイルロード完了
 
         void Start()
         {
@@ -77,6 +82,8 @@ namespace GISSample.PlateauAttributeDisplay
             tileManager.onTileInstantiatedAction += onTileInstanciated;
             tileManager.onTileUnloadBegin += onTileUnloaded;
             tileManager.onTileInstantiationComplete += onAllTileLoaded;
+
+            StartCoroutine(Initialize());　//初回ロード
         }
 
         private void OnDestroy()
@@ -86,12 +93,44 @@ namespace GISSample.PlateauAttributeDisplay
             tileManager.onTileInstantiationComplete -= onAllTileLoaded;
         }
 
+
+        /// <summary>
+        /// 初期化処理
+        /// タイル読込が完了しない場合があるので、各処理の終了を待って処理を開始
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator Initialize()
+        {
+
+#if UNITY_EDITOR
+            PLATEAUSceneViewCameraTracker.Release(); //Editor/Runtime切替時のエラー軽減
+#endif
+            PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視 (自動アップデートしない）
+
+            yield return new WaitUntil(() => sceneManager?.IsInitialized == true);
+            yield return new WaitUntil(() => tileManager?.State == PLATEAUTileManager.ManagerState.Operating);
+            yield return new WaitUntil(() => !IsTileLoading);
+
+            UpdateCameraPosition(sceneManager.CameraPosition); //初回ロード開始
+        }
+
         /// <summary>
         /// タイル読込が全て完了した際の処理
         /// </summary>
         private void onAllTileLoaded()
         {
             StartCoroutineProcess();
+
+            if (!IsTileInitialized)
+            {
+                // 更新されないことがあるので再読み込み
+                UpdateCameraPosition(sceneManager.CameraPosition);
+
+                if(!IsTileLoading)
+                    IsTileInitialized = true;
+            }
+            else
+                IsTileInitialized = true;
         }
 
         /// <summary>
@@ -174,6 +213,9 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void StartCoroutineProcess()
         {
+            if (!IsTileInitialized) // 初回ロード完了前は変更がないので除外
+                return;
+
             if (!isCoroutineRunning)
             {
                 baseCoroutine = StartCoroutine(ProcessCoroutineQueue());
@@ -322,12 +364,18 @@ namespace GISSample.PlateauAttributeDisplay
             return null;
         }
 
+        /// <summary>
+        /// クリック時のGameObjecct取得用
+        /// </summary>
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
             var gml = GetGml(gmlName);
             return gml?.GetCityObject(cityObjName);
         }
 
+        /// <summary>
+        /// クリック時の属性表示用
+        /// </summary>
         public SampleAttribute GetAttribute(string gmlFileName, string cityObjectId)
         {
             var gml = GetGml(gmlFileName);
@@ -338,11 +386,6 @@ namespace GISSample.PlateauAttributeDisplay
 
             Debug.LogWarning("gml not found.");
             return null;
-        }
-
-        public IEnumerable<FeatureGameObj> FeatureGameObjs()
-        {
-            return GmlsList.SelectMany(gml => gml.FeatureGameObjs());
         }
 
         public IEnumerable<SemanticCityObject> SemanticCityObjects()
@@ -356,6 +399,9 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        /// <summary>
+        /// CityGmlの色変更用
+        /// </summary>
         public IEnumerable<SampleGml> Gmls()
         {
             return GmlsList.Where(x => x.Tile.LoadedObject != null);

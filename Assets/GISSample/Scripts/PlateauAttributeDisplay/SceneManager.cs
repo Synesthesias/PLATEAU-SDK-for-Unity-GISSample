@@ -40,8 +40,8 @@ namespace GISSample.PlateauAttributeDisplay
         private readonly GmlDictionary gmlDict = new();
 
         [SerializeField]
-        private GISTileManager gilTileManager;
-        public GISTileManager GisTileManager => gilTileManager;
+        private GISTileManager gislTileManager;
+        public GISTileManager GisTileManager => gislTileManager;
 
         [SerializeField]
         private TrafficManager trafficManager;
@@ -67,8 +67,20 @@ namespace GISSample.PlateauAttributeDisplay
         public bool IsMouseDragging => gisCameraMove?.IsMouseDragging ?? false;
         public bool IsKeyPressed => gisCameraMove?.IsKeyPressed ?? false;
 
-        public bool IsTileLoading => gilTileManager?.IsTileLoading ?? false;
-        public bool IsTileCoroutineRunning => gilTileManager?.IsCoroutineRunning ?? false;
+        public bool IsTileLoading => gislTileManager?.IsTileLoading ?? false; // タイル読込処理中
+        public bool IsTileCoroutineRunning => gislTileManager?.IsCoroutineRunning ?? false; // タイル読込後の色変更等のコルーチン
+
+        public bool IsTileInitialized => gislTileManager?.IsTileInitialized ?? false; // 初回タイルロード完了
+
+        /// <summary>
+        /// カメラ位置（一応SceneManagerで管理）
+        /// </summary>
+        public Vector3 CameraPosition {
+            get {
+                var mainCam = Camera.main;
+                return mainCam?.transform?.position ?? Vector3.zero;
+            }
+        }
 
         public Action OnInitialize = null;
 
@@ -115,7 +127,7 @@ namespace GISSample.PlateauAttributeDisplay
             if (trafficManager != null)
             {
                 // マウス・キーでの操作時はTrafficManagerを非活性化
-                if (IsMouseDragging || IsKeyPressed || IsTileLoading || !IsInitialized)
+                if (IsMouseDragging || IsKeyPressed || IsTileLoading || !IsInitialized || !IsTileInitialized)
                 {
                     trafficManager.gameObject.SetActive(false);
                 }
@@ -185,8 +197,8 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         private void Initialize()
         {
-            if (gilTileManager == null)
-                gilTileManager = FindFirstObjectByType<GISTileManager>();
+            if (gislTileManager == null)
+                gislTileManager = FindFirstObjectByType<GISTileManager>();
 
             if (trafficManager == null)
                 trafficManager = FindFirstObjectByType<TrafficManager>();
@@ -205,14 +217,14 @@ namespace GISSample.PlateauAttributeDisplay
             cameraPositionMemory = new CameraPositionMemory(Camera.main);
             ColorChangerByAttribute = new ColorChangerByAttribute(this);
             FloatingTextList = new FloatingTextList();
-            TextureSwitcher = new TextureSwitcher(gmlDict, gilTileManager);
+            TextureSwitcher = new TextureSwitcher(gmlDict, gislTileManager);
 
             GisUiController = GetComponentInChildren<GisUiController>();
             // どのような洪水情報があるか検索します
             var floodingAreaNamesBldg = gmlDict.FindAllFloodingTitlesOfBuildings();
             var floodingAreaNamesFld = gmlDict.FindAllFloodingTitlesOfFlds();
 
-            var floodingAreaNamesBldgTiles = gilTileManager?.FindAllFloodingTitlesOfBuildings();
+            var floodingAreaNamesBldgTiles = gislTileManager?.FindAllFloodingTitlesOfBuildings();
             if (floodingAreaNamesBldgTiles?.Count > 0)
                 floodingAreaNamesBldg?.UnionWith(floodingAreaNamesBldgTiles);
 
@@ -225,7 +237,7 @@ namespace GISSample.PlateauAttributeDisplay
             gisCameraMove.OnMouseDrag += OnInteractionHandler;
             gisCameraMove.OnKeyPress += OnInteractionHandler;
 
-            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, gilTileManager);
+            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, gislTileManager);
             weatherController = new WeatherController(GisUiController.MenuUi);
 
 
@@ -270,13 +282,6 @@ namespace GISSample.PlateauAttributeDisplay
             SetupWalkControlUI();
             SetupWalkerCamera();
 
-
-            if (gilTileManager != null)
-            {
-                var mainCam = Camera.main;
-                gilTileManager.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
-            }
-
             IsInitialized = true;
             OnInitialize?.Invoke();
         }
@@ -290,17 +295,17 @@ namespace GISSample.PlateauAttributeDisplay
             if (started)
             {
                 if (GisTileManager.UseCoroutineForInteraction)
-                    gilTileManager?.StopCoroutineProcess();
+                    gislTileManager?.StopCoroutineProcess();
             }
             else // インタラクション終了時
             {
                 if (GisTileManager.UseCoroutineForInteraction)
-                    gilTileManager?.StartCoroutineProcess();
+                    gislTileManager?.StartCoroutineProcess();
 
-                if (gilTileManager != null)
+                if (gislTileManager != null)
                 {
                     var mainCam = Camera.main;
-                    gilTileManager.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
+                    gislTileManager.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
                 }
             }
         }
@@ -363,14 +368,15 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
         /// <summary>
-        /// クリック時の属性表示用尾
+        /// クリック時の属性表示用
+        /// scene/tile両方取得
         /// </summary>
         /// <param name="gmlName"></param>
         /// <param name="cityObjName"></param>
         /// <returns></returns>
         public SampleAttribute GetAttribute(string gmlName, string cityObjName)
         {
-            var result = gilTileManager?.GetAttribute(gmlName, cityObjName);
+            var result = gislTileManager?.GetAttribute(gmlName, cityObjName);
             if (result != null)
                 return result;
 
@@ -379,13 +385,14 @@ namespace GISSample.PlateauAttributeDisplay
 
         /// <summary>
         /// クリック時のGameObjecct取得用
+        /// scene/tile両方取得
         /// </summary>
         /// <param name="gmlName"></param>
         /// <param name="cityObjName"></param>
         /// <returns></returns>
         public SemanticCityObject GetCityObject(string gmlName, string cityObjName)
         {
-            var result = gilTileManager?.GetCityObject(gmlName, cityObjName);
+            var result = gislTileManager?.GetCityObject(gmlName, cityObjName);
             if (result != null)
                 return result;
 
@@ -394,29 +401,14 @@ namespace GISSample.PlateauAttributeDisplay
             return gmlDict.GetCityObject(gmlName, cityObjName);
         }
 
-        public IEnumerable<FeatureGameObj> FeatureGameObjs()
-        {
-            var result = gmlDict.FeatureGameObjs();
-
-            var tileResult = gilTileManager?.FeatureGameObjs();
-            if (tileResult != null)
-                result = result.Concat(tileResult);
-
-            return result;
-        }
-
         /// <summary>
         /// CityGmlの色変更用
+        /// Tileの処理は除外
         /// </summary>
         /// <returns></returns>
         public IEnumerable<SampleGml> Gmls()
         {
             var gmls = gmlDict.Gmls();
-
-            //var result = tiles?.Gmls();
-            //if (result != null)
-            //    gmls = gmls.Concat(result);
-
             return gmls;
         }
 

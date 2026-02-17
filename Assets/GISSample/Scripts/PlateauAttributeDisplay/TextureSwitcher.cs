@@ -77,20 +77,7 @@ namespace GISSample.PlateauAttributeDisplay
                 CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
 
             if (tiles != null)
-            {
-                //if (GISTileManager.USE_COROUTINE_FOR_INTERACTION)
-                //    tiles.ProcessAllLoadedTiles();
-                //else
-                //{
-                //    //tiles.ClearCoroutineProcess();
-                //    foreach (var gml in tiles.Gmls())
-                //    {
-                //        if(gml.Tile.LoadedObject == null) continue;
-                //        CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
-                //    }
-                //}
                 tiles.ProccessInteraction(() => TurnOnOffTextures(tiles.Gmls(), on));
-            }
         }
 
         private void TurnOnOffTextures(IEnumerable<SampleGml> gmls, bool on)
