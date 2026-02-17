@@ -200,9 +200,12 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="gml"></param>
         private void ProcessGml(SampleGml gml)
         {
+            if (!IsTileInitialized) //初期化時は無視
+                return;
+
             if (UseCoroutineForTiles)
             {
-                if(coroutineQueue.TryAdd(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml)))
+                if(coroutineQueue.TryAdd(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml))) // 特に前回のものを削除しなくてもデータが一緒なので問題ないはず
                 {
                     if(RunCoroutineOnEveryLoad)
                         StartCoroutineProcess();
