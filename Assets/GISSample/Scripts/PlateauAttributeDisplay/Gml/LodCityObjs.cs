@@ -52,15 +52,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             foreach (var feature in LodToFeatureObj.Values)
             {
-                var renderer = feature.Renderer;
-                if(renderer == null) continue;
-                var coloredMaterials = feature.ColoredMaterials;
-                foreach (var mat in coloredMaterials)
-                {
-                    mat.color = color;
-                }
-
-                renderer.materials = coloredMaterials;
+                feature.SetMaterialColor(color);
             }
         }
 

@@ -17,8 +17,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public SampleAttribute Attribute { get; }
         private CityObjDict parentDict;
 
-        public Color CurrentColor { get; private set; } = Color.white;
-
         public SemanticCityObject(PLATEAUCityObjectGroup cityObjComponent, CityObjDict parentDict)
         {
             Attribute = new SampleAttribute(cityObjComponent.PrimaryCityObjects.First().AttributesMap);
@@ -38,7 +36,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public void SetMaterialColor(Color color)
         {
             LodCityObjs.SetMaterialColor(color);
-            CurrentColor = color;
         }
 
         public void ChangeToDefaultState()
