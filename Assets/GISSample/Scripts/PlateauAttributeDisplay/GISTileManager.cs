@@ -1,6 +1,5 @@
 ﻿using GISSample.PlateauAttributeDisplay.Gml;
 using PLATEAU.DynamicTile;
-using PLATEAU.Util.Async;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +12,9 @@ namespace GISSample.PlateauAttributeDisplay
     public class GISTileManager : MonoBehaviour
     {
         public static readonly int YIELD_STEP = 20; // Coroutine実行時に一度に処理するGameObject数
+        public static readonly float COROUTINE_TIME_OUT = 15f; //1タイル処理にかかる時間がこれ以上なら破棄
+        public static readonly float BASE_COROUTINE__TIME_OUT = 180f; //全コルーチンの処理の経過時間がこれ以上ならキューを全て破棄
+        public static readonly int MAX_COROUTINE_QUEUE_SIZE = 16; //　キューに保持する最大数 (これ以上溜まったら古い方から破棄）
 
         [SerializeField] public bool UseCoroutineForTiles = true; //タイル読込後の色変更等の処理にコルーチン使用（タイル毎）
         [SerializeField] public bool RunCoroutineOnEveryLoad = true; //タイル読込完了時に毎回コルーチン実行 / 全タイル読込完了時のみにコルーチン実行
@@ -48,8 +50,11 @@ namespace GISSample.PlateauAttributeDisplay
         private OrderedMap<string, Func<IEnumerator>> coroutineQueue = new OrderedMap<string, Func<IEnumerator>>();
 
         private Coroutine baseCoroutine;
+        private float baseCoroutineStartTime;
+
         private Coroutine currentCoroutine;
         private string currentCoroutineTileAddress;
+        private float currentCoroutineStartTime;
 
         public bool IsCoroutineRunning => isCoroutineRunning;
         private bool isCoroutineRunning = false;
@@ -98,6 +103,30 @@ namespace GISSample.PlateauAttributeDisplay
             tileManager.onTileInstantiationComplete -= onAllTileLoaded;
         }
 
+        private void Update()
+        {
+            // Coroutine Timeout
+            if (currentCoroutine != null && !string.IsNullOrEmpty(currentCoroutineTileAddress))
+            {
+                float elapsed = Time.time - currentCoroutineStartTime;
+                //Debug.Log($"Coroutine elapsed: {elapsed}");
+                if (elapsed > COROUTINE_TIME_OUT)
+                {
+                    RemoveCoroutineByAddress(currentCoroutineTileAddress);
+                    Debug.Log($"Coroutine for tile {currentCoroutineTileAddress} timed out.");
+                }
+            }
+
+            if (IsCoroutineRunning)
+            {
+                float elapsed = Time.time - baseCoroutineStartTime;
+                if (elapsed > BASE_COROUTINE__TIME_OUT)
+                {
+                    ClearCoroutineProcess();
+                    Debug.Log($"Base Coroutine timed out.");
+                }
+            }
+        }
 
         /// <summary>
         /// 初期化処理
@@ -191,6 +220,28 @@ namespace GISSample.PlateauAttributeDisplay
             RemoveCoroutineByAddress(tile.Address);
         }
 
+        /// <summary>
+        /// マウス。キーボード操作開始、終了時のイベントハンドラ
+        /// タイルロード、コルーチン実行のキュー
+        /// </summary>
+        /// <param name="started"></param>
+        public void OnInteractionHandler(bool started)
+        {
+            if (started)
+            {
+                // 操作開始時に全コルーチンキューを破棄
+                ClearCoroutineProcess();
+            }
+            else // インタラクション終了時
+            {
+                if (UseCoroutineForInteraction)
+                    StartCoroutineProcess();
+
+                // 操作終了時にタイル読込開始
+                UpdateCameraPosition(sceneManager.CameraPosition); // 自前でタイル読込
+            }
+        }
+
         private void InitializeTile(PLATEAUDynamicTile tile)
         {
             var gml = new SampleGml();
@@ -212,7 +263,8 @@ namespace GISSample.PlateauAttributeDisplay
 
             if (UseCoroutineForTiles)
             {
-                coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml)); 
+                coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
+                EnsureMaxCorutineSize();
                 if (RunCoroutineOnEveryLoad)
                     StartCoroutineProcess();
             }
@@ -248,11 +300,13 @@ namespace GISSample.PlateauAttributeDisplay
         {
             Log($"<color=green>ProcessCoroutineQueue start {coroutineQueue.Count}</color>");
             isCoroutineRunning = true;
+            baseCoroutineStartTime = Time.time;
             while (coroutineQueue.Count > 0)
             {
                 var lastKv = coroutineQueue.Pop();
                 currentCoroutineTileAddress = lastKv.Key;
                 currentCoroutine = StartCoroutine(lastKv.Value());
+                currentCoroutineStartTime = Time.time;
                 yield return currentCoroutine;
 
                 Log($"<color=green>ProcessCoroutineQueue running {coroutineQueue.Count}</color>");
@@ -269,6 +323,8 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="addr"></param>
         void RemoveCoroutineByAddress(string addr)
         {
+            coroutineQueue.Remove(addr);
+
             //実行中なら停止
             if (currentCoroutineTileAddress == addr)
             {
@@ -279,8 +335,6 @@ namespace GISSample.PlateauAttributeDisplay
                 }
                 currentCoroutineTileAddress = null;
             }
-
-            coroutineQueue.Remove(addr);
         }
 
         /// <summary>
@@ -321,6 +375,7 @@ namespace GISSample.PlateauAttributeDisplay
                     if (gml.Tile.LoadedObject != null)
                     {
                         coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
+                        EnsureMaxCorutineSize();
                     }
                 }
                 if(coroutineQueue.Count > 0)
@@ -330,6 +385,18 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 foreach (var gml in GmlsList)
                     sceneManager.SampleGmlAddedHandler(gml);
+            }
+        }
+
+        /// <summary>
+        /// コルーチンキュー最大サイズ以上なら削除
+        /// </summary>
+        private void EnsureMaxCorutineSize()
+        {
+            while(coroutineQueue.Count >= MAX_COROUTINE_QUEUE_SIZE)
+            {
+                var kv = coroutineQueue.PopFirst();
+                Debug.Log($"Coroutine for tile {kv.Key} removed due to max size exceeds.");
             }
         }
 
