@@ -35,8 +35,10 @@ namespace GISSample.PlateauAttributeDisplay
 
         public void Remove(TKey key)
         {
-            dict.Remove(key);
-            order.Remove(key);
+            if (dict.ContainsKey(key))
+                dict.Remove(key);
+            if (order.Contains(key))
+                order.Remove(key);
         }
 
         public void Clear()
@@ -53,6 +55,19 @@ namespace GISSample.PlateauAttributeDisplay
             var value = dict[key];
 
             order.RemoveAt(lastIndex);
+            dict.Remove(key);
+
+            return new KeyValuePair<TKey, TValue>(key, value);
+        }
+
+        // 最初の要素を返して削除
+        public KeyValuePair<TKey, TValue> PopFirst()
+        {
+            int firstIndex = 0;
+            var key = order[firstIndex];
+            var value = dict[key];
+
+            order.RemoveAt(firstIndex);
             dict.Remove(key);
 
             return new KeyValuePair<TKey, TValue>(key, value);

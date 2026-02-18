@@ -292,22 +292,7 @@ namespace GISSample.PlateauAttributeDisplay
         /// <param name="started"></param>
         private void OnInteractionHandler(bool started)
         {
-            if (started)
-            {
-                if (GisTileManager.UseCoroutineForInteraction)
-                    gislTileManager?.StopCoroutineProcess();
-            }
-            else // インタラクション終了時
-            {
-                if (GisTileManager.UseCoroutineForInteraction)
-                    gislTileManager?.StartCoroutineProcess();
-
-                if (gislTileManager != null)
-                {
-                    var mainCam = Camera.main;
-                    gislTileManager.UpdateCameraPosition(mainCam?.transform?.position ?? Vector3.zero); // 自前でタイル読込
-                }
-            }
+            gislTileManager?.OnInteractionHandler(started);
         }
 
         /// <summary>
