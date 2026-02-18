@@ -334,10 +334,13 @@ namespace GISSample.PlateauAttributeDisplay
             if (gml.Tile.LoadedObject == null)
                 yield break;
 
-            var floodingTitles = new FloodingTitleSet();
-            if (!gml.IsFlooding)
-                floodingTitles.UnionWith(gml.FloodingTitles);
-            GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
+            if (!gml.IsCached) //初回読込時のみ処理
+            {
+                var floodingTitles = new FloodingTitleSet();
+                if (!gml.IsFlooding)
+                    floodingTitles.UnionWith(gml.FloodingTitles);
+                GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
+            }
 
             if (GisTileManager.UseCoroutineForOperations)
                 yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);

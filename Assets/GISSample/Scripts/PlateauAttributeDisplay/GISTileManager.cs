@@ -169,6 +169,7 @@ namespace GISSample.PlateauAttributeDisplay
             // Check cache first
             if (tileGmlCache.TryGetValue(tile.Address, out var cachedGml))
             {
+                cachedGml.IsCached = true;
                 ProcessGml(cachedGml);
                 return;
             }

@@ -4,6 +4,7 @@ using UnityEngine;
 using PLATEAU.Util;
 using System.Collections;
 using System;
+using UnityEngine.UIElements;
 
 namespace GISSample.PlateauAttributeDisplay.Gml
 {
@@ -77,6 +78,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public FloodingTitleSet FloodingTitles { get; private set; }
         public bool IsFlooding { get; private set; }
 
+        public bool IsCached { get; set; } = false; // キャッシュから取得されたか・新規生成されたか (Tile用)
 
         public PLATEAUDynamicTile Tile => tileInfo != null ? tileInfo.Tile : null;
 
