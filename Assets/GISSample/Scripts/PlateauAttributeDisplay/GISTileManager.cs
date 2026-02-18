@@ -1,5 +1,6 @@
 ﻿using GISSample.PlateauAttributeDisplay.Gml;
 using PLATEAU.DynamicTile;
+using PLATEAU.Util.Async;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         private Dictionary<string, SampleGml> tileGmlCache = new();
 
-        private Dictionary<string, Func<IEnumerator>> coroutineQueue = new Dictionary<string, Func<IEnumerator>>();
+        private OrderedMap<string, Func<IEnumerator>> coroutineQueue = new OrderedMap<string, Func<IEnumerator>>();
 
         private Coroutine baseCoroutine;
         private Coroutine currentCoroutine;
@@ -105,17 +106,21 @@ namespace GISSample.PlateauAttributeDisplay
         /// <returns></returns>
         IEnumerator Initialize()
         {
+            Debug.Log($"GISTileManager Initialize Start");
+
+            if (tileManager == null) yield break;
 
 #if UNITY_EDITOR
             PLATEAUSceneViewCameraTracker.Release(); //Editor/Runtime切替時のエラー軽減
 #endif
             PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視 (自動アップデートしない）
 
-            yield return new WaitUntil(() => sceneManager?.IsInitialized == true);
-            yield return new WaitUntil(() => tileManager?.State == PLATEAUTileManager.ManagerState.Operating);
+            yield return new WaitUntil(() => sceneManager.IsInitialized == true);
+            yield return new WaitUntil(() => tileManager.State == PLATEAUTileManager.ManagerState.Operating);
             yield return new WaitUntil(() => !IsTileLoading);
 
-            UpdateCameraPosition(sceneManager.CameraPosition); //初回ロード開始
+            tileManager.UpdateCameraPosition(Vector3.zero); //　カメラ位置リセット
+            UpdateCameraPosition(sceneManager.CameraPosition); //初回リロード開始
 
             Debug.Log($"GISTileManager Tile Initialized.");
         }
@@ -125,18 +130,19 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         private void onAllTileLoaded()
         {
-            StartCoroutineProcess();
-
             if (!IsTileInitialized)
             {
                 // 更新されないことがあるので再読み込み
                 UpdateCameraPosition(sceneManager.CameraPosition);
 
-                if(!IsTileLoading)
+                if (!IsTileLoading)
+                {
                     IsTileInitialized = true;
+                    Debug.Log($"GISTileManager First Tile Load Completed."); // 初回ロード後に、これが呼ばれないとしたらロードタスク・コルーチンが詰まっている可能性あり（再起動が必要）
+                }  
             }
-            else
-                IsTileInitialized = true;
+
+            StartCoroutineProcess();
         }
 
         /// <summary>
@@ -205,11 +211,9 @@ namespace GISSample.PlateauAttributeDisplay
 
             if (UseCoroutineForTiles)
             {
-                if(coroutineQueue.TryAdd(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml))) // 特に前回のものを削除しなくてもデータが一緒なので問題ないはず
-                {
-                    if(RunCoroutineOnEveryLoad)
-                        StartCoroutineProcess();
-                }   
+                coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml)); 
+                if (RunCoroutineOnEveryLoad)
+                    StartCoroutineProcess();
             }
             else
             {
@@ -245,10 +249,9 @@ namespace GISSample.PlateauAttributeDisplay
             isCoroutineRunning = true;
             while (coroutineQueue.Count > 0)
             {
-                var coroutineKV = coroutineQueue.First();
-                coroutineQueue.Remove(coroutineKV.Key);
-                currentCoroutineTileAddress = coroutineKV.Key;
-                currentCoroutine = StartCoroutine(coroutineKV.Value());
+                var lastKv = coroutineQueue.Pop();
+                currentCoroutineTileAddress = lastKv.Key;
+                currentCoroutine = StartCoroutine(lastKv.Value());
                 yield return currentCoroutine;
 
                 Log($"<color=green>ProcessCoroutineQueue running {coroutineQueue.Count}</color>");
@@ -312,16 +315,14 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 ClearCoroutineProcess();
 
-                int coroutineCount = 0;
                 foreach (var gml in GmlsList)
                 {
                     if (gml.Tile.LoadedObject != null)
                     {
-                        if(coroutineQueue.TryAdd(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml)))
-                            coroutineCount++;
+                        coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
                     }
                 }
-                if(coroutineCount > 0)
+                if(coroutineQueue.Count > 0)
                     StartCoroutineProcess();
             }
             else
@@ -439,6 +440,11 @@ namespace GISSample.PlateauAttributeDisplay
             var manager = (GISTileManager)target;
             GUILayout.Label("Coroutine Running : " + manager.IsCoroutineRunning.ToString());
             GUILayout.Label("Coroutine Count: " + manager.NumCoroutines);
+
+            if(GUILayout.Button("Clear Coroutine Queues"))
+            {
+                manager.ClearCoroutineProcess();
+            }
         }
     }
 #endif
