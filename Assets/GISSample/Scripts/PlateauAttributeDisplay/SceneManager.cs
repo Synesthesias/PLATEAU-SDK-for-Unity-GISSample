@@ -187,7 +187,7 @@ namespace GISSample.PlateauAttributeDisplay
             }
 
             //FloatingTextList.SetActive(!IsTileLoading);
-            ShowLoadingUI(IsTileLoading);//タイルロード中は一部UI非表示
+            ShowLoadingUI(IsTileLoading || !IsTileInitialized);//タイルロード中は一部UI非表示
         }
 
         /// <summary>
