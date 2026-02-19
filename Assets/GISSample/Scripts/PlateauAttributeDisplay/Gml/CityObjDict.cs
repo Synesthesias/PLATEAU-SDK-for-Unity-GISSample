@@ -17,6 +17,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         //private readonly Dictionary<string, SemanticCityObject> dict;
         public  Dictionary<string, SemanticCityObject> dict;
         private SampleGml parentGml;
+        internal SampleGml ParentGml => parentGml;
 
         public FloodingTitleSet FloodingTitleSet {  get; private set; }
 

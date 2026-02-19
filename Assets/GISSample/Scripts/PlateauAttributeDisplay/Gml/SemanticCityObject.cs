@@ -17,6 +17,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         public SampleAttribute Attribute { get; }
         private CityObjDict parentDict;
 
+        internal CityObjDict ParentDict => parentDict;
+
         public SemanticCityObject(PLATEAUCityObjectGroup cityObjComponent, CityObjDict parentDict)
         {
             Attribute = new SampleAttribute(cityObjComponent.PrimaryCityObjects.First().AttributesMap);
@@ -29,7 +31,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public void AddCityObjectForLod(Transform lodTrans, Transform cityObjectTrans, bool isFlooding, SampleGml parent)
         {
-            LodCityObjs.Add(lodTrans, cityObjectTrans, isFlooding, parent);
+            LodCityObjs.Add(lodTrans, cityObjectTrans, isFlooding, parent, this);
         }
         
 

@@ -47,7 +47,8 @@ namespace GISSample.PlateauAttributeDisplay
 
         private Dictionary<string, SampleGml> tileGmlCache = new();
 
-        private OrderedMap<string, Func<IEnumerator>> coroutineQueue = new OrderedMap<string, Func<IEnumerator>>();
+        //private OrderedMap<string, Func<IEnumerator>> coroutineQueue = new OrderedMap<string, Func<IEnumerator>>();
+        private OrderedMap<string, SampleGml> coroutineQueue = new OrderedMap<string, SampleGml>();
 
         private Coroutine baseCoroutine;
         private float baseCoroutineStartTime;
@@ -199,6 +200,7 @@ namespace GISSample.PlateauAttributeDisplay
             if (tileGmlCache.TryGetValue(tile.Address, out var cachedGml))
             {
                 cachedGml.IsCached = true;
+                cachedGml.IsDirty = true;
                 ProcessGml(cachedGml);
                 return;
             }
@@ -263,7 +265,8 @@ namespace GISSample.PlateauAttributeDisplay
 
             if (UseCoroutineForTiles)
             {
-                coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
+                //coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
+                coroutineQueue.Upsert(gml.Tile.Address, gml);
                 EnsureMaxCorutineSize();
                 if (RunCoroutineOnEveryLoad)
                     StartCoroutineProcess();
@@ -305,7 +308,8 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 var lastKv = coroutineQueue.Pop();
                 currentCoroutineTileAddress = lastKv.Key;
-                currentCoroutine = StartCoroutine(lastKv.Value());
+                //currentCoroutine = StartCoroutine(lastKv.Value());
+                currentCoroutine = StartCoroutine(sceneManager.SampleGmlAddedHandlerCoroutine(lastKv.Value));
                 currentCoroutineStartTime = Time.time;
                 yield return currentCoroutine;
 
@@ -313,6 +317,8 @@ namespace GISSample.PlateauAttributeDisplay
             }
             currentCoroutineTileAddress = null;
             isCoroutineRunning = false;
+
+            //ProcessAllLoadedTiles(); // 全タイル処理されていない可能性があるので、再度実行
 
             Log($"<color=green>ProcessCoroutineQueue End</color>");
         }
@@ -363,6 +369,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         /// <summary>
         /// 実行中のコルーチンを廃棄して読込タイル全てについて処理を行う
+        /// 処理済み(IsDirty:false)は無視
         /// </summary>
         public void ProcessAllLoadedTiles()
         {
@@ -372,10 +379,12 @@ namespace GISSample.PlateauAttributeDisplay
 
                 foreach (var gml in GmlsList)
                 {
+                    if (!gml.IsDirty) continue;
                     if (gml.Tile.LoadedObject != null)
                     {
-                        coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
-                        EnsureMaxCorutineSize();
+                        //coroutineQueue.Upsert(gml.Tile.Address, () => sceneManager.SampleGmlAddedHandlerCoroutine(gml));
+                        coroutineQueue.Upsert(gml.Tile.Address, gml);
+                        //EnsureMaxCorutineSize();
                     }
                 }
                 if(coroutineQueue.Count > 0)

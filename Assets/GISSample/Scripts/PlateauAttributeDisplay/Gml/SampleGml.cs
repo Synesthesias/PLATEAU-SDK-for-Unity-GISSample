@@ -80,6 +80,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         public bool IsCached { get; set; } = false; // キャッシュから取得されたか・新規生成されたか (Tile用)
 
+        public bool IsDirty { get; set; } = true; // タイルロード後にDirtyなら処理　（2回目以降は処理しない）
+
         public PLATEAUDynamicTile Tile => tileInfo != null ? tileInfo.Tile : null;
 
         public string ChildName => tileInfo != null ? tileInfo.ChildName : string.Empty;
