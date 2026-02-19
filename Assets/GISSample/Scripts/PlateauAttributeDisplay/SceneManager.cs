@@ -319,6 +319,8 @@ namespace GISSample.PlateauAttributeDisplay
         // TileManagerからSampleGmlが追加されたときに呼ばれるハンドラのコルーチン実行
         public IEnumerator SampleGmlAddedHandlerCoroutine(SampleGml gml)
         {
+            if(!gml.IsDirty)
+                yield break;
 
             if (gml.Tile.LoadedObject == null)
                 yield break;

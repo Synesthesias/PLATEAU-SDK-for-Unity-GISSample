@@ -65,7 +65,7 @@ namespace GISSample.PlateauAttributeDisplay
 
             yield return null;
 
-
+            gml.IsDirty = false; //２回目の処理は行わないフラグ
         }
 
     }
