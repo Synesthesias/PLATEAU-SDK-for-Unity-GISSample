@@ -43,8 +43,9 @@ namespace GISSample.PlateauAttributeDisplay
         [SerializeField]
         private SceneManager sceneManager;
 
-        private IEnumerable<SampleGml> GmlsList => tileGmlCache.Values;
+        private IEnumerable<SampleGml> GmlsList => tileGmlCache.Values; //キャッシュ含めた全データ、　読込中のものはGmls()で取得
 
+        //private List<string> currentLoadedTiles = new();
         private Dictionary<string, SampleGml> tileGmlCache = new();
 
         //private OrderedMap<string, Func<IEnumerator>> coroutineQueue = new OrderedMap<string, Func<IEnumerator>>();
@@ -206,6 +207,7 @@ namespace GISSample.PlateauAttributeDisplay
             }
 
             InitializeTile(tile);
+            //currentLoadedTiles.Add(tile.Address);
         }
 
         /// <summary>
@@ -220,6 +222,7 @@ namespace GISSample.PlateauAttributeDisplay
                 return;
 
             RemoveCoroutineByAddress(tile.Address);
+            //currentLoadedTiles.Remove(tile.Address);
         }
 
         /// <summary>
@@ -318,6 +321,9 @@ namespace GISSample.PlateauAttributeDisplay
             currentCoroutineTileAddress = null;
             isCoroutineRunning = false;
 
+#if UNITY_EDITOR
+            UnityEditor.SceneView.RepaintAll();
+#endif
             //ProcessAllLoadedTiles(); // 全タイル処理されていない可能性があるので、再度実行
 
             Log($"<color=green>ProcessCoroutineQueue End</color>");
@@ -377,7 +383,7 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 ClearCoroutineProcess();
 
-                foreach (var gml in GmlsList)
+                foreach (var gml in Gmls())
                 {
                     if (!gml.IsDirty) continue;
                     if (gml.Tile.LoadedObject != null)
@@ -392,7 +398,7 @@ namespace GISSample.PlateauAttributeDisplay
             }
             else
             {
-                foreach (var gml in GmlsList)
+                foreach (var gml in Gmls())
                     sceneManager.SampleGmlAddedHandler(gml);
             }
         }
@@ -477,7 +483,7 @@ namespace GISSample.PlateauAttributeDisplay
 
         public IEnumerable<SemanticCityObject> SemanticCityObjects()
         {
-            foreach (var gml in GmlsList)
+            foreach (var gml in Gmls())
             {
                 if (gml.Tile?.LoadedObject == null)
                     continue;
@@ -490,11 +496,21 @@ namespace GISSample.PlateauAttributeDisplay
         }
 
         /// <summary>
+        /// ロード済みタイルのSampleGml
         /// CityGmlの色変更用
         /// </summary>
         public IEnumerable<SampleGml> Gmls()
         {
-            return GmlsList.Where(x => x.Tile.LoadedObject != null);
+            foreach (var gml in GmlsList)
+            {
+                if(gml.Tile?.LoadedObject != null)
+                    yield return gml;
+            }
+            //return GmlsList.Where(x => x.Tile.LoadedObject != null);
+            //foreach(var addr in currentLoadedTiles)
+            //{
+            //    yield return tileGmlCache[addr];
+            //}          
         }
 
         private void Log(object message)
