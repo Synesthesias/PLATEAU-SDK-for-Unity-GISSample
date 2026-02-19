@@ -12,8 +12,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
     /// </summary>
     public class FeatureGameObj
     {
-        private bool isFlooding;
-
         /// <summary>
         /// 通常状態のマテリアルです。
         /// アプリケーション開始時のマテリアルが初期状態として記憶されます。
@@ -39,6 +37,8 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         private static readonly int ShaderPropIdBaseMap = Shader.PropertyToID("_BaseMap");
 
+        private GameObject gameObj;
+
         /// <summary> 対象となるゲームオブジェクトです。 </summary>
         /// タイル更新時にnullになるため再取得する必要がある
         public GameObject GameObj
@@ -62,10 +62,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 return gameObj;
             }
         }
-        private GameObject gameObj;
-
-        private string gameObjPath;
-        private SampleGml parentGml;
 
         /// <summary>
         /// GameObjのRenderer
@@ -88,18 +84,19 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     // 開始時のマテリアルを記憶。ただし編集に耐えるようコピーしておきます
                     var srcMaterials = renderer.materials;
                     int matCount = srcMaterials.Length;
-                    var materials = new Material[matCount];
-                    for (int i = 0; i < matCount; i++)
-                    {
-                        materials[i] = new Material(srcMaterials[i]);
-                    }
-                    NormalMaterials = materials;
+                    NormalMaterials = new Material[matCount];
+                    ColoredMaterials = new Material[matCount];
+                    var srcColorMat = isFlooding ? MaterialForColorFld : MaterialForColorBldg;
 
-                    // 開始時のテクスチャを記録
+                    // 開始時のマテリアル/Textureを記憶。(Normal/Color material, Texture)
                     InitialTextures = new Texture[matCount];
                     for (int i = 0; i < matCount; i++)
                     {
-                        var mat = materials[i];
+                        // Original Materials
+                        NormalMaterials[i] = new Material(srcMaterials[i]);
+
+                        // Texture
+                        var mat = NormalMaterials[i];
                         Texture tex;
                         if (mat.HasTexture(ShaderPropIdBaseMap)) // Toolkitシェーダーの場合
                         {
@@ -109,16 +106,11 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                         {
                             tex = mat.mainTexture;
                         }
-
                         InitialTextures[i] = tex;
-                    }
 
-                    // 色分け用マテリアルの初期化
-                    ColoredMaterials = new Material[matCount];
-                    var srcMat = isFlooding ? MaterialForColorFld : MaterialForColorBldg;
-                    for (int i = 0; i < matCount; i++)
-                    {
-                        ColoredMaterials[i] = new Material(srcMat);
+                        // 色分け用マテリアル
+                        var srcMat = isFlooding ? MaterialForColorFld : MaterialForColorBldg;
+                        ColoredMaterials[i] = new Material(srcColorMat);
                     }
 
                     RestoreInitialMaterials();
@@ -131,14 +123,28 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// <summary>
         /// 表示すべきかどうかを格納します。
         /// この結果は<see cref="ApplyFilter"/>で適用します。
-        /// </summary>
+        /// </summary>s
         public FeatureObjFilter Filter { get; set; }
 
-        public FeatureGameObj(GameObject gameObj, bool isFlooding, SampleGml parent)
+        private string gameObjPath;
+        private SampleGml parentGml;
+
+        private SemanticCityObject parentSemantic;
+
+        private bool isFlooding;
+
+        private int lod;
+
+        internal SemanticCityObject ParentSemantic => parentSemantic;
+        internal int Lod => lod;
+
+        public FeatureGameObj(GameObject gameObj, bool isFlooding, SampleGml parent, SemanticCityObject parentSemantic, int lod)
         {
             this.gameObj = gameObj;
             this.parentGml = parent;
             this.isFlooding = isFlooding;
+            this.parentSemantic = parentSemantic;
+            this.lod = lod;
 
             if(parent.Tile != null)
                 this.gameObjPath = gameObj?.transform?.GetPathToParent(parent?.Tile?.Address);
@@ -162,6 +168,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
         /// <summary>
         /// Texture ON/OFF
+        /// NormalMaterials / ColoredMaterials 切替はSetMaterialColorで行う (マテリアル色優先のため）
         /// </summary>
         /// <param name="on"></param>
         public void TextureOnOff(bool on)
@@ -198,13 +205,13 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         {
             var renderer = Renderer;
             if (renderer == null) return;
-            var coloredMaterials = ColoredMaterials;
-            foreach (var mat in ColoredMaterials)
+            var materials = ColoredMaterials;
+            foreach (var mat in materials)
             {
                 mat.color = color;
             }
 
-            renderer.materials = coloredMaterials;
+            renderer.materials = materials;
         }
 
         public void RestoreInitialMaterials()
@@ -218,7 +225,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
         /// </summary>
         private void ClearResources()
         {
-            if(NormalMaterials != null)
+            if (NormalMaterials != null)
             {
                 for (int i = 0; i < NormalMaterials.Length; i++)
                 {
@@ -231,7 +238,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 NormalMaterials = null;
             }
 
-            if(InitialTextures  != null)
+            if (InitialTextures  != null)
             {
                 for(int i = 0;i < InitialTextures.Length;i++)
                 {
@@ -244,9 +251,9 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 InitialTextures = null;
             }
 
-            if(ColoredMaterials  != null)
+            if (ColoredMaterials != null)
             {
-                for(int i = 0; i < ColoredMaterials.Length; i++)
+                for (int i = 0; i < ColoredMaterials.Length; i++)
                 {
 #if UNITY_EDITOR
                     Object.DestroyImmediate(ColoredMaterials[i]);

@@ -119,16 +119,18 @@ namespace GISSample.PlateauAttributeDisplay
                 int maxLodToShow = Math.Min(maxLodExist, parameter.MaxLod);
                 foreach (var (lod, featureObj) in semantic.LodCityObjs.LodToFeatureObj)
                 {
-                    if (semantic.Attribute.MeasuredHeight.HasValue)
-                    {
-                        // 高さでのフィルタ
-                        var measuredHeight = semantic.Attribute.MeasuredHeight.Value;
-                        bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
-                        featureObj.Filter.SetHeightFilter(heightFilter); 
-                    }
+                    FilterFeatureGameObj(featureObj, parameter, maxLodToShow);
 
-                    featureObj.Filter.SetLodFilter(lod == maxLodToShow && lod >= parameter.MinLod);
-                    featureObj.ApplyFilter();
+                    //if (semantic.Attribute.MeasuredHeight.HasValue)
+                    //{
+                    //    // 高さでのフィルタ
+                    //    var measuredHeight = semantic.Attribute.MeasuredHeight.Value;
+                    //    bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
+                    //    featureObj.Filter.SetHeightFilter(heightFilter); 
+                    //}
+
+                    //featureObj.Filter.SetLodFilter(lod == maxLodToShow && lod >= parameter.MinLod);
+                    //featureObj.ApplyFilter();
                 }
 
                 count++;
@@ -140,12 +142,28 @@ namespace GISSample.PlateauAttributeDisplay
             }
         }
 
+        internal void FilterFeatureGameObj(FeatureGameObj feature, FilterParameter parameter, int maxLodToShow)
+        {
+            // LODでのフィルタ
+            if (feature.ParentSemantic.Attribute.MeasuredHeight.HasValue)
+            {
+                // 高さでのフィルタ
+                var measuredHeight = feature.ParentSemantic.Attribute.MeasuredHeight.Value;
+                bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
+                feature.Filter.SetHeightFilter(heightFilter);
+            }
+
+            feature.Filter.SetLodFilter(feature.Lod == maxLodToShow && feature.Lod >= parameter.MinLod);
+            feature.ApplyFilter();
+            
+        }
+
         /// <summary>
         /// フィルターパラメータを取得
         /// UIのスライダーの状態からフィルターパラメータを作成します。
         /// </summary>
         /// <returns>フィルターパラメータ</returns>
-        private FilterParameter GetFilterParameterFromSliders()
+        internal FilterParameter GetFilterParameterFromSliders()
         {
             return new FilterParameter
             {
