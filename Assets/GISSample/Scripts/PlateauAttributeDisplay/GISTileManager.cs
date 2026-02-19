@@ -162,7 +162,7 @@ namespace GISSample.PlateauAttributeDisplay
             if (!IsTileInitialized)
             {
                 // 更新されないことがあるので再読み込み
-                UpdateCameraPosition(sceneManager.CameraPosition);
+                //UpdateCameraPosition(sceneManager.CameraPosition);
 
                 if (!IsTileLoading)
                 {
@@ -170,6 +170,9 @@ namespace GISSample.PlateauAttributeDisplay
                     Debug.Log($"GISTileManager First Tile Load Completed."); // 初回ロード後に、これが呼ばれないとしたらロードタスク・コルーチンが詰まっている可能性あり（再起動が必要）
                 }  
             }
+
+            // 更新されないことがあるので再読み込み
+            UpdateCameraPosition(sceneManager.CameraPosition);
 
             StartCoroutineProcess();
         }

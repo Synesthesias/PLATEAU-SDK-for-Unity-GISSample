@@ -49,6 +49,9 @@ namespace GISSample.PlateauAttributeDisplay
         private FilterByLodAndHeight filterByLodAndHeight;
         private WeatherController weatherController;
         public ColorChangerByAttribute ColorChangerByAttribute { get; private set; }
+
+        private AllUpdateOperations allUpdateOperations;
+
         private GISCameraMove gisCameraMove;
         public FloatingTextList FloatingTextList { get; private set; }
         private CameraPositionMemory cameraPositionMemory;
@@ -240,6 +243,7 @@ namespace GISSample.PlateauAttributeDisplay
             filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, gislTileManager);
             weatherController = new WeatherController(GisUiController.MenuUi);
 
+            allUpdateOperations = new(TextureSwitcher, filterByLodAndHeight, ColorChangerByAttribute);
 
             GameObject mainCamera = Camera.main.gameObject;
             // MainCameraにCinemachineBrainがアタッチされていない場合は追加
@@ -327,30 +331,31 @@ namespace GISSample.PlateauAttributeDisplay
                 GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
             }
 
-            if (GisTileManager.UseCoroutineForOperations)
-                yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);
-            else
-                TextureSwitcher.SetCurrentTexture(gml);
+            yield return allUpdateOperations.HandleOperations(gml);
 
-            yield return null;
+            //if (GisTileManager.UseCoroutineForOperations)
+            //    yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);
+            //else
+            //    TextureSwitcher.SetCurrentTexture(gml);
+            //yield return null;
 
-            if (ColorChangerByAttribute.BuildingColorType != BuildingColorType.None)
-            {
-                if (GisTileManager.UseCoroutineForOperations)
-                    yield return ColorChangerByAttribute.RedrawBuildingsCoroutine(new List<SampleGml>() { gml });
-                else
-                    ColorChangerByAttribute.RedrawBuildings(new List<SampleGml>() { gml });
-            }
+            //if (ColorChangerByAttribute.BuildingColorType != BuildingColorType.None)
+            //{
+            //    if (GisTileManager.UseCoroutineForOperations)
+            //        yield return ColorChangerByAttribute.RedrawBuildingsCoroutine(new List<SampleGml>() { gml });
+            //    else
+            //        ColorChangerByAttribute.RedrawBuildings(new List<SampleGml>() { gml });
+            //}
 
-            yield return null;
+            //yield return null;
 
-            if (!filterByLodAndHeight.IsDefaultFilterParameter)
-            {
-                if (GisTileManager.UseCoroutineForOperations)
-                    yield return filterByLodAndHeight.FilterCoroutine(gml);
-                else
-                    filterByLodAndHeight.Filter(gml);
-            }
+            //if (!filterByLodAndHeight.IsDefaultFilterParameter)
+            //{
+            //    if (GisTileManager.UseCoroutineForOperations)
+            //        yield return filterByLodAndHeight.FilterCoroutine(gml);
+            //    else
+            //        filterByLodAndHeight.Filter(gml);
+            //}
 
             yield return null;
         }
