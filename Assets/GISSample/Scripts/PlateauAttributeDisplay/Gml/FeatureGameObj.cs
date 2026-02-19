@@ -51,7 +51,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                     {
                         if (parentGml.Tile.LoadedObject == null)
                         {
-                            Debug.LogError($"parentGml.Tile.LoadedObject is null {gameObjPath}");
+                            //Debug.LogError($"parentGml.Tile.LoadedObject is null {gameObjPath}");
                             return null;
                         }
 
