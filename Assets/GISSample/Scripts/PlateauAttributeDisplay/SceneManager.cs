@@ -333,7 +333,10 @@ namespace GISSample.PlateauAttributeDisplay
                 GisUiController.MenuUi.ColorByAttrUi.AppendFloodingTitlesBuilding(floodingTitles);
             }
 
-            yield return allUpdateOperations.HandleOperations(gml);
+            if (GisTileManager.UseCoroutineForOperations)
+                yield return allUpdateOperations.HandleOperations(gml);
+            else
+                CoroutineUtil.RunToEnd(allUpdateOperations.HandleOperations(gml));
 
             //if (GisTileManager.UseCoroutineForOperations)
             //    yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);

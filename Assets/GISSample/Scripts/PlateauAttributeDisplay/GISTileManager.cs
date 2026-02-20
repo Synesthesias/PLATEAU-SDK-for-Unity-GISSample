@@ -32,9 +32,9 @@ namespace GISSample.PlateauAttributeDisplay
             //{ 11, (-10000f, 500f) },
             //{ 10, (500f, 1500f) },
             //{ 9, (1500f, 10000f) },
-            { 11, (-10000f, 200f) },
-            { 10, (200f, 1000f) },
-            { 9, (1000f, 100000f) },
+            { 11, (-10000f, 100f) },
+            { 10, (100f, 600f) },
+            { 9, (600f, 100000f) },
         };
 
         [SerializeField]
@@ -57,6 +57,8 @@ namespace GISSample.PlateauAttributeDisplay
         private Coroutine currentCoroutine;
         private string currentCoroutineTileAddress;
         private float currentCoroutineStartTime;
+
+        private int interacionCounter = 0; // Key, Mouse 操作実行数
 
         public bool IsCoroutineRunning => isCoroutineRunning;
         private bool isCoroutineRunning = false;
@@ -234,16 +236,32 @@ namespace GISSample.PlateauAttributeDisplay
         {
             if (started)
             {
-                // 操作開始時に全コルーチンキューを破棄
-                ClearCoroutineProcess();
+                if (interacionCounter <= 0) // 操作開始時のみ
+                {
+                    // 操作開始時に全コルーチンキューを破棄
+                    ClearCoroutineProcess();
+
+                    Log($"<color=cyan>Interaction Start</color>");
+                }
+
+                interacionCounter++;
             }
             else // インタラクション終了時
             {
+                interacionCounter--;
+
+                if (interacionCounter > 0)
+                    return;
+                else
+                    interacionCounter = 0;
+
                 if (UseCoroutineForInteraction)
                     StartCoroutineProcess();
 
                 // 操作終了時にタイル読込開始
                 UpdateCameraPosition(sceneManager.CameraPosition); // 自前でタイル読込
+
+                Log($"<color=cyan>Interaction End</color>");
             }
         }
 

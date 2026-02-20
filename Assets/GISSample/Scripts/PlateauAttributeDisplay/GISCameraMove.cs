@@ -54,18 +54,6 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void OnHorizontalMoveCameraByMouse(InputAction.CallbackContext context)
         {
-            if (context.started)
-            {
-                IsMouseDragging = true;
-                OnMouseDrag?.Invoke(IsMouseDragging);
-            }
-            if (context.canceled)
-            {
-                IsMouseDragging = false;
-                OnMouseDrag?.Invoke(IsMouseDragging);
-            }
-                
-
             if (context.performed && isMouseDraggingFromNonUi)
             {
                 // 左右同時押下時は上下移動を優先
@@ -84,16 +72,9 @@ namespace GISSample.PlateauAttributeDisplay
             if (!IsKeyboardActive) return;
 
             if (context.started)
-            {
-                IsKeyPressed = true;
-                OnKeyPress?.Invoke(IsKeyPressed);
-            }
+                OnKeyPress?.Invoke(true);
             if (context.canceled)
-            {
-                IsKeyPressed = false;
-                OnKeyPress?.Invoke(IsKeyPressed);
-            }
-
+                OnKeyPress?.Invoke(false);
 
             if (context.performed)
             {
@@ -121,6 +102,11 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
+            if (context.started)
+                OnKeyPress?.Invoke(true);
+            if (context.canceled)
+                OnKeyPress?.Invoke(false);
+
             if (!IsKeyboardActive) return;
             if (context.performed)
             {
@@ -206,10 +192,16 @@ namespace GISSample.PlateauAttributeDisplay
             if (context.started)
             {
                 isMouseDraggingFromNonUi = !GisUiController.IsMousePositionInUiRect();
+
+                if (isMouseDraggingFromNonUi && context.control == Mouse.current.leftButton)
+                    OnMouseDrag?.Invoke(true);
             }
 
             if (context.canceled)
             {
+                if (isMouseDraggingFromNonUi && context.control == Mouse.current.leftButton)
+                    OnMouseDrag?.Invoke(false);
+
                 isMouseDraggingFromNonUi = false;
             }
         }
