@@ -102,11 +102,6 @@ namespace GISSample.PlateauAttributeDisplay
         /// </summary>
         public void OnVerticalMoveCameraByKeyboard(InputAction.CallbackContext context)
         {
-            if (context.started)
-                OnKeyPress?.Invoke(true);
-            if (context.canceled)
-                OnKeyPress?.Invoke(false);
-
             if (!IsKeyboardActive) return;
             if (context.performed)
             {

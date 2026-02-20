@@ -90,8 +90,6 @@ namespace GISSample.PlateauAttributeDisplay
             PLATEAUSceneViewCameraTracker.Release(); //Editor/Runtime切替時のエラー軽減
 #endif
 
-            PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視
-
             tileManager.loadDistances = loadDistances;
             tileManager.onTileInstantiatedAction += onTileInstanciated;
             tileManager.onTileUnloadBegin += onTileUnloaded;
@@ -170,6 +168,8 @@ namespace GISSample.PlateauAttributeDisplay
 
                 if (!IsTileLoading)
                 {
+                    PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視 (PLATEAURuntimeCameraTrackerは使用しない）　PLATEAURuntimeCameraTrackerのOnRuntimeInitialize処理終了後に呼ぶ必要あり
+
                     IsTileInitialized = true;
                     Debug.Log($"GISTileManager First Tile Load Completed."); // 初回ロード後に、これが呼ばれないとしたらロードタスク・コルーチンが詰まっている可能性あり（再起動が必要）
                 }  
