@@ -45,34 +45,27 @@ namespace GISSample.PlateauAttributeDisplay
 
         public IEnumerator SetCurrentTextureCoroutine(SampleGml gml)
         {
-            if (!isTextureOn)
-            {
-                yield return TurnOnOffTexturesCoroutine(gml, false);
-            }
-            else
-            {
-                yield return TurnOnOffTexturesCoroutine(gml, true);
-            }
+            yield return TurnOnOffTexturesCoroutine(gml, isTextureOn);
         }
 
-        public void SetTextureOn()
+        //public void SetTextureOn()
+        //{
+        //    if (isTextureOn) return;
+        //    TurnOnOffTextures(true);
+        //}
+
+        //public void SetTextureOff()
+        //{
+        //    if (!isTextureOn) return;
+        //    TurnOnOffTextures(false); 
+        //}
+
+        public void TurnOnOffTextures(bool on)
         {
-            if (isTextureOn) return;
+            if(on == isTextureOn) return; //すでに同じ状態なら何もしない
 
-            isTextureOn = true;
-            TurnOnOffTextures(true);
-        }
+            isTextureOn = on; //フラグ更新
 
-        public void SetTextureOff()
-        {
-            if (!isTextureOn) return;
-
-            isTextureOn = false;
-            TurnOnOffTextures(false); 
-        }
-
-        private void TurnOnOffTextures(bool on)
-        {
             foreach (var gml in gmlDict.Gmls())
                 CoroutineUtil.RunToEnd(TurnOnOffTexturesCoroutine(gml, on));
 

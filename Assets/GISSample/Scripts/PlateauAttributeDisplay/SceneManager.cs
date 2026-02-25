@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace GISSample.PlateauAttributeDisplay
 {
@@ -240,7 +242,7 @@ namespace GISSample.PlateauAttributeDisplay
             gisCameraMove.OnMouseDrag += OnInteractionHandler;
             gisCameraMove.OnKeyPress += OnInteractionHandler;
 
-            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, gislTileManager);
+            filterByLodAndHeight = new FilterByLodAndHeight(GisUiController.MenuUi, gmlDict, gislTileManager); // UIイベントを直接このクラスで受け取って処理している
             weatherController = new WeatherController(GisUiController.MenuUi);
 
             allUpdateOperations = new(TextureSwitcher, filterByLodAndHeight, ColorChangerByAttribute);
@@ -408,6 +410,43 @@ namespace GISSample.PlateauAttributeDisplay
         {
             var gmls = gmlDict.Gmls();
             return gmls;
+        }
+
+        /// <summary>
+        /// 建物の色分けタイプを変更します。
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="floodingTitleBldg"></param>
+        public void ChangeBuildingColorType(BuildingColorType type, FloodingTitle floodingTitleBldg)
+        {
+            ColorChangerByAttribute?.ChangeBuildings(type, floodingTitleBldg);
+        }
+
+        /// <summary>
+        /// 災害情報の色分けを変更します。
+        /// </summary>
+        /// <param name="floodingTitleFld"></param>
+        public void ChangeFloodingColorType(FloodingTitle floodingTitleFld)
+        {
+            ColorChangerByAttribute?.ChangeFlooding(floodingTitleFld);
+        }
+
+        /// <summary>
+        /// Textureの表示・非表示を切り替えます。
+        /// </summary>
+        /// <param name="e"></param>
+        internal void OnTextureToggleChanged(ChangeEvent<bool> e)
+        {
+            TextureSwitcher.TurnOnOffTextures(e.newValue);
+        }
+
+        /// <summary>
+        /// 宙に浮かぶ情報テキストの表示・非表示を切り替えます。
+        /// </summary>
+        /// <param name="e"></param>
+        internal void OnFloatingTextChangedCallback(ChangeEvent<bool> e)
+        {
+            FloatingTextList.SetActive(e.newValue);
         }
 
         private void SetupWalkControlUI()

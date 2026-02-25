@@ -3,9 +3,7 @@ using GISSample.PlateauAttributeDisplay.UI.UIWindow;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using FilterParameter = GISSample.PlateauAttributeDisplay.Gml.FilterParameter;
 

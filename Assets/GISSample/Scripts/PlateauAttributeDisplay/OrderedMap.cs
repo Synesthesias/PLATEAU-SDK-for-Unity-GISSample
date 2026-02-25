@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace GISSample.PlateauAttributeDisplay
 {
+
+    /// <summary>
+    /// QueueやStackのように順番を管理しつつ、キーと値のペアでデータを保持するクラスです。
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class OrderedMap<TKey, TValue>
     {
         private readonly Dictionary<TKey, TValue> dict = new();
