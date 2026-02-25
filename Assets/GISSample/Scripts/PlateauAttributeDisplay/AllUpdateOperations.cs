@@ -1,6 +1,7 @@
 ﻿using GISSample.PlateauAttributeDisplay.Gml;
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace GISSample.PlateauAttributeDisplay
 {
@@ -49,6 +50,11 @@ namespace GISSample.PlateauAttributeDisplay
                 foreach(var feature in semantic.FeatureGameObjs())
                 {
                     filterByLodAndHeight.FilterFeatureGameObj(feature, filterParameter, maxLodToShow);
+
+
+                    // 色がついていない場合は、念のためInitialMaterialに戻す（色がついている場合は、フィルタリング後も色を維持する）
+                    if (buildingColorType == BuildingColorType.None)
+                        feature.RestoreInitialMaterials();
 
                     // Texture ON/OFF
                     feature.TextureOnOff(isTextureOn);
