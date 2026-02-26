@@ -118,17 +118,6 @@ namespace GISSample.PlateauAttributeDisplay
                 foreach (var (lod, featureObj) in semantic.LodCityObjs.LodToFeatureObj)
                 {
                     FilterFeatureGameObj(featureObj, parameter, maxLodToShow);
-
-                    //if (semantic.Attribute.MeasuredHeight.HasValue)
-                    //{
-                    //    // 高さでのフィルタ
-                    //    var measuredHeight = semantic.Attribute.MeasuredHeight.Value;
-                    //    bool heightFilter = measuredHeight >= parameter.MinHeight && measuredHeight <= parameter.MaxHeight;
-                    //    featureObj.Filter.SetHeightFilter(heightFilter); 
-                    //}
-
-                    //featureObj.Filter.SetLodFilter(lod == maxLodToShow && lod >= parameter.MinLod);
-                    //featureObj.ApplyFilter();
                 }
 
                 count++;

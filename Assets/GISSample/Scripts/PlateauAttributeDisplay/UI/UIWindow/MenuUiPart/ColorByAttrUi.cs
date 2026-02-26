@@ -23,16 +23,14 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
         /// <summary> 浸水色分けの選択肢（浸水区域） </summary>
         private readonly FloodingTitleSet floodingTitlesFld;
 
-        //private readonly ColorChangerByAttribute colorChangerByAttribute;
         private readonly SceneManager sceneManager;
 
         private List<string> radioButtonChoicesBuildingInitial = new() {"色分けなし","高さ"};
 
-        public ColorByAttrUi(VisualElement menuRoot, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, SceneManager sceneManager) //ColorChangerByAttribute colorChangerByAttribute)
+        public ColorByAttrUi(VisualElement menuRoot, FloodingTitleSet floodingTitlesBldg, FloodingTitleSet floodingTitlesFld, SceneManager sceneManager)
         {
             this.floodingTitlesBldg = floodingTitlesBldg;
             this.floodingTitlesFld = floodingTitlesFld;
-            //this.colorChangerByAttribute = colorChangerByAttribute;
             this.sceneManager = sceneManager;
             radioButtonBuilding = menuRoot.Q<RadioButtonGroup>("ColorCodeGroupBuilding");
             radioButtonFld = menuRoot.Q<RadioButtonGroup>("GroupFlooding");
@@ -99,8 +97,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
                 selectedBuildingColorType = BuildingColorType.FloodingRank;
                 selectedFloodingTitleBldg = floodingTitlesBldg.GetByTitleString(radioButtonBuilding.choices.ElementAt(e.newValue));
             }
-
-            //colorChangerByAttribute.ChangeBuildings(selectedBuildingColorType, selectedFloodingTitleBldg);
             sceneManager.ChangeBuildingColorType(selectedBuildingColorType, selectedFloodingTitleBldg);
         }
 
@@ -119,7 +115,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow.MenuUiPart
                 selectedFloodingTitleFld =
                     floodingTitlesFld.GetByTitleString(radioButtonFld.choices.ElementAt(e.newValue));
             }
-            //colorChangerByAttribute.ChangeFlooding(selectedFloodingTitleFld);
             sceneManager.ChangeFloodingColorType(selectedFloodingTitleFld);
         }
 

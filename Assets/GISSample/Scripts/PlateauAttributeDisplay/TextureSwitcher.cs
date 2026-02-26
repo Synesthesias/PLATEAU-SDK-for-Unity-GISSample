@@ -48,18 +48,6 @@ namespace GISSample.PlateauAttributeDisplay
             yield return TurnOnOffTexturesCoroutine(gml, isTextureOn);
         }
 
-        //public void SetTextureOn()
-        //{
-        //    if (isTextureOn) return;
-        //    TurnOnOffTextures(true);
-        //}
-
-        //public void SetTextureOff()
-        //{
-        //    if (!isTextureOn) return;
-        //    TurnOnOffTextures(false); 
-        //}
-
         public void TurnOnOffTextures(bool on)
         {
             if(on == isTextureOn) return; //すでに同じ状態なら何もしない

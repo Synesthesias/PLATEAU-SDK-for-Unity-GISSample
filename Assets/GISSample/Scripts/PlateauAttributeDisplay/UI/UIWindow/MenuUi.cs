@@ -30,7 +30,6 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
 
             uiDoc = GetComponent<UIDocument>();
             var uiRoot = uiDoc.rootVisualElement;
-            //ColorByAttrUi = new ColorByAttrUi(uiRoot, floodingTitlesBldg, floodingTitlesFld, sceneManager.ColorChangerByAttribute);
             ColorByAttrUi = new ColorByAttrUi(uiRoot, floodingTitlesBldg, floodingTitlesFld, sceneManager);
             heightSlider = uiRoot.Q<MinMaxSlider>("HeightSlider");
             lodSlider = uiRoot.Q<MinMaxSlider>("LodSlider");
@@ -48,22 +47,7 @@ namespace GISSample.PlateauAttributeDisplay.UI.UIWindow
             cloudIntensitySlider = uiRoot.Q<Slider>("CloudIntensitySlider");
             floatingTextSwitchToggle = uiRoot.Q<Toggle>("FloatingTextSwitchToggle");
             textureSwitchToggle = uiRoot.Q<Toggle>("TextureSwitchToggle");
-            //floatingTextSwitchToggle.RegisterValueChangedCallback((e) =>
-            //{
-            //    sceneManager.FloatingTextList.SetActive(e.newValue);
-            //});
             floatingTextSwitchToggle.RegisterValueChangedCallback(sceneManager.OnFloatingTextChangedCallback);
-            //textureSwitchToggle.RegisterValueChangedCallback((e) =>
-            //{
-            //    if (e.newValue)
-            //    {
-            //        sceneManager.TextureSwitcher.SetTextureOn();
-            //    }
-            //    else
-            //    {
-            //        sceneManager.TextureSwitcher.SetTextureOff();
-            //    }
-            //});
             textureSwitchToggle.RegisterValueChangedCallback(sceneManager.OnTextureToggleChanged);
 
             CameraPositionMemoryUi = new CameraPositionMemoryUi(cameraPositionMemory, uiRoot, renameCameraSlotUi);
