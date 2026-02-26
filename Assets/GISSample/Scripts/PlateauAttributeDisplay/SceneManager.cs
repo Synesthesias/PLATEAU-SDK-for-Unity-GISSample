@@ -340,30 +340,6 @@ namespace GISSample.PlateauAttributeDisplay
             else
                 CoroutineUtil.RunToEnd(allUpdateOperations.HandleOperations(gml));
 
-            //if (GisTileManager.UseCoroutineForOperations)
-            //    yield return TextureSwitcher.SetCurrentTextureCoroutine(gml);
-            //else
-            //    TextureSwitcher.SetCurrentTexture(gml);
-            //yield return null;
-
-            //if (ColorChangerByAttribute.BuildingColorType != BuildingColorType.None)
-            //{
-            //    if (GisTileManager.UseCoroutineForOperations)
-            //        yield return ColorChangerByAttribute.RedrawBuildingsCoroutine(new List<SampleGml>() { gml });
-            //    else
-            //        ColorChangerByAttribute.RedrawBuildings(new List<SampleGml>() { gml });
-            //}
-
-            //yield return null;
-
-            //if (!filterByLodAndHeight.IsDefaultFilterParameter)
-            //{
-            //    if (GisTileManager.UseCoroutineForOperations)
-            //        yield return filterByLodAndHeight.FilterCoroutine(gml);
-            //    else
-            //        filterByLodAndHeight.Filter(gml);
-            //}
-
             yield return null;
         }
 

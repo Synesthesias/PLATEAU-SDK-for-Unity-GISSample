@@ -98,16 +98,6 @@ namespace GISSample.PlateauAttributeDisplay
         {
             selectedFloodingTitleBldg = floodingTitleBldg;
             selectedBuildingColorType = type;
-            //var heightColorTable = sceneManager.GisUiController.heightColorTable;
-            //var floodingRankColorTable = sceneManager.GisUiController.floodingRankColorTable;
-            //Color[] colorTable = type switch
-            //{
-            //    BuildingColorType.Height => heightColorTable,
-            //    BuildingColorType.FloodingRank => floodingRankColorTable,
-            //    BuildingColorType.None => null,
-            //    _ => throw new ArgumentOutOfRangeException()
-            //};
-
             Color[] colorTable = GetColorTable(type);
 
             foreach (var gml in gmls)
@@ -119,22 +109,6 @@ namespace GISSample.PlateauAttributeDisplay
                 {
 
                     ChangeBuildingsSemantic(semantic, type, floodingTitleBldg, colorTable);
-
-                    //switch (type)
-                    //{
-                    //    case BuildingColorType.None:
-                    //        semantic.ChangeToDefaultState();
-                    //        break;
-                    //    case BuildingColorType.Height:
-                    //        ColorByHeight(colorTable, semantic);
-                    //        break;
-                    //    case BuildingColorType.FloodingRank:
-                    //        ColorByFloodingRank(colorTable, floodingTitleBldg, semantic);
-                    //        break;
-                    //    default:
-                    //        throw new ArgumentException();
-                    //}
-
                     count++;
                     if (count > GISTileManager.YIELD_STEP)
                     {
