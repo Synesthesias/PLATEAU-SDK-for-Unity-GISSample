@@ -1,0 +1,982 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9c9edb2512d8446857091a1868ec70, type: 3}
+  m_Name: PLATEAUTileMeta_13101_chiyoda-ku_pref_2023_citygml_2_op
+  m_EditorClassIdentifier: PLATEAU.Runtime::PLATEAU.DynamicTile.PLATEAUDynamicTileMetaStore
+  tileMetaInfos:
+  - addressName: tile_zoom_11_grid_533945192_bldg_6697_op
+    extent:
+      m_Center: {x: -2011.7449, y: 69.893524, z: 677.0913}
+      m_Extent: {x: 274.6599, y: 49.806473, z: 260.33002}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945291_bldg_6697_op
+    extent:
+      m_Center: {x: -2027.4099, y: 59.479977, z: 1159.4912}
+      m_Extent: {x: 258.565, y: 39.83002, z: 244.06}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945292_bldg_6697_op
+    extent:
+      m_Center: {x: -2052.1196, y: 53.771076, z: 1615.7312}
+      m_Extent: {x: 235.52496, y: 35.81892, z: 243.41998}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945293_bldg_6697_op
+    extent:
+      m_Center: {x: -1719.3248, y: 56.23893, z: 1163.6562}
+      m_Extent: {x: 151.22998, y: 36.69107, z: 244.79501}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945294_bldg_6697_op
+    extent:
+      m_Center: {x: -1602.3049, y: 50.904976, z: 1619.3413}
+      m_Extent: {x: 258.43, y: 34.68502, z: 251.95001}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946101_bldg_6697_op
+    extent:
+      m_Center: {x: -827.4398, y: 65.646324, z: 179.55627}
+      m_Extent: {x: 283.735, y: 62.38967, z: 234.07501}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946102_bldg_6697_op
+    extent:
+      m_Center: {x: -615.9498, y: 7.5899563, z: 735.4463}
+      m_Extent: {x: 69.35498, y: 2.63, z: 104.10501}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946202_bldg_6697_op
+    extent:
+      m_Center: {x: -836.1999, y: 21.988, z: 1723.1963}
+      m_Extent: {x: 285.16498, y: 19.052002, z: 124.84497}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945092_tran_6697_op
+    extent:
+      m_Center: {x: -1946.7908, y: 14.6005, z: -473.32227}
+      m_Extent: {x: 336.47412, y: 14.6005, z: 523.6035}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945094_tran_6697_op
+    extent:
+      m_Center: {x: -1433.9598, y: 8.84, z: -198.48874}
+      m_Extent: {x: 326.62512, y: 8.84, z: 267}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945091_tran_6697_op
+    extent:
+      m_Center: {x: -1977.3699, y: 18.3055, z: -677.73627}
+      m_Extent: {x: 321.41504, y: 11.279499, z: 268.4085}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945093_tran_6697_op
+    extent:
+      m_Center: {x: -1429.6768, y: 10.554, z: -611.28876}
+      m_Extent: {x: 321.138, y: 5.773999, z: 318.539}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945192_tran_6697_op
+    extent:
+      m_Center: {x: -1879.4697, y: 8.2655, z: 675.45624}
+      m_Extent: {x: 427.90503, y: 8.2655, z: 262.315}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945194_tran_6697_op
+    extent:
+      m_Center: {x: -1733.4716, y: 0, z: 590.4896}
+      m_Extent: {x: 503.21667, y: 0, z: 335.12842}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945191_tran_6697_op
+    extent:
+      m_Center: {x: -1922.9048, y: 9.372, z: 167.63626}
+      m_Extent: {x: 374.33008, y: 9.372, z: 279.535}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945193_tran_6697_op
+    extent:
+      m_Center: {x: -1303.9348, y: 0, z: 245.15485}
+      m_Extent: {x: 284.2, y: 0, z: 287.1336}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945291_tran_6697_op
+    extent:
+      m_Center: {x: -1976.0248, y: 0, z: 1068.7863}
+      m_Extent: {x: 325.06995, y: 0, z: 164.245}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945292_tran_6697_op
+    extent:
+      m_Center: {x: -2064.7898, y: 0, z: 1477.1262}
+      m_Extent: {x: 345.60498, y: 0, z: 390.885}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945293_tran_6697_op
+    extent:
+      m_Center: {x: -1619.2849, y: 0, z: 1003.4813}
+      m_Extent: {x: 170.70001, y: 0, z: 528.36}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945294_tran_6697_op
+    extent:
+      m_Center: {x: -1408.1875, y: 0, z: 1496.509}
+      m_Extent: {x: 365.81274, y: 0, z: 352.06226}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946002_tran_6697_op
+    extent:
+      m_Center: {x: -857.7948, y: 3.9825, z: -278.71927}
+      m_Extent: {x: 300.77002, y: 3.9825, z: 265.3005}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946004_tran_6697_op
+    extent:
+      m_Center: {x: -272.10983, y: 1.985, z: -290.33975}
+      m_Extent: {x: 310.42502, y: 1.985, z: 306.85898}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946001_tran_6697_op
+    extent:
+      m_Center: {x: -851.70984, y: 4.452, z: -691.7798}
+      m_Extent: {x: 300.455, y: 2.302, z: 235.95901}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946003_tran_6697_op
+    extent:
+      m_Center: {x: -302.8398, y: 7.4645, z: -755.6132}
+      m_Extent: {x: 339.455, y: 5.3545003, z: 281.3355}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946103_tran_6697_op
+    extent:
+      m_Center: {x: -280.47482, y: 1.4300001, z: 205.35925}
+      m_Extent: {x: 322.08, y: 1.4300001, z: 240.5}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946104_tran_6697_op
+    extent:
+      m_Center: {x: -252.32336, y: 1.5, z: 630.24524}
+      m_Extent: {x: 294.64856, y: 1.5, z: 313.524}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946101_tran_6697_op
+    extent:
+      m_Center: {x: -862.3198, y: 0, z: 100.4892}
+      m_Extent: {x: 295.525, y: 0, z: 237.22205}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946013_tran_6697_op
+    extent:
+      m_Center: {x: 740.1552, y: -0.7744999, z: -618.9133}
+      m_Extent: {x: 392.33002, y: 5.4695, z: 316.83557}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946014_tran_6697_op
+    extent:
+      m_Center: {x: 755.8502, y: 3.3270001, z: -239.67773}
+      m_Extent: {x: 400.225, y: 9.652, z: 262.643}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946011_tran_6697_op
+    extent:
+      m_Center: {x: 39.83069, y: 4.2395, z: -504.91428}
+      m_Extent: {x: 375.1355, y: 7.7355003, z: 434.8945}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946012_tran_6697_op
+    extent:
+      m_Center: {x: 192.05017, y: 7.0025, z: -220.89226}
+      m_Extent: {x: 220.785, y: 4.6625, z: 262.8145}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946113_tran_6697_op
+    extent:
+      m_Center: {x: 823.24524, y: 5.9085, z: 262.20126}
+      m_Extent: {x: 323.87, y: 7.9865003, z: 289.236}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946111_tran_6697_op
+    extent:
+      m_Center: {x: 302.92017, y: 7.7395, z: 290.19925}
+      m_Extent: {x: 318.615, y: 5.3395004, z: 303.559}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946112_tran_6697_op
+    extent:
+      m_Center: {x: 233.34517, y: 1.24, z: 758.07825}
+      m_Extent: {x: 242.99, y: 1.9100001, z: 260.625}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946114_tran_6697_op
+    extent:
+      m_Center: {x: 845.87964, y: 3.0755, z: 700.32574}
+      m_Extent: {x: 319.63547, y: 1.1704999, z: 237.18549}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946202_tran_6697_op
+    extent:
+      m_Center: {x: -843.0394, y: 0, z: 1674.6853}
+      m_Extent: {x: 298.14465, y: 0, z: 150.60297}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946204_tran_6697_op
+    extent:
+      m_Center: {x: -373.55988, y: 7.5265, z: 1694.5513}
+      m_Extent: {x: 363.20508, y: 7.5265, z: 231.34009}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946203_tran_6697_op
+    extent:
+      m_Center: {x: -86.87683, y: 2.949, z: 1246.8438}
+      m_Extent: {x: 124.612, y: 0.301, z: 226.97647}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946212_tran_6697_op
+    extent:
+      m_Center: {x: 246.41516, y: 6.771, z: 1610.7908}
+      m_Extent: {x: 332.99, y: 6.771, z: 251.93945}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946213_tran_6697_op
+    extent:
+      m_Center: {x: 876.1017, y: 7.433, z: 1161.4747}
+      m_Extent: {x: 349.99646, y: 7.433, z: 260.38452}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946211_tran_6697_op
+    extent:
+      m_Center: {x: 273.83017, y: 1.3145001, z: 1153.7812}
+      m_Extent: {x: 324.895, y: 2.4215, z: 256.18002}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946214_tran_6697_op
+    extent:
+      m_Center: {x: 782.5602, y: 11.113, z: 1437.4728}
+      m_Extent: {x: 388.77502, y: 7.4049997, z: 426.9495}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946113_ubld_6697_op
+    extent:
+      m_Center: {x: 647.9608, y: -0.040333748, z: 622.82117}
+      m_Extent: {x: 180.1521, y: 5.31295, z: 236.69092}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946001_frn_6697_op
+    extent:
+      m_Center: {x: -1111.8014, y: 10.514925, z: -918.1952}
+      m_Extent: {x: 26.872803, y: 6.178831, z: 57.66678}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946003_frn_6697_op
+    extent:
+      m_Center: {x: -296.78006, y: 2.4754064, z: -755.1896}
+      m_Extent: {x: 243.76015, y: 2.2858384, z: 178.13907}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946004_frn_6697_op
+    extent:
+      m_Center: {x: -92.99913, y: 3.3630881, z: -373.77155}
+      m_Extent: {x: 115.4655, y: 0.45498908, z: 200.69202}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946011_frn_6697_op
+    extent:
+      m_Center: {x: 6.9356756, y: 4.0460587, z: -918.53705}
+      m_Extent: {x: 6.4446, y: 0.10543895, z: 2.8892822}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946012_frn_6697_op
+    extent:
+      m_Center: {x: 79.65533, y: 3.6520925, z: -279.5736}
+      m_Extent: {x: 122.322655, y: 0.5401335, z: 122.17705}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946013_frn_6697_op
+    extent:
+      m_Center: {x: 325.68945, y: 3.515067, z: -512.33093}
+      m_Extent: {x: 80.787796, y: 0.6683521, z: 81.298065}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946014_frn_6697_op
+    extent:
+      m_Center: {x: 209.03412, y: 3.5957565, z: -240.05405}
+      m_Extent: {x: 103.95965, y: 0.5942435, z: 247.9867}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945091_frn_6697_op
+    extent:
+      m_Center: {x: -1396.6569, y: 10.98413, z: -853.5219}
+      m_Extent: {x: 117.85388, y: 5.4991865, z: 85.20795}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945092_frn_6697_op
+    extent:
+      m_Center: {x: -1402.0846, y: 12.4868, z: -779.06683}
+      m_Extent: {x: 95.29431, y: 7.223464, z: 54.962463}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945093_frn_6697_op
+    extent:
+      m_Center: {x: -1227.2809, y: 11.78299, z: -868.8453}
+      m_Extent: {x: 114.84143, y: 6.7892675, z: 61.824463}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945094_frn_6697_op
+    extent:
+      m_Center: {x: -1260.644, y: 12.27883, z: -781.83105}
+      m_Extent: {x: 66.117615, y: 6.4256473, z: 58.56772}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946211_frn_6697_op
+    extent:
+      m_Center: {x: 626.78705, y: 3.1706119, z: 1086.7666}
+      m_Extent: {x: 117.78255, y: 0.37857306, z: 145.01178}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946212_frn_6697_op
+    extent:
+      m_Center: {x: 676.902, y: 4.687368, z: 1299.9983}
+      m_Extent: {x: 100.417755, y: 1.795967, z: 127.86029}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946213_frn_6697_op
+    extent:
+      m_Center: {x: 786.0754, y: 3.9183586, z: 1096.2449}
+      m_Extent: {x: 49.614075, y: 0.80364156, z: 172.40399}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946214_frn_6697_op
+    extent:
+      m_Center: {x: 834.66956, y: 4.381749, z: 1355.1622}
+      m_Extent: {x: 141.97818, y: 0.91154647, z: 182.4596}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946111_frn_6697_op
+    extent:
+      m_Center: {x: 403.419, y: 8.514433, z: 230.1943}
+      m_Extent: {x: 138.66754, y: 5.786768, z: 233.40054}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946112_frn_6697_op
+    extent:
+      m_Center: {x: 607.6135, y: 8.9244175, z: 626.0714}
+      m_Extent: {x: 110.44595, y: 6.014282, z: 200.4213}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946113_frn_6697_op
+    extent:
+      m_Center: {x: 905.3144, y: 2.947798, z: 424.32385}
+      m_Extent: {x: 96.43109, y: 0.936748, z: 45.351593}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946114_frn_6697_op
+    extent:
+      m_Center: {x: 891.99945, y: 9.268974, z: 683.9876}
+      m_Extent: {x: 261.03693, y: 6.440626, z: 244.12042}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945091_veg_6697_op
+    extent:
+      m_Center: {x: -1510.0623, y: 12.2885065, z: -846.8862}
+      m_Extent: {x: 1.7525024, y: 4.1467924, z: 1.6253967}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945092_veg_6697_op
+    extent:
+      m_Center: {x: -1423.7236, y: 12.283576, z: -757.1182}
+      m_Extent: {x: 20.14508, y: 5.902835, z: 12.049377}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945093_veg_6697_op
+    extent:
+      m_Center: {x: -1216.2712, y: 12.023249, z: -877.2946}
+      m_Extent: {x: 84.08716, y: 7.0346203, z: 50.276062}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945094_veg_6697_op
+    extent:
+      m_Center: {x: -1238.7515, y: 13.107353, z: -782.36316}
+      m_Extent: {x: 51.066956, y: 7.4860554, z: 52.111115}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946001_veg_6697_op
+    extent:
+      m_Center: {x: -1122.6167, y: 9.466759, z: -902.79193}
+      m_Extent: {x: 5.982361, y: 4.8308616, z: 14.946045}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946002_veg_6697_op
+    extent:
+      m_Center: {x: -1126.1514, y: 9.253404, z: -871.9297}
+      m_Extent: {x: 12.679504, y: 4.422703, z: 15.089264}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946003_veg_6697_op
+    extent:
+      m_Center: {x: -1091.426, y: 5.370863, z: -899.4512}
+      m_Extent: {x: 5.321106, y: 0.66426396, z: 14.976868}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946004_veg_6697_op
+    extent:
+      m_Center: {x: -1111.1287, y: 9.157537, z: -863.50806}
+      m_Extent: {x: 2.2503662, y: 4.279983, z: 2.3916016}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946111_veg_6697_op
+    extent:
+      m_Center: {x: 524.5294, y: 9.2415695, z: 470.18985}
+      m_Extent: {x: 74.80206, y: 6.2695694, z: 104.32974}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946112_veg_6697_op
+    extent:
+      m_Center: {x: 586.2676, y: 8.699235, z: 637.42236}
+      m_Extent: {x: 51.696564, y: 6.2012053, z: 88.871704}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946113_veg_6697_op
+    extent:
+      m_Center: {x: 731.5989, y: 11.1145, z: 513.1306}
+      m_Extent: {x: 85.7583, y: 7.685499, z: 39.420654}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946114_veg_6697_op
+    extent:
+      m_Center: {x: 649.7069, y: 10.217999, z: 662.2107}
+      m_Extent: {x: 31.942627, y: 7.582, z: 105.02075}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945091_brid_6697_op
+    extent:
+      m_Center: {x: -2186.9167, y: 16.532295, z: -912.7428}
+      m_Extent: {x: 8.277832, y: 4.4925056, z: 7.3339844}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945092_brid_6697_op
+    extent:
+      m_Center: {x: -2199.574, y: 22.193375, z: -581.88354}
+      m_Extent: {x: 7.711426, y: 1.7183809, z: 4.2362976}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945093_brid_6697_op
+    extent:
+      m_Center: {x: -1172.9196, y: 9.625709, z: -797.6178}
+      m_Extent: {x: 22.842285, y: 4.996567, z: 66.740204}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533945094_brid_6697_op
+    extent:
+      m_Center: {x: -1356.4614, y: 18.240713, z: -451.61133}
+      m_Extent: {x: 21.858887, y: 9.720551, z: 100.63086}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946001_brid_6697_op
+    extent:
+      m_Center: {x: -946.17, y: 5.006428, z: -770.58527}
+      m_Extent: {x: 157.06256, y: 5.890299, z: 115.284485}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946003_brid_6697_op
+    extent:
+      m_Center: {x: -226.00404, y: 7.834545, z: -683.60614}
+      m_Extent: {x: 193.62074, y: 4.957328, z: 347.36517}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946004_brid_6697_op
+    extent:
+      m_Center: {x: -117.30268, y: 7.5838404, z: -302.5879}
+      m_Extent: {x: 179.49371, y: 5.211611, z: 184.29102}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946011_brid_6697_op
+    extent:
+      m_Center: {x: 388.91846, y: 5.972787, z: -580.6687}
+      m_Extent: {x: 281.35736, y: 8.343947, z: 318.81827}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946012_brid_6697_op
+    extent:
+      m_Center: {x: 184.88972, y: 17.789045, z: -26.45787}
+      m_Extent: {x: 180.86275, y: 17.628763, z: 214.31831}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946013_brid_6697_op
+    extent:
+      m_Center: {x: 888.5067, y: 16.006369, z: -623.66864}
+      m_Extent: {x: 262.33786, y: 18.5086, z: 232.68547}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946014_brid_6697_op
+    extent:
+      m_Center: {x: 629.448, y: 9.745179, z: -106.10742}
+      m_Extent: {x: 327.8694, y: 9.925141, z: 208.18555}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946103_brid_6697_op
+    extent:
+      m_Center: {x: -26.164423, y: 28.48505, z: 543.7295}
+      m_Extent: {x: 6.214842, y: 1.0001736, z: 2.7363281}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946111_brid_6697_op
+    extent:
+      m_Center: {x: 103.634125, y: 17.853088, z: 69.29406}
+      m_Extent: {x: 217.58759, y: 15.596282, z: 240.67963}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946112_brid_6697_op
+    extent:
+      m_Center: {x: 416.17142, y: 8.386731, z: 629.55176}
+      m_Extent: {x: 179.90524, y: 11.513162, z: 342.01553}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946113_brid_6697_op
+    extent:
+      m_Center: {x: 953.19745, y: 5.112588, z: 121.95363}
+      m_Extent: {x: 196.18866, y: 8.018477, z: 239.08253}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946114_brid_6697_op
+    extent:
+      m_Center: {x: 1035.3834, y: 1.9159565, z: 411.36038}
+      m_Extent: {x: 85.48364, y: 3.0330696, z: 142.85934}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946203_brid_6697_op
+    extent:
+      m_Center: {x: -60.72838, y: 5.443498, z: 1422.4558}
+      m_Extent: {x: 14.977537, y: 2.0573568, z: 42.66211}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946204_brid_6697_op
+    extent:
+      m_Center: {x: -145.97372, y: 10.353803, z: 1744.4084}
+      m_Extent: {x: 199.03925, y: 10.065909, z: 75.282776}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946202_brid_6697_op
+    extent:
+      m_Center: {x: -462.8208, y: 9.164, z: 1793.2632}
+      m_Extent: {x: 121.415054, y: 5.815, z: 28.537048}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946211_brid_6697_op
+    extent:
+      m_Center: {x: 562.7859, y: 5.723827, z: 1227.7703}
+      m_Extent: {x: 111.5632, y: 5.054913, z: 277.0351}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946212_brid_6697_op
+    extent:
+      m_Center: {x: 322.169, y: 10.09093, z: 1522.7878}
+      m_Extent: {x: 283.94037, y: 11.517844, z: 176.02539}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946213_brid_6697_op
+    extent:
+      m_Center: {x: 877.85004, y: 12.1233635, z: 1184.7621}
+      m_Extent: {x: 285.3344, y: 12.210747, z: 235.7074}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_11_grid_533946214_brid_6697_op
+    extent:
+      m_Center: {x: 650.7373, y: 4.089559, z: 1343.6902}
+      m_Extent: {x: 42.908173, y: 3.054241, z: 58.48633}
+    lod: 0
+    zoomLevel: 11
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394529_bldg_6697_op
+    extent:
+      m_Center: {x: -1815.7598, y: 57.764977, z: 1393.3613}
+      m_Extent: {x: 471.885, y: 41.54502, z: 477.92993}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394610_bldg_6697_op
+    extent:
+      m_Center: {x: -543.3098, y: 77.950005, z: 435.33624}
+      m_Extent: {x: 567.865, y: 76.003, z: 489.85498}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394509_bldg_6697_op
+    extent:
+      m_Center: {x: -1712.5748, y: 111.6305, z: -470.48776}
+      m_Extent: {x: 590.66003, y: 106.7615, z: 479.189}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394620_bldg_6697_op
+    extent:
+      m_Center: {x: -546.88684, y: 80.25, z: 1407.2817}
+      m_Extent: {x: 574.478, y: 81.53, z: 463.0205}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394509_tran_6697_op
+    extent:
+      m_Center: {x: -1703.0599, y: 14.7925, z: -464.20728}
+      m_Extent: {x: 595.725, y: 14.7925, z: 532.7185}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394519_tran_6697_op
+    extent:
+      m_Center: {x: -1663.5548, y: 9.372, z: 412.93625}
+      m_Extent: {x: 643.81995, y: 9.372, z: 524.835}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394529_tran_6697_op
+    extent:
+      m_Center: {x: -1726.3848, y: 0, z: 1171.5663}
+      m_Extent: {x: 684.01, y: 0, z: 696.44495}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394600_tran_6697_op
+    extent:
+      m_Center: {x: -560.1248, y: 6.4095, z: -510.21472}
+      m_Extent: {x: 598.44, y: 6.4095, z: 526.734}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394610_tran_6697_op
+    extent:
+      m_Center: {x: -557.7598, y: 1.5, z: 403.5182}
+      m_Extent: {x: 600.085, y: 1.5, z: 540.25104}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394601_tran_6697_op
+    extent:
+      m_Center: {x: 410.3852, y: 3.3270001, z: -448.94327}
+      m_Extent: {x: 745.69, y: 9.652, z: 490.8655}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394611_tran_6697_op
+    extent:
+      m_Center: {x: 574.91016, y: 5.9085, z: 495.83426}
+      m_Extent: {x: 590.605, y: 7.9865003, z: 522.869}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394620_tran_6697_op
+    extent:
+      m_Center: {x: -551.7245, y: 7.5265, z: 1472.8794}
+      m_Extent: {x: 589.4596, y: 7.5265, z: 453.012}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394621_tran_6697_op
+    extent:
+      m_Center: {x: 569.76166, y: 8.7055, z: 1381.0117}
+      m_Extent: {x: 656.3365, y: 9.8125, z: 483.41052}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394611_ubld_6697_op
+    extent:
+      m_Center: {x: 647.9608, y: -0.040333748, z: 622.82117}
+      m_Extent: {x: 180.1521, y: 5.31295, z: 236.69092}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394600_frn_6697_op
+    extent:
+      m_Center: {x: -558.1039, y: 8.441662, z: -574.47076}
+      m_Extent: {x: 580.5703, y: 8.252094, z: 401.39124}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394601_frn_6697_op
+    extent:
+      m_Center: {x: 181.90497, y: 3.5194705, z: -456.74683}
+      m_Extent: {x: 224.5723, y: 0.6727555, z: 464.6795}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394509_frn_6697_op
+    extent:
+      m_Center: {x: -1313.4751, y: 12.351994, z: -830.9966}
+      m_Extent: {x: 201.03564, y: 7.3582706, z: 107.73328}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394621_frn_6697_op
+    extent:
+      m_Center: {x: 742.8261, y: 4.6376867, z: 1230.7313}
+      m_Extent: {x: 233.82164, y: 1.845648, z: 306.8905}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394611_frn_6697_op
+    extent:
+      m_Center: {x: 708.8939, y: 8.860325, z: 462.4509}
+      m_Extent: {x: 444.14246, y: 6.8492756, z: 465.65714}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394509_veg_6697_op
+    extent:
+      m_Center: {x: -1321.9995, y: 12.7910185, z: -828.9114}
+      m_Extent: {x: 189.81537, y: 7.80239, z: 98.6593}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394600_veg_6697_op
+    extent:
+      m_Center: {x: -1112.4679, y: 9.466759, z: -887.2892}
+      m_Extent: {x: 26.362915, y: 4.8308616, z: 30.448761}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394611_veg_6697_op
+    extent:
+      m_Center: {x: 633.54224, y: 10.649014, z: 566.5458}
+      m_Extent: {x: 183.81488, y: 8.150985, z: 200.68567}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394509_brid_6697_op
+    extent:
+      m_Center: {x: -1678.6814, y: 16.295202, z: -635.5286}
+      m_Extent: {x: 528.60406, y: 11.666061, z: 284.54816}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394600_brid_6697_op
+    extent:
+      m_Center: {x: -520.52075, y: 5.95579, z: -574.6341}
+      m_Extent: {x: 582.7118, y: 6.839661, z: 456.33722}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394601_brid_6697_op
+    extent:
+      m_Center: {x: 577.4358, y: 16.457788, z: -355.81323}
+      m_Extent: {x: 573.4088, y: 18.96002, z: 543.6737}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394610_brid_6697_op
+    extent:
+      m_Center: {x: -26.164423, y: 28.48505, z: 543.7295}
+      m_Extent: {x: 6.214842, y: 1.0001736, z: 2.7363281}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394611_brid_6697_op
+    extent:
+      m_Center: {x: 517.7163, y: 15.16147, z: 400.09085}
+      m_Extent: {x: 631.6698, y: 18.2879, z: 571.47644}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394620_brid_6697_op
+    extent:
+      m_Center: {x: -265.58514, y: 10.353803, z: 1600.797}
+      m_Extent: {x: 318.6507, y: 10.065909, z: 221.0033}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_10_grid_53394621_brid_6697_op
+    extent:
+      m_Center: {x: 600.70654, y: 11.453598, z: 1323.934}
+      m_Extent: {x: 562.4779, y: 12.880512, z: 374.87927}
+    lod: 0
+    zoomLevel: 10
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394519_bldg_6697_op
+    extent:
+      m_Center: {x: -1712.8638, y: 130.10852, z: -21.962097}
+      m_Extent: {x: 590.3711, y: 125.86351, z: 959.3834}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394529_bldg_6697_op
+    extent:
+      m_Center: {x: -1815.7598, y: 57.764977, z: 1393.3613}
+      m_Extent: {x: 471.885, y: 41.54502, z: 477.92993}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394509_tran_6697_op
+    extent:
+      m_Center: {x: -1663.5548, y: 0, z: -30.913757}
+      m_Extent: {x: 643.81995, y: 0, z: 968.685}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394529_tran_6697_op
+    extent:
+      m_Center: {x: -1726.3848, y: 0, z: 1171.5662}
+      m_Extent: {x: 684.01, y: 0, z: 696.44507}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394600_tran_6697_op
+    extent:
+      m_Center: {x: 3.4750977, y: 0, z: 33.68628}
+      m_Extent: {x: 1162.04, y: 0, z: 985.015}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394620_tran_6697_op
+    extent:
+      m_Center: {x: 42.630493, y: 0, z: 1411.2963}
+      m_Extent: {x: 1183.8146, y: 0, z: 514.5951}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394611_ubld_6697_op
+    extent:
+      m_Center: {x: 647.9608, y: -0.04033351, z: 622.82117}
+      m_Extent: {x: 180.15213, y: 5.31295, z: 236.69089}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394600_frn_6697_op
+    extent:
+      m_Center: {x: 640.40906, y: 9.3038, z: 551.6835}
+      m_Extent: {x: 184.42624, y: 6.3858, z: 196.42435}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394600_veg_6697_op
+    extent:
+      m_Center: {x: 629.38617, y: 10.649014, z: 566.5458}
+      m_Extent: {x: 179.65881, y: 8.150985, z: 200.68564}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394509_brid_6697_op
+    extent:
+      m_Center: {x: -1678.6814, y: 16.295202, z: -635.5286}
+      m_Extent: {x: 528.60406, y: 11.666061, z: 284.54816}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394600_brid_6697_op
+    extent:
+      m_Center: {x: 23.80603, y: 16.145689, z: -29.702026}
+      m_Extent: {x: 1127.0386, y: 19.27212, z: 1001.2693}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  - addressName: tile_zoom_9_grid_53394620_brid_6697_op
+    extent:
+      m_Center: {x: 289.4743, y: 11.453598, z: 1385.4275}
+      m_Extent: {x: 873.71014, y: 12.880512, z: 436.3728}
+    lod: 0
+    zoomLevel: 9
+    groupName: PLATEAUCityObjectGroup_13101_chiyoda-ku_pref_2023_citygml_2_op
+  referencePoint: {x: -6412.055, y: 0, z: -36054.78}
