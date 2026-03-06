@@ -32,7 +32,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 2a26edcbcccc5d949b39fad7847039bd, type: 3}
+        m_Texture: {fileID: 2800000, guid: ff41155bdb5f2224c8d6ee1c36ddd49d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -295,7 +295,7 @@ Material:
     - _WindowOffsetXY: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &5934778272339328786
+--- !u!114 &3965100748760529259
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
