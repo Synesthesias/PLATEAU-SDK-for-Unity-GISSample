@@ -11,10 +11,10 @@
   "dependencies": {
     "com.cesium.unity": "1.7.1",
     "com.synesthesias.plateau-unity-sdk": "file:PLATEAU-SDK-for-Unity-v2.3.2.tgz",
-    "com.unity.ai.navigation": "2.0.9",
+    "com.unity.ai.navigation": "2.0.10",
     "com.unity.cinemachine": "2.10.5",
-    "com.unity.collab-proxy": "2.11.2",
-    "com.unity.ide.rider": "3.0.38",
+    "com.unity.collab-proxy": "2.11.3",
+    "com.unity.ide.rider": "3.0.39",
     "com.unity.ide.visualstudio": "2.0.26",
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.multiplayer.center": "1.0.1",
