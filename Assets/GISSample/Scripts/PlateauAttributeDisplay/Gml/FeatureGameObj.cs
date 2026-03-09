@@ -230,7 +230,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 for (int i = 0; i < NormalMaterials.Length; i++)
                 {
 #if UNITY_EDITOR
-                    Object.DestroyImmediate(NormalMaterials[i]);
+                    Object.DestroyImmediate(NormalMaterials[i], true);
 #else
                     Object.Destroy(NormalMaterials[i]);
 #endif
@@ -243,7 +243,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 for(int i = 0;i < InitialTextures.Length;i++)
                 {
 #if UNITY_EDITOR
-                    Object.DestroyImmediate(InitialTextures[i]);
+                    Object.DestroyImmediate(InitialTextures[i], true);
 #else
                     Object.Destroy(InitialTextures[i]);
 #endif
@@ -256,7 +256,7 @@ namespace GISSample.PlateauAttributeDisplay.Gml
                 for (int i = 0; i < ColoredMaterials.Length; i++)
                 {
 #if UNITY_EDITOR
-                    Object.DestroyImmediate(ColoredMaterials[i]);
+                    Object.DestroyImmediate(ColoredMaterials[i], true);
 #else
                     Object.Destroy(ColoredMaterials[i]);
 #endif
