@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/GISSample/GISSampleTileSceneChiyoda3x3.unity
     guid: 1320d652a9833d84a98b7f570acf1816
   m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: 7f44984be3942c64f8075d1edd4554b4,
+    com.unity.addressableassets: {fileID: 11400000, guid: 2b65febbfae88b041b47dc5d2dcac5fe,
       type: 2}
   m_UseUCBPForAssetBundles: 0
