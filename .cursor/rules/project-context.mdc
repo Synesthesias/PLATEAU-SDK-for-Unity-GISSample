@@ -1,0 +1,19 @@
+---
+description: PLATEAU GIS サンプルのプロジェクト前提
+alwaysApply: true
+---
+
+# Project Context
+
+- このプロジェクトは `PLATEAU SDK for Unity`、`PLATEAU SDK Toolkits for Unity`、`PLATEAU SDK Maps Toolkit for Unity` の3つのプラグインのサンプルである。
+- 3つのプラグインは `Packages` 配下に入っている。
+
+# Main Features
+
+- `PLATEAU SDK for Unity` の動的タイル機能により、3D都市モデルをタイル状に分割し、カメラからの距離に応じて読み込める。
+- `PLATEAU SDK Toolkits for Unity` により、見た目の向上ができる。また、交通シミュレーション機能を含む。
+- `PLATEAU SDK Maps Toolkit for Unity` により、`Cesium for Unity` と連携できる。
+
+# Writing Guidelines
+
+- コードコメント、ドキュメント、説明文は日本語で書くこと。
