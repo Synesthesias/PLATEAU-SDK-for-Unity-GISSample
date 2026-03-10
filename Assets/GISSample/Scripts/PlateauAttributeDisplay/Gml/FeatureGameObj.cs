@@ -240,14 +240,6 @@ namespace GISSample.PlateauAttributeDisplay.Gml
 
             if (InitialTextures  != null)
             {
-                for(int i = 0;i < InitialTextures.Length;i++)
-                {
-#if UNITY_EDITOR
-                    Object.DestroyImmediate(InitialTextures[i]);
-#else
-                    Object.Destroy(InitialTextures[i]);
-#endif
-                }
                 InitialTextures = null;
             }
 
