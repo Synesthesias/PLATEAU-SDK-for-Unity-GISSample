@@ -34,34 +34,6 @@ MonoBehaviour:
     lod: 0
     zoomLevel: 11
     groupName: PLATEAUCityObjectGroup_Tiles
-  - addressName: tile_zoom_11_grid_533946101_bldg_6697_op
-    extent:
-      m_Center: {x: -828.1063, y: 65.646324, z: -744.96326}
-      m_Extent: {x: 283.735, y: 62.38967, z: 234.07501}
-    lod: 0
-    zoomLevel: 11
-    groupName: PLATEAUCityObjectGroup_Tiles
-  - addressName: tile_zoom_11_grid_533946102_bldg_6697_op
-    extent:
-      m_Center: {x: -616.61633, y: 7.5899563, z: -189.07329}
-      m_Extent: {x: 69.35498, y: 2.63, z: 104.104996}
-    lod: 0
-    zoomLevel: 11
-    groupName: PLATEAUCityObjectGroup_Tiles
-  - addressName: tile_zoom_11_grid_533946103_bldg_6697_op
-    extent:
-      m_Center: {x: -257.69632, y: 77.950005, z: -681.6283}
-      m_Extent: {x: 281.585, y: 76.003, z: 249.48999}
-    lod: 0
-    zoomLevel: 11
-    groupName: PLATEAUCityObjectGroup_Tiles
-  - addressName: tile_zoom_11_grid_533946104_bldg_6697_op
-    extent:
-      m_Center: {x: -183.74133, y: 77.78353, z: -267.70825}
-      m_Extent: {x: 182.69, y: 75.817474, z: 268.38}
-    lod: 0
-    zoomLevel: 11
-    groupName: PLATEAUCityObjectGroup_Tiles
   - addressName: tile_zoom_11_grid_533946111_bldg_6697_op
     extent:
       m_Center: {x: 252.99867, y: 104.8625, z: -730.4883}
@@ -71,8 +43,8 @@ MonoBehaviour:
     groupName: PLATEAUCityObjectGroup_Tiles
   - addressName: tile_zoom_11_grid_533946112_bldg_6697_op
     extent:
-      m_Center: {x: 310.96368, y: 119.368004, z: -284.06778}
-      m_Extent: {x: 350.015, y: 122.178, z: 306.05948}
+      m_Center: {x: 315.2287, y: 119.368004, z: -284.06778}
+      m_Extent: {x: 345.75, y: 122.178, z: 306.05948}
     lod: 0
     zoomLevel: 11
     groupName: PLATEAUCityObjectGroup_Tiles
@@ -125,13 +97,6 @@ MonoBehaviour:
     lod: 0
     zoomLevel: 10
     groupName: PLATEAUCityObjectGroup_Tiles
-  - addressName: tile_zoom_10_grid_53394610_bldg_6697_op
-    extent:
-      m_Center: {x: -543.9763, y: 77.950005, z: -489.1833}
-      m_Extent: {x: 567.865, y: 76.003, z: 489.85498}
-    lod: 0
-    zoomLevel: 10
-    groupName: PLATEAUCityObjectGroup_Tiles
   - addressName: tile_zoom_10_grid_53394611_bldg_6697_op
     extent:
       m_Center: {x: 549.32367, y: 119.368004, z: -494.5083}
@@ -153,10 +118,10 @@ MonoBehaviour:
     lod: 0
     zoomLevel: 9
     groupName: PLATEAUCityObjectGroup_Tiles
-  - addressName: tile_zoom_9_grid_53394610_bldg_6697_op
+  - addressName: tile_zoom_9_grid_53394611_bldg_6697_op
     extent:
-      m_Center: {x: 22.693604, y: 98.270004, z: -494.5083}
-      m_Extent: {x: 1134.5349, y: 101.08, z: 529.51}
+      m_Center: {x: 549.32367, y: 98.270004, z: -494.5083}
+      m_Extent: {x: 607.90497, y: 101.08, z: 529.51}
     lod: 0
     zoomLevel: 9
     groupName: PLATEAUCityObjectGroup_Tiles

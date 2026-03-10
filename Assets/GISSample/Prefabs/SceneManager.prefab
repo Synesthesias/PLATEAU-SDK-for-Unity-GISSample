@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 07d689824a5f9e348b986cb199ccd8cd, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: dddfc0f7b915d6a44b632012d792ca29, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: dddfc0f7b915d6a44b632012d792ca29,
+    type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -102,7 +103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instancedCityModels: []
-  tiles: {fileID: 0}
+  gislTileManager: {fileID: 2392528256820790695}
+  trafficManager: {fileID: 0}
 --- !u!114 &2392528256820790695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,7 +117,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b42647fdd45f9c45919865238515ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GISSample::GISSample.PlateauAttributeDisplay.GISTileManager
+  UseCoroutineForTiles: 1
+  RunCoroutineOnEveryLoad: 1
+  UseCoroutineForOperations: 0
+  UseCoroutineForInteraction: 0
+  ZoomLevel11Only: 0
+  ShowDebugLogs: 0
+  loadDistanceSettings:
+  - ZoomLevel: 11
+    MinDistance: -10000
+    MaxDistance: 10
+  - ZoomLevel: 10
+    MinDistance: 100
+    MaxDistance: 400
+  - ZoomLevel: 9
+    MinDistance: 400
+    MaxDistance: 100000
   tileManager: {fileID: 0}
+  sceneManager: {fileID: 5265063444730009986}
 --- !u!1001 &2330898325097397491
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -124,55 +143,68 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5265063444730009985}
     m_Modifications:
-    - target: {fileID: 6362980509278895834, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 6362980509278895834, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_Name
       value: GisUiController
       objectReference: {fileID: 0}
-    - target: {fileID: 7328982412730064108, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 7328982412730064108, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: loadingUi
       value: 
       objectReference: {fileID: 7667002362821969708}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - target: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
@@ -180,13 +212,15 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 8481576551473214615, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 2354467947881592784}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
 --- !u!4 &6557725390644960535 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8888060378605969892, guid: 5bdb410b2ddba664c99700f726ae4587,
+    type: 3}
   m_PrefabInstance: {fileID: 2330898325097397491}
   m_PrefabAsset: {fileID: 0}

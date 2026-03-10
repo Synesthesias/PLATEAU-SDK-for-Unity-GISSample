@@ -1,5 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:VisualElement style="flex-grow: 1; align-self: flex-end; justify-content: flex-end; flex-direction: column; bottom: 100px; width: 20%;">
-        <ui:Label text="ロード中..." display-tooltip-when-elided="true" style="-unity-text-align: middle-left; width: auto; height: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 20px; -unity-text-generator: standard; flex-shrink: 0; bottom: auto; flex-grow: 0; flex-direction: column; align-content: auto; align-items: auto; justify-content: flex-start;"/>
+    <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; flex-direction: column;">
+        <ui:VisualElement style="background-color: rgba(0, 0, 0, 0.7); padding-top: 16px; padding-right: 28px; padding-bottom: 16px; padding-left: 28px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; align-items: center; justify-content: center;">
+            <ui:Label text="ロード中..." display-tooltip-when-elided="true" style="-unity-text-align: middle-center; width: auto; height: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 24px; -unity-text-generator: standard; flex-shrink: 0; bottom: auto; flex-grow: 0; flex-direction: column; align-content: auto; align-items: auto; justify-content: flex-start;"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

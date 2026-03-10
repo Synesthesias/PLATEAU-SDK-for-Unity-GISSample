@@ -1,4 +1,4 @@
-﻿using GISSample.PlateauAttributeDisplay.Gml;
+using GISSample.PlateauAttributeDisplay.Gml;
 using PLATEAU.DynamicTile;
 using System;
 using System.Collections;
@@ -11,6 +11,21 @@ namespace GISSample.PlateauAttributeDisplay
 {
     public class GISTileManager : MonoBehaviour
     {
+        [Serializable]
+        private struct ZoomLevelLoadDistanceSetting
+        {
+            public int ZoomLevel;
+            public float MinDistance;
+            public float MaxDistance;
+
+            public ZoomLevelLoadDistanceSetting(int zoomLevel, float minDistance, float maxDistance)
+            {
+                ZoomLevel = zoomLevel;
+                MinDistance = minDistance;
+                MaxDistance = maxDistance;
+            }
+        }
+
         public static readonly int YIELD_STEP = 20; // Coroutine実行時に一度に処理するGameObject数
         public static readonly float COROUTINE_TIME_OUT = 15f; //1タイル処理にかかる時間がこれ以上なら破棄
         public static readonly float BASE_COROUTINE__TIME_OUT = 180f; //全コルーチンの処理の経過時間がこれ以上ならキューを全て破棄
@@ -27,14 +42,12 @@ namespace GISSample.PlateauAttributeDisplay
         /// 各Zoomレベルごとのカメラからのロード距離定義をオーバーライドします。
         /// {zoomLevel, (最小距離, 最大距離)}
         /// </summary>
-        public Dictionary<int, (float, float)> loadDistances = new Dictionary<int, (float, float)>
+        [SerializeField]
+        private List<ZoomLevelLoadDistanceSetting> loadDistanceSettings = new()
         {
-            //{ 11, (-10000f, 500f) },
-            //{ 10, (500f, 1500f) },
-            //{ 9, (1500f, 10000f) },
-            { 11, (-10000f, 100f) },
-            { 10, (100f, 600f) },
-            { 9, (600f, 100000f) },
+            new ZoomLevelLoadDistanceSetting(11, -10000f, 100f),
+            new ZoomLevelLoadDistanceSetting(10, 100f, 600f),
+            new ZoomLevelLoadDistanceSetting(9, 600f, 100000f),
         };
 
         [SerializeField]
@@ -88,7 +101,7 @@ namespace GISSample.PlateauAttributeDisplay
             PLATEAUSceneViewCameraTracker.Release(); //Editor/Runtime切替時のエラー軽減
 #endif
 
-            tileManager.loadDistances = loadDistances;
+            tileManager.loadDistances = ToLoadDistanceDictionary();
             tileManager.onTileInstantiatedAction += onTileInstanciated;
             tileManager.onTileUnloadBegin += onTileUnloaded;
             tileManager.onTileInstantiationComplete += onAllTileLoaded;
@@ -101,6 +114,26 @@ namespace GISSample.PlateauAttributeDisplay
             tileManager.onTileInstantiatedAction -= onTileInstanciated;
             tileManager.onTileUnloadBegin -= onTileUnloaded;
             tileManager.onTileInstantiationComplete -= onAllTileLoaded;
+        }
+
+        private Dictionary<int, (float, float)> ToLoadDistanceDictionary()
+        {
+            if (loadDistanceSettings == null || loadDistanceSettings.Count == 0)
+            {
+                return new Dictionary<int, (float, float)>
+                {
+                    { 11, (-10000f, 100f) },
+                    { 10, (100f, 600f) },
+                    { 9, (600f, 100000f) },
+                };
+            }
+
+            var dict = new Dictionary<int, (float, float)>(loadDistanceSettings.Count);
+            foreach (var setting in loadDistanceSettings)
+            {
+                dict[setting.ZoomLevel] = (setting.MinDistance, setting.MaxDistance);
+            }
+            return dict;
         }
 
         private void Update()

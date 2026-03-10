@@ -70,3 +70,4 @@ Assets/Scenes/13101_chiyoda-ku_city_2023_citygml_1_op/TrafficManager.prefab filt
 *.bundle filter=lfs diff=lfs merge=lfs -text
 Assets/GISSample/TrafficManager.prefab filter=lfs diff=lfs merge=lfs -text
 Assets/GISSample/Tiles/*.prefab filter=lfs diff=lfs merge=lfs -text
+Assets/GISSample/Prefabs/TrafficManager.prefab filter=lfs diff=lfs merge=lfs -text

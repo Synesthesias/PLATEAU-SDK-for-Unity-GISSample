@@ -5,11 +5,8 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/GISSample/GISSampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/GISSample/GISSampleTileSceneChiyoda3x3.unity
+    path: Assets/GISSample/GISSampleScene.unity
     guid: 1320d652a9833d84a98b7f570acf1816
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 2b65febbfae88b041b47dc5d2dcac5fe,
