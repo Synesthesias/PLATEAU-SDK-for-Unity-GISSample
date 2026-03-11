@@ -138,6 +138,11 @@ namespace GISSample.PlateauAttributeDisplay
 
         private void Update()
         {
+            if (!IsTileInitialized)
+            {
+                TryCompleteInitialTileLoad();
+            }
+
             // Coroutine Timeout
             if (currentCoroutine != null && !string.IsNullOrEmpty(currentCoroutineTileAddress))
             {
@@ -183,6 +188,7 @@ namespace GISSample.PlateauAttributeDisplay
 
             tileManager.UpdateCameraPosition(Vector3.zero); //　カメラ位置リセット
             UpdateCameraPosition(sceneManager.CameraPosition); //初回リロード開始
+            TryCompleteInitialTileLoad(); // ビルド時の初期化順差分でイベントを取り逃しても復旧する
 
             Debug.Log($"GISTileManager Tile Initialized.");
         }
@@ -196,17 +202,31 @@ namespace GISSample.PlateauAttributeDisplay
             {
                 // 更新されないことがあるので再読み込み
                 UpdateCameraPosition(sceneManager.CameraPosition);
-
-                if (!IsTileLoading)
-                {
-                    PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視 (PLATEAURuntimeCameraTrackerは使用しない）　PLATEAURuntimeCameraTrackerのOnRuntimeInitialize処理終了後に呼ぶ必要あり
-
-                    IsTileInitialized = true;
-                    Debug.Log($"GISTileManager First Tile Load Completed."); // 初回ロード後に、これが呼ばれないとしたらロードタスク・コルーチンが詰まっている可能性あり（再起動が必要）
-                }  
+                TryCompleteInitialTileLoad();
             }
 
             StartCoroutineProcess();
+        }
+
+        /// <summary>
+        /// 初回タイルロード完了を判定して必要な後処理を行います。
+        /// ビルド時は初期化順の差で完了イベントを取り逃すことがあるため、状態からも復旧します。
+        /// </summary>
+        private void TryCompleteInitialTileLoad()
+        {
+            if (IsTileInitialized || tileManager == null)
+                return;
+
+            if (IsTileLoading)
+                return;
+
+            if (!tileManager.DynamicTiles.Any(t => t?.LoadedObject != null))
+                return;
+
+            PLATEAURuntimeCameraTracker.StopCameraTracking(); //　自前のUpdateでカメラ移動を監視 (PLATEAURuntimeCameraTrackerは使用しない）　PLATEAURuntimeCameraTrackerのOnRuntimeInitialize処理終了後に呼ぶ必要あり
+
+            IsTileInitialized = true;
+            Debug.Log($"GISTileManager First Tile Load Completed."); // 初回ロード後に、これが呼ばれないとしたらロードタスク・コルーチンが詰まっている可能性あり（再起動が必要）
         }
 
         /// <summary>
